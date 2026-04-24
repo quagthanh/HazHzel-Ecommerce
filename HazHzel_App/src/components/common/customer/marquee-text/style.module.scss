@@ -1,0 +1,11 @@
+@use "../../../../scss/dependencies/variables" as *;
+.marqueeText {
+  color: $white-text-color;
+  background-color: $black-background;
+  height: 70px;
+  font-size: large;
+  font-weight: 600;
+}
+.scrollingContent {
+  margin-right: 32px;
+}

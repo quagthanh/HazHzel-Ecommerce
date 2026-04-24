@@ -1,0 +1,103 @@
+.sizeSelectorContainer {
+  margin-bottom: 1rem;
+  
+  label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
+    font-size: 0.9rem;
+  }
+}
+
+.sizeOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.optionBtn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // 1. Trạng thái mặc định (Chưa chọn): Bg xám nhẹ, viền đen
+  background-color: #f5f5f5; 
+  color: #000;
+  border: 1px solid #000; 
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+
+  // 2. Trạng thái Active (Đang chọn): Bg đen, chữ trắng
+  &.active {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #000;
+  }
+
+  // 3. Trạng thái Disabled (Hết hàng): Xám nặng hơn, gạch chéo
+  &.disabled {
+    background-color: #a3a3a3; // Xám nặng
+    color: #e0e0e0; // Chữ mờ
+    border: 1px solid #a3a3a3; // Viền cùng màu nền
+    cursor: not-allowed;
+    text-decoration: line-through;
+    opacity: 0.6;
+
+    &:hover {
+      background-color: #a3a3a3; // Không đổi màu khi hover
+    }
+  }
+}
+.colorBtn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%; // Tạo hình tròn
+  cursor: pointer;
+  border: 1px solid #e5e5e5; // Viền mờ mặc định
+  transition: all 0.2s ease;
+  position: relative;
+  
+  // Shadow nhẹ để nổi bật trên nền trắng
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  // Khi được chọn: Thêm viền kép (Double ring effect)
+  &.active {
+    border: 2px solid #fff; // Viền trắng bên trong
+    outline: 1px solid #000; // Viền đen bao ngoài
+    transform: scale(1.1);
+  }
+
+  // Khi hết hàng: Gạch chéo hoặc làm mờ
+  &.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    
+    // Tạo đường gạch chéo
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: #000;
+      transform: rotate(-45deg);
+    }
+    
+    &:hover {
+      transform: none;
+    }
+  }
+}

@@ -1,0 +1,31 @@
+.analyticsPreview {
+  flex: 1;
+  background-color: #0a4d4d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+
+  .analyticsDescription {
+    margin-top: 48px;
+    text-align: center;
+    max-width: 500px;
+
+    .analyticsTitle {
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .analyticsText {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}

@@ -1,0 +1,85 @@
+@use "../../../../scss/dependencies/variables" as *;
+
+.checkoutForm {
+  background: $primary-color;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.expressCheckout {
+  margin-bottom: 16px;
+  padding-top: 40px;
+}
+.wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.expressBtn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  img {
+    display: block;
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+  @media (max-width: 1000px) {
+    padding: 4px 8px;
+  }
+}
+.emailSection {
+  font-size: 14px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.deliverySection {
+  margin-bottom: 16px;
+
+  h3 {
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .deliveryOption {
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+  }
+}
+
+.form {
+  margin-top: 8px;
+}
+.deliveryOption > span:last-child {
+  display: block;
+  width: 100%;
+}
+.optionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.price {
+  font-weight: 500;
+  color: #000;
+}

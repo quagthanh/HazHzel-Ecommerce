@@ -1,0 +1,9 @@
+.loginPage {
+  display: flex;
+  min-height: 100vh;
+  background-color: rgb(255, 251, 245);;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,94 @@
+@use "../../../../scss/dependencies/variables" as *;
+.sectionSpacing {
+  @include section-spacing;
+  background-color: $primary-color;
+}
+.container {
+  @include container;
+}
+.sectionStack {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 36px;
+  width: 100%;
+}
+.wrap {
+  @include wrap;
+}
+.collectionList {
+  display: flex;
+  gap: 40px;
+  flex-wrap: nowrap;
+  justify-content: center;
+  @media (max-width: 800px) {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+.collectionCard {
+  display: grid;
+  gap: 1.5rem;
+  align-content: start;
+  width: 1000px;
+}
+.contentOverMedia {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+}
+.zoomImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 5s ease;
+}
+.collectionCard:hover .zoomImage {
+  transform: scale(1.1);
+}
+
+.cardContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  z-index: 2;
+
+  h3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 0;
+  }
+  .antBtn {
+    font-size: 16px;
+    color: rgb(var(--button-text-color));
+    background-color: transparent;
+    border: 1px solid rgb(var(--button-outline-color));
+    padding: 0.65rem 1.75rem;
+    text-transform: var(--button-text-transform);
+  }
+}

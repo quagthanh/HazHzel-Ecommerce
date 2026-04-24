@@ -1,0 +1,14 @@
+.logoContainer {
+  margin-bottom: 48px;
+ display: flex;
+  justify-content: flex-start; 
+  align-items: center;
+}
+
+.logoSvg {
+  .logoText {
+    font-size: 20px;
+    font-weight: bold;
+    fill: #000;
+  }
+}

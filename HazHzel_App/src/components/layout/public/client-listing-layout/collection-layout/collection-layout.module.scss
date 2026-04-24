@@ -1,0 +1,17 @@
+@use "@/scss/dependencies/variables" as *;
+.container {
+  width: 100%;
+  background-color: $primary-color; // Hoặc màu nền bạn muốn
+  min-height: 100vh;
+}
+
+.content {
+  // Giới hạn chiều rộng nội dung để Masonry đẹp nhất
+  max-width: 1200px; 
+  margin: 0 auto; // Căn giữa
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+}

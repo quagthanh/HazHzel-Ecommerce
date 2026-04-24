@@ -1,0 +1,84 @@
+@use "../../../../scss/dependencies/variables" as *;
+.sectionSpacing {
+  @include section-spacing;
+  background-color: $primary-color;
+}
+.container {
+  @include container;
+}
+
+.cartWrapper {
+  padding: 0 300px;
+  text-align: center;
+
+  h1 {
+    margin-bottom: 5px;
+  }
+
+  p {
+    color: #555;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 1200px) {
+    padding: 0 100px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    text-align: left;
+  }
+}
+
+.cartItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.productInfo {
+  display: grid;
+  padding: 1.5rem 0;
+  font-weight: 600;
+  font-size: 14px;
+  & a {
+    color: black;
+  }
+  & a:hover {
+    color: rgb(139, 139, 139);
+  }
+}
+.quantityItem {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.removeLink {
+  all: unset;
+  position: relative;
+  display: inline-block;
+  color: black;
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background-color: black;
+    transform: scaleX(0);
+    transform-origin: right; // bắt đầu từ phải
+    transition: transform 0.3s ease;
+  }
+
+  &:hover::after {
+    transform: scaleX(1); // mở rộng ra từ phải sang trái
+    transform-origin: left;
+  }
+}
+.checkOutBtn {
+  padding-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+}

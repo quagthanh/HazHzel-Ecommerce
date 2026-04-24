@@ -1,0 +1,181 @@
+.textLinesContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 48px;
+}
+
+.textLine {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+.textContent {
+  display: inline-block;
+  animation: fadeInOutFlicker 8s ease-in-out infinite;
+}
+
+.textLineTopLeft {
+  text-align: left;
+  align-self: flex-start;
+  
+  .textContent {
+    animation-delay: 0s;
+  }
+}
+
+.textLineCenterCenter {
+  text-align: center;
+  align-self: center;
+  font-size: 20px;
+  font-weight: 700;
+  
+  .textContent {
+    animation-delay: 2.5s;
+  }
+}
+
+.textLineBottomRight {
+  text-align: right;
+  align-self: flex-end;
+  
+  .textContent {
+    animation-delay: 5s;
+  }
+}
+
+// Animation flash per second
+@keyframes fadeInOutFlicker {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  
+  // Show clearly
+  10% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  // Hold show
+  40% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  // Start blink blink
+  45% {
+    opacity: 0.7;
+  }
+  
+  // 47% {
+  //   opacity: 1;
+  // }
+  
+  // 49% {
+  //   opacity: 0.6;
+  // }
+  
+  51% {
+    opacity: 1;
+  }
+  
+  // 53% {
+  //   opacity: 0.5;
+  // }
+  
+  // 55% {
+  //   opacity: 1;
+  // }
+  
+  57% {
+    opacity: 0.4;
+  }
+  
+  // 59% {
+  //   opacity: 0.9;
+  // }
+  
+  // 61% {
+  //   opacity: 0.3;
+  // }
+  
+  63% {
+    opacity: 0.8;
+  }
+  
+  // Mostly disappear 
+  65% {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  
+  // disappeared
+  100% {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+}
+
+@media (max-width: 1200px) {
+  .textLinesContainer {
+    padding: 60px 40px;
+    gap: 50px;
+    min-height: 350px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .textLinesContainer {
+    padding: 50px 30px;
+    gap: 40px;
+    min-height: 300px;
+  }
+  
+  .textLine {
+    font-size: 14px;
+  }
+  
+  .textLineCenterCenter {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .textLinesContainer {
+    padding: 40px 20px;
+    gap: 30px;
+    min-height: 250px;
+  }
+  
+  .textLine {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+  }
+  
+  .textLineCenterCenter {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .textLinesContainer {
+    padding: 30px 15px;
+    gap: 25px;
+    min-height: 200px;
+  }
+  
+  .textLine {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  
+  .textLineCenterCenter {
+    font-size: 14px;
+  }
+}

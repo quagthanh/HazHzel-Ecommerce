@@ -1,0 +1,25 @@
+@use "../../../../scss/dependencies/variables" as *;
+.colorSchema {
+  background-color: $primary-color;
+}
+.productPage {
+  max-width: 100%;
+  padding: 2rem;
+}
+
+.productGrid {
+  display: grid;
+  align-items: start;
+  grid-template-areas: "thumbnail main info";
+  grid-template-columns: 60px 500px 500px;
+  justify-content: center;
+  gap: 2rem;
+
+  @media (max-width: 1024px) {
+    grid-template-areas:
+      "main"
+      "thumbnail"
+      "info";
+    grid-template-columns: 1fr;
+  }
+}

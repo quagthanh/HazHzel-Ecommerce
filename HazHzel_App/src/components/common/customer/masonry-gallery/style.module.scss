@@ -1,0 +1,123 @@
+.masonryWrapper {
+  column-count: 4;
+  column-gap: 16px;
+  padding: 10px 0;
+
+  @media (max-width: 1024px) {
+    column-count: 3;
+  }
+  @media (max-width: 768px) {
+    column-count: 2;
+  }
+  @media (max-width: 480px) {
+    column-count: 1;
+  }
+}
+
+.masonryItem {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  display: inline-block;
+  width: 100%;
+}
+
+.masonryCard {
+  overflow: hidden;
+  margin-bottom: 0;
+  background: transparent;
+  border-radius: 0 !important;
+  :global(.ant-card-body) {
+    padding: 0 !important;
+    display: none; 
+  }
+  :global(.ant-card-cover) {
+    border-radius: 0 !important; 
+    margin: 0 !important; 
+    overflow: visible !important;
+  }
+
+  :global(.ant-card-cover > *) {
+    border-radius: 0 !important;
+  }
+}
+
+.cardImageWrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0px;
+  background-color: #f0f0f0; 
+}
+
+.zoomImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.masonryCard:hover .zoomImage {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  z-index: 1;
+  opacity: 0.6;
+  transition: opacity 3s ease;
+}
+
+.masonryCard:hover .overlay {
+  opacity: 0.8;
+}
+
+.titleOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 90%;
+  text-align: center;
+  pointer-events: none;
+}
+
+.cardTitle {
+  font-family: sans-serif;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.tag {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 4px 8px;
+  font-size: 9px;
+  font-weight: 700;
+  color: white;
+  z-index: 3;
+  text-transform: uppercase;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tagStore { background-color: #000; }
+.tagCollection { background-color: #000; }
+.tagCategory { background-color: #000; }

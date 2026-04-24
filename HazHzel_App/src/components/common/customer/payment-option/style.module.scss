@@ -1,0 +1,26 @@
+.shopPay {
+  background: #5a31f4;
+  color: white;
+  padding: 1rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; // 👈 khoảng cách giữa chữ và hình
+
+  &:hover {
+    background: #4a25cc;
+  }
+
+  img {
+    display: block;
+    width: 30px;
+    height: auto;
+    background-color: white;
+  }
+}

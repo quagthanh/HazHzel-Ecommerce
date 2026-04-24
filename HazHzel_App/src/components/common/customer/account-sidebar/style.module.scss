@@ -1,0 +1,64 @@
+// components/AccountSidebar/style.module.scss
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 32px;
+}
+
+.sidebarHeader {
+  padding: 0 0 20px;
+  border-bottom: 1px solid #e8e8e8;
+  margin: 0 16px 8px;
+}
+
+.welcomeText {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  text-align: center;
+  margin: 0;
+}
+
+.sidebarMenu {
+  background: transparent !important;
+  border-inline-end: none !important;
+  flex: 1;
+
+  :global(.ant-menu-item) {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    font-size: 14px;
+    color: #555;
+    height: 46px;
+    line-height: 46px;
+
+    &:hover {
+      background: #eef0f3 !important;
+      color: #111 !important;
+    }
+  }
+
+  :global(.ant-menu-item-selected) {
+    background: #eef0f3 !important;
+    color: #111 !important;
+    font-weight: 600;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  :global(.ant-menu-item-danger) {
+    margin-top: 8px !important;
+    border-top: 1px solid #ebebeb;
+    color: #888 !important;
+
+    &:hover {
+      color: #e53e3e !important;
+      background: #fff5f5 !important;
+    }
+  }
+}

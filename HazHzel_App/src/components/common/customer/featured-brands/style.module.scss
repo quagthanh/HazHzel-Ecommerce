@@ -1,0 +1,75 @@
+@use "../../../../scss/dependencies/variables" as *;
+.colorSchema {
+  background-color: $primary-color;
+}
+.sectionStack {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 36px;
+  width: 100%;
+}
+.collectionListTextOutSide {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  justify-content: center;
+
+  .collectionCard {
+    flex: 1 1 calc(33.333% - 3rem);
+    max-width: calc(33.333% - 3rem);
+
+    @media (max-width: 1024px) {
+      flex: 1 1 calc(50% - 3rem);
+      max-width: calc(50% - 3rem);
+    }
+
+    @media (max-width: 768px) {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
+}
+.wrap {
+  @include wrap;
+}
+.collectionCard {
+  display: grid;
+  align-content: start;
+  gap: 20px;
+}
+.contentOverMedia {
+  position: relative;
+  overflow: hidden;
+ height: 420px;  
+ display: block;
+}
+.contentOverMedia {
+  height: 420px;
+
+  @media (max-width: 1024px) {
+    height: 360px;
+  }
+
+  @media (max-width: 768px) {
+    height: 300px;
+  }
+}
+.zoomImage {
+  transition: transform 5s ease;
+}
+.collectionCard:hover .zoomImage {
+  transform: scale(1.1);
+}
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  h3 {
+    font-size: 30px;
+    color: black;
+    text-transform: uppercase;
+  }
+}

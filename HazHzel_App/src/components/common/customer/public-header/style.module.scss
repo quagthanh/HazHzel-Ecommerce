@@ -1,0 +1,32 @@
+@use "../../../../scss/dependencies/variables" as *;
+
+.headerMain {
+  @media (max-width: 1245px) {
+    padding: 0 16px;
+  }
+}
+
+.headerLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.leftMobileNav {
+  display: none;
+  @media (max-width: 1245px) {
+    display: flex;
+  }
+}
+.centerLogo {
+  flex: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+
+  @media (min-width: 1245px) {
+    position: static;
+    transform: none;
+    margin-right: auto;
+  }
+}

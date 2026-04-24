@@ -1,0 +1,11 @@
+.cartItem{
+  padding-bottom: 10px;
+}
+.cartImgWrapper {
+  :global(.ant-skeleton-image) {
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #f0ece6;
+  }
+}
+

@@ -1,0 +1,33 @@
+// account-tabs/style.module.scss
+
+.accountPage {
+  min-height: 100vh;
+  background: #fff !important;
+    padding:50px;
+  :global(.ant-layout) {
+    background: #fff;
+  }
+}
+
+.accountSider {
+  background: #f7f8fa !important;
+  border-right: 1px solid #ebebeb;
+
+  :global(.ant-layout-sider-children) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.accountContent {
+  padding: 48px 60px !important;
+  background: #fff !important;
+
+  @media (max-width: 1024px) {
+    padding: 36px 32px !important;
+  }
+
+  @media (max-width: 768px) {
+    padding: 24px 20px !important;
+  }
+}

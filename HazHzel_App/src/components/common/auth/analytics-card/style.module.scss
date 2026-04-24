@@ -1,0 +1,41 @@
+.analyticsCard {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.analyticsCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.analyticsCardTitle {
+  margin: 0;
+}
+
+.analyticsCardTabs {
+  display: flex;
+  gap: 8px;
+}
+
+.analyticsTab {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &Active { /* Removed the --active modifier and used camelCase */
+    background-color: #f0f0f0;
+    font-weight: 500;
+  }
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}

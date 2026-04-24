@@ -1,0 +1,54 @@
+.circularProgressWrapper {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.circularProgress {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.circularProgressSvg {
+  transform: rotate(-90deg);
+}
+
+.circularProgressBg {
+  stroke: #f0f0f0;
+  stroke-width: 10;
+  fill: none;
+}
+
+.circularProgressFill {
+  stroke: #0a4d4d;
+  stroke-width: 10;
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.5s ease;
+}
+
+.circularProgressContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.circularProgressLabel {
+  font-size: 12px;
+  display: block;
+}
+
+.circularProgressValue {
+  font-size: 24px;
+  display: block;
+}

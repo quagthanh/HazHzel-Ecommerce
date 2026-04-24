@@ -1,0 +1,28 @@
+.lineChart {
+  height: 160px;
+  margin-bottom: 36px;
+  position: relative;
+  width: 100%;
+}
+
+.lineChartSvg {
+  display: block;
+  width: 100%;
+  height: 160px;
+}
+
+.lineChartLabels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.lineChartLabel {
+  font-size: 11px !important;
+  font-weight: 500;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+}

@@ -1,0 +1,23 @@
+.mainImage {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  scroll-behavior: smooth;
+  padding-bottom: 40px;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  .mainImageWrapper {
+    width: 100%;
+    max-width: 673px;
+    aspect-ratio: 1 / 1; 
+    position: relative; 
+    scroll-margin-top: 120px; 
+    background-color: #f9f9f9; 
+    border-radius: 8px;
+    overflow: hidden;
+  }
+}

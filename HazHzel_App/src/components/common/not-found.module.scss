@@ -1,0 +1,176 @@
+$color: #595959;
+$easeSmooth: cubic-bezier(0.39, 0.575, 0.28, 0.995);
+$anims: float, floatReverse, float2, floatReverse2;
+
+.notFoundContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: white;
+  color: black;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  margin: 0;
+  padding: 20px;
+}
+
+.content {
+  position: relative;
+  width: 600px;
+  max-width: 100%;
+  background: white;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: -10px 10px 67px -12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  animation: apparition 0.8s 1.2s $easeSmooth forwards;
+  z-index: 10;
+
+  p {
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.1rem;
+    color: $color;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      font-size: 1.5em;
+      color: #262626;
+    }
+  }
+}
+
+.homeButton {
+  margin-top: 2rem;
+  padding: 0.5rem 2rem;
+  height: auto;
+  border: 3px solid $color !important;
+  background: transparent !important;
+  font-size: 1rem;
+  color: $color !important;
+  font-weight: bold;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: $color !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.particle {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  font-weight: bold;
+  //Change color of 4
+  color: rgba(0, 0, 0, 0.3);
+  user-select: none;
+
+  @for $i from 1 through 40 {
+    &:nth-child(#{$i}) {
+      $size: random(30) + 20;
+      $blur: $i * 0.03;
+      $speed: random(15) + 15;
+      $delay: random(10) * 0.1;
+      $animIndex: random(4);
+      $anim: float;
+
+      @if $animIndex == 1 {
+        $anim: float;
+      } @else if $animIndex == 2 {
+        $anim: floatReverse;
+      } @else if $animIndex == 3 {
+        $anim: float2;
+      } @else {
+        $anim: floatReverse2;
+      }
+
+      top: random(100) * 1%;
+      left: random(100) * 1%;
+      font-size: #{$size}px;
+      filter: blur(#{$blur}px);
+      animation: $anim #{$speed}s infinite ease-in-out;
+      animation-delay: #{$delay}s;
+    }
+  }
+}
+
+// Animations
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(180px);
+  }
+}
+
+@keyframes floatReverse {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-180px);
+  }
+}
+
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(40px);
+  }
+}
+
+@keyframes floatReverse2 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-40px);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .content {
+    padding: 40px 30px;
+
+    p {
+      font-size: 1.1rem;
+    }
+  }
+
+  .particle {
+    @for $i from 1 through 40 {
+      &:nth-child(#{$i}) {
+        $size: random(20) + 15;
+        font-size: #{$size}px;
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+@use "../../../../scss/dependencies/variables" as *;
+.sectionSpacing {
+  background-color: $primary-color;
+}
+.container {
+  @include container;
+}
+.checkoutWrapper {
+  padding: 0 300px;
+  @media (max-width: 1450px) {
+    padding: 0 100px;
+  }
+  @media (max-width: 1200px) {
+    padding: 0 60px;
+  }
+}
+.leftCol {
+  padding-right: 24px;
+  border-right: 1px solid $border-color;
+}
+.rightCol {
+  padding-left: 24px;
+  position: sticky;
+  top: 0;
+}

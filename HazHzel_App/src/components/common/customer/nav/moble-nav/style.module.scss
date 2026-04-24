@@ -1,0 +1,60 @@
+@use "../../../../../scss/dependencies/variables" as *;
+.mobileSubGroup {
+  margin-bottom: 24px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.mobileSubTitle {
+  font-size: 10px;
+  font-weight: 700;
+  color: #b0a89e;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid #ede8e0;
+}
+
+.mobileSubList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  li {
+    border-bottom: 1px solid #f5f0ea;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  & & {
+    margin: 0;
+    padding-left: 14px;
+    border-left: 1.5px solid #ede8e0;
+
+    li {
+      border-bottom: none;
+    }
+  }
+}
+
+.mobileSubLink {
+  color: #4a4540;
+  text-decoration: none;
+  font-size: 13.5px;
+  display: block;
+  padding: 9px 0;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+
+  &:hover {
+    color: #1a1a1a;
+    padding-left: 4px;
+  }
+}

@@ -1,0 +1,47 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  // Không set height 100% hay overflow hidden ở đây 
+  // để wrapper tự giãn theo chiều cao ảnh
+  display: block; 
+  background: #f5f5f5;
+  line-height: 0; // Loại bỏ khoảng trắng thừa dưới chân ảnh inline
+}
+
+.skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #f8f8f8 20%,
+    #f0f0f0 40%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  z-index: 10; // Đè lên ảnh khi đang load
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  // Khi chưa load xong, opacity 0 để hiện skeleton bên dưới (nếu skeleton không absolute)
+  // Tuy nhiên ở đây ta dùng skeleton absolute đè lên, nên ảnh cứ hiện bình thường
+}
+
+.fallback {
+  width: 100%;
+  padding-top: 100%; // Tạo khung vuông tạm nếu không có src
+  background: #eee;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

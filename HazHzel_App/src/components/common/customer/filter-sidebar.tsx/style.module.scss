@@ -1,0 +1,57 @@
+.sidebar {
+  width: 220px;
+}
+
+.dropdown {
+  margin-bottom: 0.7rem;
+}
+
+.dropdownHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+  padding: 1.1rem 0;
+}
+
+.dropdownContent {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.dropdownContent.open {
+  max-height: 500px;
+}
+
+.dropdownList {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  font-size: 12px;
+}
+
+.dropdownList li {
+  padding: 0.3rem 0;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #000;
+  }
+}
+.switchRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+.priceSort {
+  padding: 0 10px;
+}

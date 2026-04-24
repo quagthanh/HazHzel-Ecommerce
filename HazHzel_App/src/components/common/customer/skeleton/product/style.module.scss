@@ -1,0 +1,14 @@
+// style.module.scss
+
+// Tạo một class riêng để đè lên style của antd
+.skeletonImage {
+  width: 100% !important;
+  height: 28rem !important; // Ép chiều cao giống ảnh thật
+  border-radius: 0 !important;
+  
+  // Đè lên class nội bộ của antd
+  :global(.ant-skeleton-image) {
+    width: 100% !important;
+    height: 28rem !important;
+  }
+}

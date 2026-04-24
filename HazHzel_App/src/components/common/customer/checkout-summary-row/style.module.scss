@@ -1,0 +1,16 @@
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.totalRow {
+  font-size: 18px;
+  font-weight: bold;
+
+  small {
+    font-size: 12px;
+    margin-right: 4px;
+  }
+}

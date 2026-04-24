@@ -1,0 +1,94 @@
+@use "../../../../scss/dependencies/variables" as *;
+
+.footer {
+  background-color: $primary-color;
+  padding: 60px 20px;
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #555;
+  border-top: 1px solid $border-color;
+}
+
+.container {
+  max-width: 1240px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.col {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 12px;
+}
+
+.col h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #000;
+}
+
+.col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.col ul li {
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.col ul li:hover {
+  color: #000;
+}
+
+.col p {
+  margin: 6px 0;
+  line-height: 1.5;
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  font-size: 18px;
+  color: #555;
+}
+
+.socials svg {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.socials svg:hover {
+  color: #000;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: row;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .col {
+    width: 100%;
+  }
+}

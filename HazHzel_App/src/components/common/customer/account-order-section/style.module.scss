@@ -1,0 +1,41 @@
+// components/OrdersSection/style.module.scss
+
+.profileSection {
+  max-width: 680px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: 0.8px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #111;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0;
+}
+
+.shopBtn {
+  background: #111 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 0 !important;
+  height: 48px !important;
+  padding: 0 40px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  margin-top: 24px;
+
+  &:hover {
+    background: #333 !important;
+    color: #fff !important;
+  }
+}
