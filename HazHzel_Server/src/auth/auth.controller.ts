@@ -1,0 +1,54 @@
+import { Controller, Post, UseGuards, Request, Body } from '@nestjs/common';
+import { AuthService } from '@/auth/auth.service';
+import { LocalAuthGuard } from '@/auth/strategies/local/local-auth.guard';
+import { Public, ResponseMessage } from '@/shared/decorators/customize';
+import { CreateAuthDto } from './dto/create-auth.dto';
+import {
+  ChangePasswordDto,
+  CodeAuthDto,
+  RetryCodeDto,
+  RetryPasswordDto,
+} from '@/auth/dto/checkcode-auth.dto';
+
+@Controller('auth')
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+  @Post('login')
+  @Public()
+  @UseGuards(LocalAuthGuard)
+  @ResponseMessage('Login successfully')
+  handleLogin(@Request() req) {
+    return this.authService.login(req.user);
+  }
+  @Public()
+  @Post('register')
+  @ResponseMessage('Register success')
+  async register(@Body() registerDto: CreateAuthDto) {
+    return this.authService.handleRegister(registerDto);
+  }
+
+  @Public()
+  @ResponseMessage('Enter the following code below to check code')
+  @Post('check-code')
+  checkCode(@Body() codeDto: CodeAuthDto) {
+    return this.authService.checkCode(codeDto);
+  }
+  @Public()
+  @ResponseMessage(
+    'Your previous activation code has expired. A new activation code has been sent to your email.',
+  )
+  @Post('retry-active')
+  retryActive(@Body() retryCodeDto: RetryCodeDto) {
+    return this.authService.retryActive(retryCodeDto);
+  }
+  @Public()
+  @Post('retry-password')
+  retryPassword(@Body() retryPasswordDto: RetryPasswordDto) {
+    return this.authService.retryPassword(retryPasswordDto);
+  }
+  @Public()
+  @Post('change-password')
+  changePassword(@Body() changePasswordDto: ChangePasswordDto) {
+    return this.authService.changePassword(changePasswordDto);
+  }
+}
