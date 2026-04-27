@@ -30,7 +30,7 @@ const PublicHomePage = async () => {
     <>
       <HeroPublic />
       <UnisexCollections />
-      <Catwalk />
+      {/* <Catwalk /> */}
 
       <MarqueeText />
       <FeaturedBrands brands={topSuppliers} />
