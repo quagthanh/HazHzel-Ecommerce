@@ -1,0 +1,40 @@
+services:
+  # 1. DATABASE: MongoDB
+  database:
+    image: mongo:5.0.15
+    container_name: ecom_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db/ecom # Giữ lại dữ liệu khi tắt container
+
+  # 2. BACKEND: Express JS
+  backend:
+    build:
+      context: ./HazHzel_Server
+    container_name: ecom_backend
+    restart: always
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - ./HazHzel_Server/.env
+    depends_on:
+      - database
+
+  # 3. FRONTEND: Next.js App Router
+  frontend:
+    build:
+      context: ./HazHzel_App
+    container_name: ecom_frontend
+    restart: always
+    ports:
+      - "127.0.0.1:3001:3000"
+    env_file:
+      - ./HazHzel_App/.env
+    depends_on:
+      - backend
+
+# Khai báo volume để lưu trữ dữ liệu database
+volumes:
+  mongo_data:

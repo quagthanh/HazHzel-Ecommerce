@@ -31,12 +31,12 @@ pipeline {
     stage('Prepare Environment Files') {
             steps {
                 script {
-                    sh """
+                    sh '''
                     echo "AUTH_SECRET=${FE_AUTH_SECRET}" > HazHzel_App/.env
                     echo "NEXT_PUBLIC_BACKEND_URL=${FE_BACKEND_URL}" >> HazHzel_App//.env
-                    """
+                    '''
 
-                    sh """
+                    sh '''
                     echo "PORT=${BE_PORT}" > HazHzel_Server/.env
                     echo "MONGODB_URI=${BE_MONGODB_URI}" >> HazHzel_Server/.env
                     echo "JWT_SECRET=${BE_JWT_SECRET}" >> HazHzel_Server/.env
@@ -46,7 +46,7 @@ pipeline {
                     echo "CLOUDINARY_NAME=${BE_CLOUDINARY_NAME}" >> HazHzel_Server/.env
                     echo "CLOUDINARY_API_KEY=${BE_CLOUDINARY_KEY}" >> HazHzel_Server/.env
                     echo "CLOUDINARY_API_SECRET=${BE_CLOUDINARY_SECRET}" >> HazHzel_Server/.env
-                    """
+                    '''
                 }
             }
         }
