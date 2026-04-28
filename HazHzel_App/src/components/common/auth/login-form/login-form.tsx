@@ -69,7 +69,7 @@ const LoginForm = () => {
         </Link>
 
         <Title level={2} className={styles.loginFormTitle}>
-          Log in to your account
+          Log in to your accounts
         </Title>
 
         <div className={styles.loginForm}>
