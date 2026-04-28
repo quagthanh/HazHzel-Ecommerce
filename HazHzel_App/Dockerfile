@@ -46,6 +46,11 @@ COPY . .
 
 ENV NODE_ENV=production
 
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Ép Node.js dọn rác liên tục, không cho phép dùng quá 700MB RAM
+ENV NODE_OPTIONS="--max-old-space-size=700"
+
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.

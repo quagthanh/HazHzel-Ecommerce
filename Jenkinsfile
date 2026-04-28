@@ -52,6 +52,8 @@ pipeline {
         }
         stage('Docker Build & Deploy') {
             steps {
+                sh 'docker compose build backend'                
+                sh 'docker compose build frontend'
                 sh 'docker compose up -d --build --force-recreate'
             }
         }
