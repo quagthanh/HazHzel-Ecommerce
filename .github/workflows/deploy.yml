@@ -1,6 +1,5 @@
 name: E-commerce CI/CD Pipeline
 
-# Kích hoạt luồng chạy mỗi khi có code đẩy lên nhánh main
 on:
   push:
     branches:
@@ -9,59 +8,53 @@ on:
 jobs:
   build-and-push:
     name: Build & Push to Docker Hub
-    # Mượn máy chủ Ubuntu mới nhất, siêu mạnh của GitHub để chạy
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Kéo code từ GitHub về máy chủ ảo này
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      # 2. Đăng nhập vào Docker Hub bằng chìa khóa em vừa nạp
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 3. Build Backend và đẩy lên Docker Hub
       - name: Build and Push Backend
         uses: docker/build-push-action@v5
         with:
           context: ./HazHzel_Server
           push: true
-          # Tên image sẽ có dạng: username/ecommerce-backend:latest
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-backend:latest
 
-      # 4. Build Frontend (Next.js) và đẩy lên Docker Hub
       - name: Build and Push Frontend
         uses: docker/build-push-action@v5
         with:
           context: ./HazHzel_App
           push: true
-          # Tên image sẽ có dạng: username/ecommerce-frontend:latest
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-frontend:latest
-deploy:
-  name: Deploy to VPS
-  needs: build-and-push # Lệnh này bắt buộc GitHub phải đợi build xong mới được deploy
-  runs-on: ubuntu-latest
 
-  steps:
-    - name: Konekto VPS & Deploy
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VPS_IP }}
-        username: ${{ secrets.VPS_USERNAME }}
-        password: ${{ secrets.VPS_PASSWORD }}
-        script: |
-          # 1. Đi vào thư mục dự án
-          cd ~/HazHzel-Ecommerce
+  deploy:
+    name: Deploy to VPS
+    needs: build-and-push
+    runs-on: ubuntu-latest
 
-          # 2. Lấy file docker-compose.yml mới nhất về
-          git pull origin main
+    steps:
+      - name: Connect to VPS & Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            # 1. Đi vào thư mục dự án
+            cd ~/HazHzel-Ecommerce
 
-          # 3. Kéo Image đã build sẵn từ Docker Hub về (Rất nhẹ, không tốn RAM)
-          docker compose pull
+            # 2. Lấy file docker-compose.yml mới nhất về
+            git pull origin main
 
-          # 4. Khởi động lại các container với Image mới
-          docker compose up -d
+            # 3. Kéo Image đã build sẵn từ Docker Hub về (Rất nhẹ, không tốn RAM)
+            docker compose pull
+
+            # 4. Khởi động lại các container với Image mới
+            docker compose up -d
