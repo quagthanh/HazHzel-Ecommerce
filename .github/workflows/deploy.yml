@@ -41,3 +41,27 @@ jobs:
           push: true
           # Tên image sẽ có dạng: username/ecommerce-frontend:latest
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-frontend:latest
+deploy:
+  name: Deploy to VPS
+  needs: build-and-push # Lệnh này bắt buộc GitHub phải đợi build xong mới được deploy
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Konekto VPS & Deploy
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: ${{ secrets.VPS_USERNAME }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        script: |
+          # 1. Đi vào thư mục dự án
+          cd ~/HazHzel-Ecommerce
+
+          # 2. Lấy file docker-compose.yml mới nhất về
+          git pull origin main
+
+          # 3. Kéo Image đã build sẵn từ Docker Hub về (Rất nhẹ, không tốn RAM)
+          docker compose pull
+
+          # 4. Khởi động lại các container với Image mới
+          docker compose up -d

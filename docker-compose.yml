@@ -11,8 +11,7 @@ services:
 
   # 2. BACKEND: Express JS
   backend:
-    build:
-      context: ./HazHzel_Server
+    image: quagthanh/ecommerce-backend:latest
     container_name: ecom_backend
     restart: always
     ports:
@@ -24,8 +23,7 @@ services:
 
   # 3. FRONTEND: Next.js App Router
   frontend:
-    build:
-      context: ./HazHzel_App
+    image: quagthanh/ecommerce-frontend:latest
     container_name: ecom_frontend
     restart: always
     ports:
