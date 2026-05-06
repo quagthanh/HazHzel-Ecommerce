@@ -14,6 +14,9 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
+      - name: Create Frontend .env for Build
+        run: echo "NEXT_PUBLIC_BACKEND_URL=/api/v1" > ./HazHzel_App/.env.production
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -42,13 +45,26 @@ jobs:
     steps:
       - name: Connect to VPS & Deploy
         uses: appleboy/ssh-action@v1.0.3
+
+        env:
+          FE_AUTH_SECRET: ${{ secrets.FE_AUTH_SECRET }}
+          BE_MONGODB_URI: ${{ secrets.BE_MONGODB_URI }}
+          BE_JWT_SECRET: ${{ secrets.BE_JWT_SECRET }}
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
             # 1. Đi vào thư mục dự án
-            cd ~/HazHzel-Ecommerce
+            cd /home/thanh/HazHzel-Ecommerce
+
+            echo "AUTH_SECRET=$FE_AUTH_SECRET" > HazHzel_App/.env
+            echo "NEXT_PUBLIC_BACKEND_URL=/api/v1" >> HazHzel_App/.env
+
+            echo "PORT=8000" > HazHzel_Server/.env
+            echo "MONGODB_URI=$BE_MONGODB_URI" >> HazHzel_Server/.env
+            echo "JWT_SECRET=$BE_JWT_SECRET" >> HazHzel_Server/.env
+            echo "JWT_ACCESS_TOKEN_EXPIRED=1000d" >> HazHzel_Server/.env
 
             # 2. Lấy file docker-compose.yml mới nhất về
             git pull origin main
@@ -58,3 +74,6 @@ jobs:
 
             # 4. Khởi động lại các container với Image mới
             docker compose up -d
+
+            # 5. Xóa hết env
+            rm HazHzel_App/.env HazHzel_Server/.env
