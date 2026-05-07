@@ -23,7 +23,7 @@ export default function Verify({ id }: any) {
     const { _id, code } = values;
     const res = await sendRequest<IBackendRes<any>>({
       method: "POST",
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/check-code`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/check-code`,
       body: {
         _id: _id,
         code: code,
