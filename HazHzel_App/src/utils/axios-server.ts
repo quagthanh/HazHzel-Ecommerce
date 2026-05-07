@@ -16,7 +16,6 @@ http.interceptors.request.use(
         config.headers.Authorization = `Bearer ${session?.user?.access_token}`;
       }
     }
-    console.log("Check request at axios-server.file:", config);
     return config;
   },
   (error) => {
@@ -29,7 +28,6 @@ http.interceptors.response.use(
     return response?.data;
   },
   (error) => {
-    console.log("Check at axios-server.file:", error);
     console.error("Can not connect to server:", error?.response?.data);
     const customResponse = {
       message:

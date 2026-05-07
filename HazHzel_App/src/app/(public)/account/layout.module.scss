@@ -1,0 +1,19 @@
+.accountLayout {
+  display: flex;
+  max-width: 1200px; /* Adjust to your container size */
+  margin: 0 auto;
+  padding: 40px 20px;
+  gap: 48px; // Space between sidebar and main content
+  min-height: calc(100vh - 80px); // Adjust based on your header height
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 24px;
+    padding: 20px 16px;
+  }
+}
+
+.mainContent {
+  flex: 1; // Allows the content area to take up the remaining space
+  min-width: 0; // Prevents flexbox overflow issues
+}
