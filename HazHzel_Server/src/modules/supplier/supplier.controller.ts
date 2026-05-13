@@ -84,6 +84,7 @@ export class SupplierController {
     @Body() updateSupplierDto: UpdateSupplierDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
+    console.log('Check uploadfiles:', files);
     return this.supplierService.update(id, updateSupplierDto, files);
   }
 

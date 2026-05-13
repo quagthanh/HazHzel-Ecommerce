@@ -13,6 +13,7 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Product } from '../product/schemas/product.schema';
 import slugify from 'slugify';
 import aqp from 'api-query-params';
+import { statusSupplier } from '@/shared/enums/statusSupplier.enum';
 
 @Injectable()
 export class SupplierService {
@@ -126,19 +127,16 @@ export class SupplierService {
           supplierId: { $exists: true },
         },
       },
-
       {
         $group: {
           _id: '$supplierId',
           totalViews: { $sum: '$views' },
-          totalProducts: { $sum: 1 },
+          totalProducts: { $count: {} },
         },
       },
-
       {
         $sort: { totalViews: -1 },
       },
-
       {
         $lookup: {
           from: 'suppliers',
@@ -147,32 +145,14 @@ export class SupplierService {
           as: 'supplier',
         },
       },
-
       { $unwind: '$supplier' },
 
       {
         $match: {
-          'supplier.status': 'ACTIVE',
+          'supplier.status': statusSupplier.ACTIVE,
         },
       },
-
       { $limit: 3 },
-
-      {
-        $project: {
-          _id: 0,
-          supplierId: '$_id',
-          totalViews: 1,
-          totalProducts: 1,
-          supplier: {
-            name: 1,
-            slug: 1,
-            images: 1,
-            description: 1,
-            status: 1,
-          },
-        },
-      },
     ]);
   }
   async findByName(name: string) {
