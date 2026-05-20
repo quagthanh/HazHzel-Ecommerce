@@ -5,6 +5,7 @@ import { Drawer, Collapse } from "antd";
 import styles from "./style.module.scss";
 import { NavMenuItem } from "@/types/navbar";
 import { getAbsoluteUrl } from "@/utils/helper";
+import { typeNavMenuItem } from "@/types/enum";
 
 const MobileNav = ({
   open,
@@ -25,7 +26,7 @@ const MobileNav = ({
     >
       <Collapse accordion ghost className={styles.mobileCollapse}>
         {items.map((item) => {
-          if (item.type === "static") {
+          if (item.type === typeNavMenuItem.STATIC) {
             return (
               <div
                 key={item.label}
@@ -46,16 +47,27 @@ const MobileNav = ({
           return (
             <Collapse.Panel
               header={
-                <span className={styles.mobileMenuHeader}>{item.label}</span>
+                <Link
+                  href={`/products?${item.baseParams}`}
+                  className={styles.mobileMenuHeader}
+                  onClick={(e) => {
+                    onClose();
+                  }}
+                >
+                  {item.label}
+                </Link>
               }
               key={item.label}
             >
-              {item.items?.map((cat) => (
-                <div key={cat._id} className={styles.mobileSubGroup}>
+              {item.items?.map((cat, index) => (
+                <div
+                  key={`cat-${cat.name}-${index}`}
+                  className={styles.mobileSubGroup}
+                >
                   <h5 className={styles.mobileSubTitle}>{cat.name}</h5>
                   <ul className={styles.mobileSubList}>
                     {cat.children?.map((sub: any) => (
-                      <li key={sub._id}>
+                      <li key={`sub-${sub.name}-${index}`}>
                         <Link
                           href={`/products?${item.baseParams}&category=${sub.slug.replace(/^\//, "")}`}
                           onClick={onClose}
@@ -66,10 +78,11 @@ const MobileNav = ({
                         {sub.children && sub.children.length > 0 && (
                           <ul className={styles.mobileSubList}>
                             {sub.children.map((child: any) => (
-                              <li key={child._id}>
+                              <li key={`child-${child.name}-${index}`}>
                                 <Link
                                   href={`/products?${item.baseParams}&category=${child.slug.replace(/^\//, "")}`}
                                   onClick={onClose}
+                                  className={styles.mobileSubLink}
                                 >
                                   {child.name}
                                 </Link>

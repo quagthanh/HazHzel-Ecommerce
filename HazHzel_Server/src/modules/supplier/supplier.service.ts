@@ -51,24 +51,22 @@ export class SupplierService {
     const slug = await this.generateSlugUnique(name);
 
     if (!files || files.length === 0) {
-      throw new BadRequestException('Please choose atleast 1 picture');
+      throw new BadRequestException('Please choose at least 1 picture');
     }
     const uploadedImages = await this.cloudinaryService.uploadMultiFiles(files);
-    const simplifiedImages = uploadedImages.map((img) => ({
-      public_id: img.public_id,
-      secure_url: img.secure_url,
-      width: img.width,
-      height: img.height,
-    }));
-
-    const newSupplier = await this.supplierModel.create({
-      name,
-      images: simplifiedImages,
-      slug,
-      ...otherFields,
-    });
-
-    return newSupplier;
+    try {
+      const newSupplier = await this.supplierModel.create({
+        images: uploadedImages,
+        name,
+        slug,
+        ...otherFields,
+      });
+      return newSupplier;
+    } catch (error) {
+      console.error('Error while creating new supplier:', error);
+      const delete_image_ids = uploadedImages.map((image) => image.public_id);
+      await this.cloudinaryService.deleteFiles(delete_image_ids);
+    }
   }
   async findAll(query: string, current: number = 1, pageSize: number = 5) {
     const { filter, sort } = aqp(query);
@@ -109,16 +107,23 @@ export class SupplierService {
     return supplier;
   }
   async findIdBySlug(slug: string): Promise<Types.ObjectId> {
-    const supplier = await this.supplierModel
-      .findOne({ slug })
-      .select('_id')
-      .exec();
+    const supplier = await this.supplierModel.findOne({ slug });
 
     if (!supplier) {
-      throw new NotFoundException(`Supplier với slug "${slug}" không tồn tại.`);
+      throw new NotFoundException(`Supplier with slug "${slug}" is not exists`);
     }
 
     return supplier._id;
+  }
+  async findIdBySlugs(slugs: string[] | string): Promise<Types.ObjectId[]> {
+    const slugArray = typeof slugs === 'string' ? [slugs] : slugs;
+    let slugIds = [];
+
+    for (const slug of slugArray) {
+      const slugId = await this.findIdBySlug(slug);
+      slugIds.push(slugId);
+    }
+    return slugIds;
   }
   async getTop3SuppliersByProductViews() {
     return await this.productModel.aggregate([
@@ -168,46 +173,38 @@ export class SupplierService {
     updateSupplierDto: UpdateSupplierDto,
     files: Express.Multer.File[],
   ) {
-    if (!isValidId(_id)) {
-      throw new BadRequestException('Supplier Id is not valid');
+    const supplier = await this.supplierModel.findById(_id);
+    if (!supplier) {
+      throw new BadRequestException('Can not find supplier to update');
     }
 
-    const data = await this.supplierModel.findById(_id);
-    if (!data) {
-      throw new BadRequestException('Supplier have not been created yet');
-    }
+    //Must have this to use synImage from cloudinaryService
+    const keptImages = updateSupplierDto.existingImages
+      ? JSON.parse(updateSupplierDto.existingImages)
+      : [];
+    const currentImages = supplier.images ?? [];
 
-    let existingImages = data.images;
-
-    if (files && files.length > 0) {
-      const uploadedImages =
-        await this.cloudinaryService.uploadMultiFiles(files);
-      const newImages = uploadedImages.map((img) => ({
-        public_id: img.public_id,
-        secure_url: img.secure_url,
-        width: img.width,
-        height: img.height,
-      }));
-      existingImages = [...existingImages, ...newImages];
-    }
-
-    const result = await this.supplierModel.updateOne(
-      { _id },
-      { images: existingImages, ...updateSupplierDto },
+    const finalImages = await this.cloudinaryService.synImages(
+      currentImages,
+      keptImages,
+      files,
     );
 
-    return result;
+    supplier.images = finalImages;
+    supplier.name = updateSupplierDto.name;
+    supplier.status = updateSupplierDto.status ?? supplier.status;
+    supplier.contactName =
+      updateSupplierDto.contactName ?? supplier.contactName;
+    supplier.slug = supplier.slug ?? supplier.slug;
+    return await supplier.save();
   }
   async remove(_id: string) {
-    if (!isValidId(_id)) {
-      throw new BadRequestException('Id supplier không hợp lệ');
-    }
-
     const supplier = await this.supplierModel.findById(_id);
     if (!supplier) {
       throw new NotFoundException('Không tìm thấy supplier');
     }
-
+    const id_image = supplier?.images.map((img) => img.public_id);
+    await this.cloudinaryService.deleteFiles(id_image);
     return await this.supplierModel.deleteOne({ _id });
   }
 }

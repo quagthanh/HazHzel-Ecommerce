@@ -11,12 +11,13 @@ const ProductCard = ({
   name,
   slug,
   images,
-  categoryId,
+  categories,
+  supplier,
   status,
   isSale,
   variants,
   originalPrice,
-  currentPrice,
+  currentPrice = 0,
 }: IProduct) => {
   const isInactive = status === statusProduct.INACTIVE;
 
@@ -26,8 +27,10 @@ const ProductCard = ({
   if (!hoverImage) {
     hoverImage = variants?.images?.[0]?.secure_url ?? hoverImage;
   }
-  console.log("Check main:", mainImage);
-  console.log("Check hoverImage:", hoverImage);
+
+  // const categoryName = categories?.[0]?.name;
+  const supplierName = supplier?.name;
+
   return (
     <Link href={`${ROUTE_CONFIG.product}/${slug}`}>
       <div className={`${styles.card} ${isInactive ? styles.soldOut : ""}`}>
@@ -40,13 +43,15 @@ const ProductCard = ({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
 
-          <AppImage
-            src={hoverImage}
-            alt={`${name} hover`}
-            className={`${styles.image} ${styles.hoverImage}`}
-            style={{ objectFit: "cover" }}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          {hoverImage && (
+            <AppImage
+              src={hoverImage}
+              alt={`${name} hover`}
+              className={`${styles.image} ${styles.hoverImage}`}
+              style={{ objectFit: "cover" }}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          )}
 
           <button className={styles.addToCart}>
             <PlusOutlined size={18} className={styles.plusIcon} />
@@ -54,12 +59,21 @@ const ProductCard = ({
         </div>
 
         <div className={styles.productInfo}>
-          <div className={styles.categoryTag}>{categoryId?.name}</div>
+          {/* <div className={styles.categoryTag}>{categoryName}</div> */}
+
+          {supplierName && (
+            <div className={styles.supplierName}>{supplierName}</div>
+          )}
+
           <h3 className={styles.productName}>{name}</h3>
+
           <div className={styles.priceWrapper}>
-            <span className={styles.originalPrice}>
-              {originalPrice ? originalPrice.toLocaleString("vi-VN") : 0}₫
-            </span>
+            {originalPrice && originalPrice > currentPrice && (
+              <span className={styles.originalPrice}>
+                {originalPrice.toLocaleString("vi-VN")}₫
+              </span>
+            )}
+
             <span className={styles.price}>
               {currentPrice ? currentPrice.toLocaleString("vi-VN") : 0}₫
             </span>

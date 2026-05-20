@@ -4,7 +4,7 @@ import http from "@/utils/axios-server";
 export interface IBackendRes<T> {
   statusCode: number;
   message: string;
-  data: T;
+  data: T | null;
 }
 
 interface IRequest {
@@ -46,8 +46,17 @@ export const sendRequest = async <T>(
       ...config.headers,
     };
   }
-  const res = await http.request<IBackendRes<T>>(config);
-  return res as unknown as IBackendRes<T>;
+  try {
+    const res = await http.request<IBackendRes<T>>(config);
+    return res as unknown as IBackendRes<T>;
+  } catch (error: any) {
+    console.error(`API error: ${method}----${url}`, error);
+    return {
+      statusCode: error.statusCode,
+      message: error.message,
+      data: null,
+    } as IBackendRes<T>;
+  }
 };
 //for form data req
 export const sendRequestFile = async <T>(

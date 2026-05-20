@@ -1,15 +1,11 @@
-import ListingStoreClient from "@/components/layout/public/client-listing-layout/listing-store-layout/listing-store-layout";
-import { getProductsByStore } from "@/services/product.api"; // Import hàm mới
+import { getProducts } from "@/services/product.api";
 import { ListPageProps } from "@/types/interface";
-import store_banner from "@/assets/store-banner.png";
-import { getParam } from "@/utils/helper";
+import collection_banner from "@/assets/nike_banner_collection_croped.jpg";
+import ListingGenderClient from "@/components/layout/public/client-listing-layout/listing-gender-layout/listing-gender-layout";
 
-export default async function StorePage({
-  params,
+export default async function GeneralStorePage({
   searchParams,
 }: ListPageProps) {
-  const { slug } = params;
-  const title = slug.replace(/-/g, " ").toUpperCase();
   const current = Number(searchParams?.current) || 1;
   const pageSize = Number(searchParams?.pageSize) || 12;
   const gender = searchParams?.gender
@@ -36,21 +32,21 @@ export default async function StorePage({
   };
   let products = [];
   let meta = { current: 1, pageSize: 12, total: 0, pages: 0 };
-
   try {
-    const res = await getProductsByStore(slug, sendParams);
+    const res = await getProducts(sendParams);
     const backendData = res?.data;
+
     if (backendData) {
       products = backendData.result || [];
       meta = backendData.meta || meta;
     }
   } catch (error) {
-    console.error("Fetch store products error:", error);
+    console.error("Fetch collection products error:", error);
   }
+
   return (
-    <ListingStoreClient
-      banner={store_banner}
-      title={title}
+    <ListingGenderClient
+      banner={collection_banner}
       initialProducts={products}
       initialMeta={meta}
     />

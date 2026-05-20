@@ -35,13 +35,14 @@ export const useProductFilter = () => {
       }
 
       current.set("current", "1");
+      current.set("pageSize", "10");
 
       const search = current.toString();
       const query = search ? `?${search}` : "";
 
       router.push(`${pathname}${query}`, { scroll: false });
     },
-    [router, pathname, searchParams]
+    [router, pathname, searchParams],
   );
   const updateParams = useCallback(
     (updates: { key: string; value: string | number | null }[]) => {
@@ -61,7 +62,7 @@ export const useProductFilter = () => {
       const query = search ? `?${search}` : "";
       router.push(`${pathname}${query}`, { scroll: false });
     },
-    [router, pathname, searchParams]
+    [router, pathname, searchParams],
   );
 
   return { updateFilter, updateParams, searchParams, pathname };

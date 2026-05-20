@@ -60,8 +60,6 @@ export class CollectionService {
       simplifiedImages = uploadedImages.map((img) => ({
         public_id: img.public_id,
         secure_url: img.secure_url,
-        width: img.width,
-        height: img.height,
       }));
     }
 
@@ -202,8 +200,6 @@ export class CollectionService {
       const newImages = uploadedImages.map((img) => ({
         public_id: img.public_id,
         secure_url: img.secure_url,
-        width: img.width,
-        height: img.height,
       }));
       existingImages = [...existingImages, ...newImages];
     }

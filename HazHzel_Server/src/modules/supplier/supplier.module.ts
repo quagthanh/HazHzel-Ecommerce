@@ -5,10 +5,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Supplier, SupplierSchema } from './schemas/supplier.schema';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { ProductModule } from '../product/product.module';
+import { CategoryModule } from '../category/category.module';
 
 @Module({
   imports: [
     forwardRef(() => ProductModule),
+    forwardRef(() => CategoryModule),
     CloudinaryModule,
     MongooseModule.forFeature([
       { name: Supplier.name, schema: SupplierSchema },

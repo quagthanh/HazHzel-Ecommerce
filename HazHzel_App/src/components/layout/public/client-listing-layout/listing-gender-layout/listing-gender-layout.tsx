@@ -31,7 +31,7 @@ export default function ListingGenderClient({
       router.replace(`${pathname}?${params.toString()}`);
     });
   };
-
+  console.log("Check products at gender page:", products);
   return (
     <>
       <TitleHeaderCenter banner={banner} />

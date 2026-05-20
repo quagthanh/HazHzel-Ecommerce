@@ -6,10 +6,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Category, CategorySchema } from './schemas/category.schema';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { ProductModule } from '../product/product.module';
+import { SupplierModule } from '../supplier/supplier.module';
 
 @Module({
   imports: [
     forwardRef(() => ProductModule),
+    forwardRef(() => SupplierModule),
     CloudinaryModule,
     MongooseModule.forFeature([
       { name: Category.name, schema: CategorySchema },

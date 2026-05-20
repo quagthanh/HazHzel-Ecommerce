@@ -9,13 +9,41 @@ export default async function GenderPage({ searchParams }: ListPageProps) {
   const gender = searchParams?.gender
     ? String(searchParams?.gender)
     : undefined;
-  const category = searchParams?.category
-    ? String(searchParams?.category)
+  const filterCategory = searchParams?.filterCategory
+    ? String(searchParams?.filterCategory)
     : undefined;
+  const filterBrand = searchParams?.filterBrand
+    ? String(searchParams?.filterBrand)
+    : undefined;
+  const sort = searchParams?.sort ? String(searchParams?.sort) : undefined;
+  const filterSize = searchParams?.filterSize
+    ? String(searchParams.filterSize)
+    : undefined;
+  const filterColor = searchParams?.filterColor
+    ? String(searchParams.filterColor)
+    : undefined;
+  const minPrice = searchParams?.minPrice
+    ? Number(searchParams.minPrice)
+    : undefined;
+  const maxPrice = searchParams?.maxPrice
+    ? Number(searchParams.maxPrice)
+    : undefined;
+  let sendParams = {
+    current,
+    pageSize,
+    gender,
+    filterCategory,
+    filterBrand,
+    filterSize,
+    filterColor,
+    minPrice,
+    maxPrice,
+    sort,
+  };
   let products = [];
   let meta = { current: 1, pageSize: 12, total: 0, pages: 0 };
   try {
-    const res = await getProducts(gender, category, { current, pageSize });
+    const res = await getProducts(sendParams);
     const backendData = res?.data;
 
     if (backendData) {

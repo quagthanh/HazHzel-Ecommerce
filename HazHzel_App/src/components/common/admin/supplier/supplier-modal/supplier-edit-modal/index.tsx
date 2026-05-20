@@ -4,21 +4,16 @@ import { updateProductsForAdmin } from "@/services/product.api";
 import {
   Col,
   Form,
-  Input,
   message,
   Modal,
   notification,
   Row,
-  Select,
-  Radio,
-  InputNumber,
-  Upload,
   UploadFile,
   UploadProps,
   Image,
 } from "antd";
 import { useEffect, useState } from "react";
-import { EyeOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { FileType } from "@/types/product";
 import { getBase64 } from "@/utils/helper";
 import styles from "./style.module.scss";
@@ -27,8 +22,7 @@ import { updateSupplier } from "@/services/supplier.api";
 import { useRouter } from "next/navigation";
 
 const SupplierEditModal = (props: any) => {
-  const { isOk, isCancel, dataUpdate, setDataUpdate, category, supplier } =
-    props;
+  const { isOk, isCancel, dataUpdate, category, supplier } = props;
   const [form] = Form.useForm();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
@@ -42,7 +36,6 @@ const SupplierEditModal = (props: any) => {
         email: dataUpdate.email,
         phone: dataUpdate.phone,
         address: dataUpdate.address,
-        status: dataUpdate.status ?? true,
       });
 
       if (dataUpdate.images && dataUpdate.images.length > 0) {
@@ -59,14 +52,12 @@ const SupplierEditModal = (props: any) => {
     }
   }, [dataUpdate, form]);
 
-  const handleCloseUpdateModal = () => {
-    if (setDataUpdate) {
-      setDataUpdate(null);
-    }
+  const handleCancel = () => {
     form.resetFields();
     setFileList([]);
     isCancel();
   };
+
   const onFinish = async (values: any) => {
     if (dataUpdate) {
       const formData = new FormData();
@@ -76,7 +67,6 @@ const SupplierEditModal = (props: any) => {
       if (values.email) formData.append("email", values.email);
       if (values.phone) formData.append("phone", values.phone);
       if (values.address) formData.append("address", values.address);
-      formData.append("status", values.status ? "true" : "false");
 
       fileList.forEach((file) => {
         if (file.originFileObj) {
@@ -94,7 +84,7 @@ const SupplierEditModal = (props: any) => {
         if (res?.data) {
           message.success("Update supplier successfully");
           router.refresh();
-          handleCloseUpdateModal();
+          handleCancel();
         } else {
           notification.error({
             message: "Update failed",
@@ -107,10 +97,7 @@ const SupplierEditModal = (props: any) => {
     }
   };
 
-  const beforeUpload = (file: FileType) => {
-    setFileList((prev) => [...prev, file]);
-    return false;
-  };
+  const beforeUpload = () => false;
 
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
@@ -122,21 +109,6 @@ const SupplierEditModal = (props: any) => {
 
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
     setFileList(newFileList);
-
-  const handleCancel = () => {
-    form.resetFields();
-    setFileList([]);
-    isCancel();
-  };
-
-  const uploadButton = (
-    <button className={styles.uploadButton} type="button">
-      <PlusOutlined />
-      <div className={styles.uploadText}>Upload</div>
-    </button>
-  );
-  const currentPreviewImage =
-    fileList.length > 0 ? fileList[0].url || fileList[0].preview : null;
 
   return (
     <>

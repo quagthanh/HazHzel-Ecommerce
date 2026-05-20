@@ -3,3 +3,12 @@ export enum statusProduct {
   INACTIVE = "INACTIVE",
   OUTOFSTOCK = "OUTOFSTOCK",
 }
+
+export enum typeNavMenuItem {
+  DYNAMIC = "dynamic",
+  STATIC = "static",
+}
+export enum linkType {
+  PRODUCTS = "products",
+  STORES = "stores",
+}

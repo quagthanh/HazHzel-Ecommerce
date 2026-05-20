@@ -75,8 +75,6 @@ export class VariantService {
       images = uploaded.map((img) => ({
         public_id: img.public_id,
         secure_url: img.secure_url,
-        width: img.width,
-        height: img.height,
       }));
     }
 
@@ -127,8 +125,6 @@ export class VariantService {
       uploadedImages = uploaded.map((img) => ({
         public_id: img.public_id,
         secure_url: img.secure_url,
-        width: img.width,
-        height: img.height,
       }));
     }
 

@@ -16,6 +16,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { RemoveImage } from './dto/remove-image.dto';
 import { Public, ResponseMessage } from '@/shared/decorators/customize';
+import { ProductFilterDto } from './dto/product-filter.dto';
 
 @Controller('products')
 export class ProductController {
@@ -46,32 +47,18 @@ export class ProductController {
   @Public()
   @Get()
   @ResponseMessage('Fetched all products successfull')
-  findAll(
-    @Query() query: string,
-    @Query('current') current: string,
-    @Query('pageSize') pageSize: string,
-  ) {
-    return this.productService.findAll(
-      query,
-      Number(current) || 1,
-      Number(pageSize) || 10,
-    );
+  findAll(@Query() filterDto: ProductFilterDto) {
+    return this.productService.findAll(filterDto);
   }
   @Public()
   @Get('/by-supplier/:supplierSlug')
   @ResponseMessage('Fetched products by supplier successful')
   findBySupplier(
     @Param('supplierSlug') supplierSlug: string,
-    @Query() query: string,
-    @Query('current') current?: number,
-    @Query('pageSize') pageSize?: number,
+    @Query() filterDto: ProductFilterDto,
   ) {
-    return this.productService.findBySupplier(
-      supplierSlug,
-      query,
-      Number(current) || 1,
-      Number(pageSize) || 10,
-    );
+    filterDto.filterBrand = supplierSlug;
+    return this.productService.findAll(filterDto);
   }
   @Public()
   @Get('/home-new-brand/:supplierSlug')
@@ -108,14 +95,18 @@ export class ProductController {
     return this.productService.findByProductSlug(slug);
   }
   @Public()
-  @Get('/by-category/:categorySlug')
+  @Get('/by-category/:categorySlug(*)')
   @ResponseMessage('Fetched products by category successful')
   findByCategory(
     @Param('categorySlug') categorySlug: string,
     @Query() query: string,
+    @Query() filter: ProductFilterDto,
     @Query('current') current?: number,
     @Query('pageSize') pageSize?: number,
   ) {
+    console.log('Check filter in controller:', filter);
+    console.log('Check query in controller:', query);
+
     return this.productService.findByCategory(
       categorySlug,
       query,
@@ -166,5 +157,14 @@ export class ProductController {
   @Delete(':id')
   remove(@Param('id') _id: string) {
     return this.productService.remove(_id);
+  }
+  @Public()
+  @Get('test/filter/dto/:collectionSlug(*)')
+  @ResponseMessage('Test filter product')
+  findAllTestFilter(
+    @Query() filter: ProductFilterDto,
+    @Param('collectionSlug') collectionSlug: string,
+  ) {
+    return { filter: filter, slug: collectionSlug };
   }
 }

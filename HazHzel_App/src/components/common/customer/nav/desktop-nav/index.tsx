@@ -4,14 +4,25 @@ import Link from "next/link";
 import styles from "./style.module.scss";
 import { NavMenuItem } from "@/types/navbar";
 import { getAbsoluteUrl } from "@/utils/helper";
+import { linkType, typeNavMenuItem } from "@/types/enum";
 
 const DesktopNav = ({ items }: { items: NavMenuItem[] }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const buildLink = (item: NavMenuItem, slug: string) => {
+    if (item.linkType === linkType.STORES) {
+      return `/${linkType.STORES}/${slug}`;
+    }
+
+    return `/${linkType.PRODUCTS}?${item.baseParams}&category=${slug.replace(
+      /^\//,
+      "",
+    )}`;
+  };
   return (
     <nav className={styles.headerPrimaryNav}>
       <ul className={styles.unstyledList}>
         {items.map((item) => {
-          if (item.type === "static") {
+          if (item.type === typeNavMenuItem.STATIC) {
             return (
               <li key={item.label} className={styles.headerPrimaryNavItem}>
                 <Link href={getAbsoluteUrl(item.href!)} className={styles.h6}>
@@ -28,9 +39,14 @@ const DesktopNav = ({ items }: { items: NavMenuItem[] }) => {
               onMouseEnter={() => setOpenDropdown(item.label)}
               onMouseLeave={() => setOpenDropdown(null)}
             >
+              {/* Header in nav bar */}
               <div className={styles.h6}>
                 <Link
-                  href={`/products?${item.baseParams}`}
+                  href={
+                    item.linkType === linkType.STORES
+                      ? `/${linkType.STORES}`
+                      : `/${linkType.PRODUCTS}?${item.baseParams}`
+                  }
                   className={styles.h6}
                 >
                   {item.label}
@@ -43,14 +59,17 @@ const DesktopNav = ({ items }: { items: NavMenuItem[] }) => {
                 >
                   <div className={styles.megaMenuContainer}>
                     <div className={styles.menuColumnsWrapper}>
-                      {item.items.map((cat) => (
-                        <div key={cat._id} className={styles.menuColumn}>
+                      {item.items.map((cat, index) => (
+                        <div
+                          key={`cat-${cat.name}-${index}`}
+                          className={styles.menuColumn}
+                        >
                           <h4 className={styles.columnTitle}>{cat.name}</h4>
                           <ul className={styles.columnList}>
                             {cat.children?.map((sub: any) => (
                               <li key={sub._id}>
                                 <Link
-                                  href={`/products?${item.baseParams}&category=${sub.slug.replace(/^\//, "")}`}
+                                  href={buildLink(item, sub.slug)}
                                   className={styles.linkFaded}
                                 >
                                   {sub.name}
@@ -60,7 +79,7 @@ const DesktopNav = ({ items }: { items: NavMenuItem[] }) => {
                                     {sub.children.map((child: any) => (
                                       <li key={child._id}>
                                         <Link
-                                          href={`/products?${item.baseParams}&category=${child.slug.replace(/^\//, "")}`}
+                                          href={buildLink(item, child.slug)}
                                           className={styles.linkFaded}
                                         >
                                           {child.name}

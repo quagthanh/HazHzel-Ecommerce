@@ -17,7 +17,6 @@ const ProductGrid = ({ products }: IProductGrid) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  console.log(JSON.stringify(products, null, 2));
   return (
     <div
       className={styles.grid}

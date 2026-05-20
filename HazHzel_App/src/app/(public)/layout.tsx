@@ -13,7 +13,10 @@ const PublicLayout = async ({
   let navItems = [];
   try {
     const res = await getNavMetadata();
-    navItems = res?.data;
+    if (!res?.data) {
+      console.error("Can not get navItems of nav meta data");
+    }
+    navItems = res?.data ?? [];
   } catch (error: any) {
     console.error("Error when call API getNavMetadata:", error?.message);
   }

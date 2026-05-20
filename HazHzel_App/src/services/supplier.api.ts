@@ -60,6 +60,7 @@ export async function updateSupplier({
   _id: string;
   formData: FormData;
 }) {
+  console.log("Check formData at supplierService/UpdateSupplier:", formData);
   return sendRequestFile<any>({
     url: `/suppliers/${_id}`,
     method: "PATCH",

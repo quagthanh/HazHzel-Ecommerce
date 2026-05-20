@@ -14,6 +14,7 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { pagination } from '@/shared/helpers/utils';
 import { GenderType } from '@/shared/enums/typeGenderProduct.enm';
 import { Product } from '../product/schemas/product.schema';
+import { Supplier } from '../supplier/schemas/supplier.schema';
 @Injectable()
 export class CategoryService {
   constructor(
@@ -22,6 +23,8 @@ export class CategoryService {
     private readonly cloudinaryService: CloudinaryService,
     @InjectModel(Product.name)
     private readonly productModel: Model<Product>,
+    @InjectModel(Supplier.name)
+    private readonly supplierModel: Model<Supplier>,
   ) {}
 
   private createBaseSlug(name: string): string {
@@ -68,8 +71,6 @@ export class CategoryService {
       simplifiedImages = uploadedImages.map((img) => ({
         public_id: img.public_id,
         secure_url: img.secure_url,
-        width: img.width,
-        height: img.height,
       }));
     }
 
@@ -121,16 +122,23 @@ export class CategoryService {
   }
 
   async findIdBySlug(slug: string): Promise<Types.ObjectId> {
-    console.log('Check id input in findIdBySlug:', slug);
-    const newSlug = `/${slug}`;
-    const category = await this.categoryModel.findOne({ slug: newSlug });
+    const category = await this.categoryModel.findOne({ slug: slug });
 
     if (!category) {
-      throw new NotFoundException(`Category với slug "${slug}" không tồn tại`);
+      throw new NotFoundException(
+        `Category with slug "${slug}" is not exists `,
+      );
     }
     return category._id;
   }
-
+  async findIdBySlugs(slugs: string[]): Promise<Types.ObjectId[]> {
+    let slugIds = [];
+    for (const slug of slugs) {
+      const slugId = await this.findIdBySlug(slug);
+      slugIds.push(slugId);
+    }
+    return slugIds;
+  }
   async update(
     _id: string,
     updateCategoryDto: UpdateCategoryDto,
@@ -177,8 +185,6 @@ export class CategoryService {
       const newImages = uploadedImages.map((img) => ({
         public_id: img.public_id,
         secure_url: img.secure_url,
-        width: img.width,
-        height: img.height,
       }));
       finalImages = [...finalImages, ...newImages];
     }
@@ -272,17 +278,28 @@ export class CategoryService {
         label: 'MEN',
         filter: { gender: GenderType.MEN, status: 'ACTIVE' },
         params: `gender=${GenderType.MEN}`,
+        linkType: 'products',
       },
       {
         label: 'WOMEN',
         filter: { gender: GenderType.WOMEN, status: 'ACTIVE' },
         params: `gender=${GenderType.WOMEN}`,
+        linkType: 'products',
+      },
+
+      {
+        label: 'BRANDS',
+        filter: { status: 'ACTIVE' },
+        params: 'test',
+        model: 'supplier',
+        linkType: 'stores',
       },
 
       {
         label: 'SALE',
         filter: { isSale: true, status: 'ACTIVE' },
         params: 'isSale=true',
+        linkType: 'products',
       },
       //   {
       //   label: 'NEW ARRIVALS',
@@ -298,34 +315,53 @@ export class CategoryService {
     const navData = [];
 
     for (const group of navGroups) {
-      const usedCategoryIds = await this.productModel
-        .find(group.filter)
-        .distinct('categoryId');
+      if (group.model == 'supplier') {
+        var usedBrand = await this.supplierModel.find(group.filter);
+        if (usedBrand.length > 0) {
+          const brandItems = usedBrand.map((brand) => ({
+            _id: brand._id,
+            name: brand.name,
+            slug: brand.slug,
+          }));
 
-      let activeCategoryList: any[] = [];
-      for (const idObj of usedCategoryIds) {
-        const lineage = this.getCategoryAndAncestors(
-          idObj.toString(),
-          allCategories,
-        );
-        activeCategoryList.push(...lineage);
+          navData.push({
+            label: group.label,
+            baseParams: group.params,
+            linkType: group.linkType,
+            items: [{ name: 'Stores', children: brandItems }],
+          });
+        }
       }
+      if (!group.model) {
+        const usedCategoryIds = await this.productModel
+          .find(group.filter)
+          .distinct('categoryId');
 
-      const uniqueCategories = Array.from(
-        new Map(
-          activeCategoryList.map((item) => [item._id.toString(), item]),
-        ).values(),
-      );
+        let activeCategoryList: any[] = [];
+        for (const idObj of usedCategoryIds) {
+          const lineage = this.getCategoryAndAncestors(
+            idObj.toString(),
+            allCategories,
+          );
+          activeCategoryList.push(...lineage);
+        }
 
-      if (uniqueCategories.length > 0) {
-        navData.push({
-          label: group.label,
-          baseParams: group.params,
-          items: this.buildTree(uniqueCategories, null),
-        });
+        const uniqueCategories = Array.from(
+          new Map(
+            activeCategoryList.map((item) => [item._id.toString(), item]),
+          ).values(),
+        );
+
+        if (uniqueCategories.length > 0) {
+          navData.push({
+            label: group.label,
+            baseParams: group.params,
+            linkType: group.linkType,
+            items: this.buildTree(uniqueCategories, null),
+          });
+        }
       }
     }
-
     return navData;
   }
 }

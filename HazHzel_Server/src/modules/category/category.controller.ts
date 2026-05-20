@@ -26,7 +26,6 @@ export class CategoryController {
     @Body() createCategoryDto: CreateCategoryDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
-    console.log('Check createCategory:', createCategoryDto);
     return this.categoryService.create(createCategoryDto, files);
   }
 
@@ -48,6 +47,7 @@ export class CategoryController {
   @ResponseMessage('Fetched all categories successful')
   findAll(
     @Query() query: string,
+    // @Param('categorySlugs') categorySlugs: string,
     @Query('current') current: string,
     @Query('pageSize') pageSize: string,
   ) {

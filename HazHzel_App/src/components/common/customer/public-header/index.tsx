@@ -13,22 +13,24 @@ import NavIcons from "../nav/nav-icons";
 import { INavItem } from "@/components/layout/public/client-layout/customer.header";
 import { staticItemsConfig } from "@/shared/configs/header";
 import { NavMenuItem } from "@/types/navbar";
+import { typeNavMenuItem } from "@/types/enum";
 interface NavBarProps {
-  navGroups: INavItem[];
+  navGroups: INavItem[] | [];
 }
-const NavBar: React.FC<NavBarProps> = ({ navGroups }) => {
+const NavBar: React.FC<NavBarProps> = ({ navGroups = [] }) => {
   const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
   const showMobileMenu = () => setOpenMobileMenu(true);
 
   const dynamicItems: NavMenuItem[] = navGroups.map((g) => ({
-    type: "dynamic",
+    type: typeNavMenuItem.DYNAMIC,
     label: g.label,
     baseParams: g.baseParams,
+    linkType: g.linkType,
     items: g.items,
   }));
 
   const staticItems: NavMenuItem[] = staticItemsConfig.map((s) => ({
-    type: "static",
+    type: typeNavMenuItem.STATIC,
     label: s.label,
     href: s.href,
   }));
