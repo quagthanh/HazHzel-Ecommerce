@@ -1,0 +1,46 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "NestJS Backend",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/HazHzel_Server",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start:debug"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Next.js Server Debug",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/HazHzel_App",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--inspect",
+        "node_modules/next/dist/bin/next",
+        "dev"
+      ],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Next.js Chrome Debug",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/HazHzel_App"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Fullstack Debug",
+      "configurations": [
+        "NestJS Backend",
+        "Next.js Server Debug",
+        "Next.js Chrome Debug"
+      ]
+    }
+  ]
+}

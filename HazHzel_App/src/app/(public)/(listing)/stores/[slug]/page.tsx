@@ -10,22 +10,35 @@ export default async function StorePage({
 }: ListPageProps) {
   const { slug } = params;
   const title = slug.replace(/-/g, " ").toUpperCase();
-  const filters = {
-    current: Number(getParam(searchParams?.current)) || 1,
-    pageSize: Number(getParam(searchParams?.pageSize)) || 12,
-    category: getParam(searchParams?.filterCategory),
-    size: getParam(searchParams?.filterSize),
-    minPrice: getParam(searchParams?.minPrice),
-    maxPrice: getParam(searchParams?.maxPrice),
-    inStock: getParam(searchParams?.inStock),
-    sort: getParam(searchParams?.sort),
+  const current = Number(searchParams?.current) || 1;
+  const pageSize = Number(searchParams?.pageSize) || 12;
+  const gender = searchParams?.gender
+    ? String(searchParams?.gender)
+    : undefined;
+  const filterCategory = searchParams?.filterCategory
+    ? String(searchParams?.filterCategory)
+    : undefined;
+  const filterBrand = searchParams?.filterBrand
+    ? String(searchParams?.filterBrand)
+    : undefined;
+  const sort = searchParams?.sort ? String(searchParams?.sort) : undefined;
+  let sendParams = {
+    current,
+    pageSize,
+    gender,
+    filterCategory,
+    filterBrand,
+    // filterSize,
+    // minPrice,
+    // maxPrice,
+    // availabilit,
+    sort,
   };
-
   let products = [];
   let meta = { current: 1, pageSize: 12, total: 0, pages: 0 };
 
   try {
-    const res = await getProductsByStore(slug, filters);
+    const res = await getProductsByStore(slug, sendParams);
     const backendData = res?.data;
     if (backendData) {
       products = backendData.result || [];

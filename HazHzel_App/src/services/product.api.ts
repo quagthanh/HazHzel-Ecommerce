@@ -1,6 +1,6 @@
 "use server";
 import { ResponseData } from "@/types/interface";
-import { ProductResponseData } from "@/types/product";
+import { IProductQueryParams, ProductResponseData } from "@/types/product";
 import { sendRequest, sendRequestFile } from "@/utils/api";
 
 export async function getProductsForAdmin({
@@ -19,28 +19,17 @@ export async function getProductsForAdmin({
     },
   });
 }
+
 //Product by gender
-export async function getProducts(
-  gender: string | undefined,
-  category: string | undefined,
-  params: {
-    current: number;
-    pageSize: number;
-  },
-) {
-  if (gender && gender.toUpperCase() !== "UNDEFINED") {
-    gender = gender.toUpperCase();
+export async function getProducts(sendParams: IProductQueryParams) {
+  if (sendParams.gender && sendParams.gender.toUpperCase() !== "UNDEFINED") {
+    sendParams.gender = sendParams.gender.toUpperCase();
   }
 
   const res = await sendRequest<ResponseData<any>>({
     url: "/products",
     method: "GET",
-    queryParams: {
-      gender,
-      category,
-      current: params.current,
-      pageSize: params.pageSize,
-    },
+    queryParams: sendParams,
   });
   return res;
 }
@@ -58,22 +47,16 @@ export async function getDetailProduct(
 //Product by store(supplier)
 export async function getProductsByStore(
   slug: string,
-  params: {
-    current: number;
-    pageSize: number;
-    category?: string;
-    size?: string;
-    minPrice?: string | number;
-    maxPrice?: string | number;
-    inStock?: string;
-    sort?: string;
-  },
+  sendParams: IProductQueryParams,
 ) {
-  return sendRequest<ProductResponseData>({
+  const res = await sendRequest<ProductResponseData>({
     url: `/products/by-supplier/${slug}`,
     method: "GET",
-    queryParams: params,
+    queryParams: sendParams,
   });
+
+  console.log("Check res getProductsByStore:", res);
+  return res;
 }
 //Product by category
 export async function getProductsByCategory(
@@ -120,7 +103,6 @@ export async function getHomeProductBySupplier() {
     url: `/products/home-new-brand/${slug}`,
     method: "GET",
   });
-  console.log("Check res getHomeProduct:", res);
   return res;
 }
 

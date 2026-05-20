@@ -58,3 +58,23 @@
     padding-left: 4px;
   }
 }
+
+.mobileCollapse {
+  :global(.ant-collapse-item) {
+    border-bottom: 1px solid #f5f0ea; 
+  }
+}
+
+.mobileMenuHeader {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: block; 
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #b0a89e;
+  }
+}

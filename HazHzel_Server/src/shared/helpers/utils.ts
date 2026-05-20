@@ -111,19 +111,13 @@ export async function paginationAggregate(
 }
 export async function paginationAggregateNew(
   model: Model<any>,
-  query: string,
   current = 1,
   pageSize = 10,
+  sort: any = { createdAt: -1 },
   aggregatePipeline: any[] = [],
-  extraFilter: any = {},
+  customMatchStage: any = {},
 ) {
-  const { filter, sort } = aqp(query);
-
-  delete filter.current;
-  delete filter.pageSize;
-
-  const finalFilter = { ...filter, ...extraFilter };
-  const fullPipeline = [{ $match: finalFilter }, ...aggregatePipeline];
+  const fullPipeline = [{ $match: customMatchStage }, ...aggregatePipeline];
 
   const skip = (current - 1) * pageSize;
 
@@ -137,7 +131,7 @@ export async function paginationAggregateNew(
 
   const result = await model.aggregate([
     ...fullPipeline,
-    { $sort: sort || { createdAt: -1 } },
+    { $sort: sort },
     { $skip: skip },
     { $limit: pageSize },
   ]);

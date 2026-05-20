@@ -15,16 +15,6 @@ const TitleHeaderCenter = ({
         <BreadcrumbPublic />
       </div>
       <h1 className={styles.title}>{title}</h1>
-      <div className={styles.bannerWrapper}>
-        <Image
-          className={styles.bannerImage}
-          src={banner}
-          alt="listing banner"
-          fill
-          priority
-          sizes="100vw"
-        />
-      </div>
     </div>
   );
 };

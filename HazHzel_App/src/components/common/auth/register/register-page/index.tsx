@@ -20,7 +20,7 @@ const Register = () => {
   //   setLoading(true);
   //   const res = await sendRequest<IBackendRes<any>>({
   //     method: "POST",
-  //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/register`,
+  //     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
   //     body: {
   //       email: values.email,
   //       name: values.name,

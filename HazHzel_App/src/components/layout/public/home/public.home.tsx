@@ -17,9 +17,9 @@ const PublicHomePage = async () => {
   const topSuppliersData = getTopSuppliers();
   const [resultTopSupplier] = await Promise.allSettled([topSuppliersData]);
   if (resultTopSupplier.status === "fulfilled") {
-    const res1 = resultTopSupplier.value;
-    if (res1?.data) {
-      topSuppliers = res1.data || [];
+    const res = resultTopSupplier.value;
+    if (res?.data) {
+      topSuppliers = res.data || [];
     }
   } else {
     console.error(
@@ -28,15 +28,14 @@ const PublicHomePage = async () => {
   }
   return (
     <>
+      <MarqueeText />
       <HeroPublic />
       <UnisexCollections />
       {/* <Catwalk /> */}
-
-      <MarqueeText />
-      <FeaturedBrands brands={topSuppliers} />
       <Suspense fallback={<SkeletonGrid />}>
         <ShopFavoritesContainer />
       </Suspense>
+      <FeaturedBrands brands={topSuppliers} />
       <NewBrand />
     </>
   );

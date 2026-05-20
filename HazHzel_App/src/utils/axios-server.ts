@@ -33,7 +33,9 @@ http.interceptors.response.use(
       message:
         error?.response?.data?.message ||
         "Can not get message of querry response",
-      error: error?.response?.data?.error || "Internal Server Error At Base",
+      error:
+        error?.response?.data?.error ||
+        "Internal Server Error At Base - Can not connect to server",
       statusCode: error?.response?.data?.statusCode || "500",
     };
     return Promise.reject(customResponse);

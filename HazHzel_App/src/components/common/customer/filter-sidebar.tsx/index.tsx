@@ -5,15 +5,12 @@ import styles from "./style.module.scss";
 import { Slider, Switch, Checkbox } from "antd";
 import DropdownSection from "./DropdownSection";
 import { useProductFilter } from "@/utils/hooks/useProductFilter";
+import { IFilterConfig } from "@/types/navbar";
+import ColorFilter from "./ColorFilter";
 
-const FILTER_CONFIG = {
-  types: ["T-Shirt", "Polo", "Pants", "Shorts", "Jacket", "Accessories"],
-  brands: ["Gucci", "Adidas", "Nike", "Coolmate", "OAS"],
-  sizes: ["S", "M", "L", "XL", "XXL"],
-  prices: [0, 10000000],
-};
-
-export default function FilterSidebar() {
+export default function FilterSidebar({ filter_config }: IFilterConfig) {
+  const productType = filter_config.productTypeName ?? [];
+  const brandName = filter_config.brandName ?? [];
   const [openDropdown, setOpenDropdown] = useState<string | null>("Price");
   const { updateFilter, updateParams, searchParams, pathname } =
     useProductFilter();
@@ -50,6 +47,9 @@ export default function FilterSidebar() {
     return params.includes(value);
   };
 
+  const handleColorChange = (item: string) => {
+    updateFilter("filterColor", item, true);
+  };
   return (
     <div className={styles.sidebar}>
       {!isCategoryPage && (
@@ -59,13 +59,13 @@ export default function FilterSidebar() {
           onToggle={() => toggleDropdown("Type")}
         >
           <ul className={styles.dropdownList}>
-            {FILTER_CONFIG.types.map((item) => (
-              <li key={item} className={styles.filterItem}>
+            {productType.map((item) => (
+              <li key={item.slug} className={styles.filterItem}>
                 <Checkbox
-                  checked={isActive("filterCategory", item)}
-                  onChange={() => handleTypeChange(item)}
+                  checked={isActive("filterCategory", item.slug)}
+                  onChange={() => handleTypeChange(item.slug)}
                 >
-                  {item}
+                  {item.name}
                 </Checkbox>
               </li>
             ))}
@@ -79,13 +79,13 @@ export default function FilterSidebar() {
           onToggle={() => toggleDropdown("Brand")}
         >
           <ul className={styles.dropdownList}>
-            {FILTER_CONFIG.brands.map((item) => (
-              <li key={item}>
+            {brandName.map((item) => (
+              <li key={item.slug}>
                 <Checkbox
-                  checked={isActive("filterBrand", item)}
-                  onChange={() => handleBrandChange(item)}
+                  checked={isActive("filterBrand", item.slug)}
+                  onChange={() => handleBrandChange(item.slug)}
                 >
-                  {item}
+                  {item.name}
                 </Checkbox>
               </li>
             ))}
@@ -99,7 +99,7 @@ export default function FilterSidebar() {
         onToggle={() => toggleDropdown("Size")}
       >
         <ul className={styles.dropdownList}>
-          {FILTER_CONFIG.sizes.map((item) => (
+          {filter_config.sizeFilter.map((item) => (
             <li key={item}>
               <Checkbox
                 checked={isActive("filterSize", item)}
@@ -110,6 +110,18 @@ export default function FilterSidebar() {
             </li>
           ))}
         </ul>
+      </DropdownSection>
+
+      <DropdownSection
+        label="Color"
+        isOpen={openDropdown === "Color"}
+        onToggle={() => toggleDropdown("Color")}
+      >
+        <ColorFilter
+          colors={filter_config.colorFilter ?? []}
+          isActive={isActive}
+          onChange={handleColorChange}
+        />
       </DropdownSection>
 
       <DropdownSection
@@ -131,28 +143,14 @@ export default function FilterSidebar() {
           />
           <div style={{ marginTop: 10 }}>
             {(Number(searchParams.get("minPrice")) || 0).toLocaleString(
-              "vi-VN"
+              "vi-VN",
             )}
             đ -
             {(Number(searchParams.get("maxPrice")) || 10000000).toLocaleString(
-              "vi-VN"
+              "vi-VN",
             )}
             đ
           </div>
-        </div>
-      </DropdownSection>
-
-      <DropdownSection
-        label="Availability"
-        isOpen={openDropdown === "Availability"}
-        onToggle={() => toggleDropdown("Availability")}
-      >
-        <div className={styles.switchRow}>
-          <Switch
-            checked={searchParams.get("inStock") === "true"}
-            onChange={handleStockChange}
-          />
-          <span>In stock only</span>
         </div>
       </DropdownSection>
     </div>

@@ -13,31 +13,46 @@ import { Button } from "antd";
 import Link from "next/link";
 import styles from "@/components/common/customer/filter-bar/style.module.scss";
 import useGridStore from "@/library/stores/useGridStore";
+import { useProductFilter } from "@/utils/hooks/useProductFilter";
 
 const sortOptions = [
-  "Featured",
-  "Best selling",
-  "Alphabetically, A-Z",
-  "Alphabetically, Z-A",
-  "Price, low to high",
-  "Price, high to low",
-  "Date, old to new",
-  "Date, new to old",
+  {
+    name: "Best selling",
+    value: "best-selling",
+  },
+  {
+    name: "Price, low to high",
+    value: "price-asc",
+  },
+  {
+    name: "Price, high to low",
+    value: "price-desc",
+  },
+  {
+    name: "Date, old to new",
+    value: "date-asc",
+  },
+  {
+    name: "Date, new to old",
+    value: "date-desc",
+  },
 ];
-
 const FilterBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("Sort by");
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { updateFilter } = useProductFilter();
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
-  const handleSelect = (option: string) => {
-    setSelected(option);
+  const handleSelect = (option: { name: string; value: string }) => {
+    setSelected(option.name);
+    updateFilter("sort", option.value);
     setIsOpen(false);
   };
   const handleReset = (e: React.MouseEvent) => {
     e.stopPropagation();
     setSelected("Sort by");
+    updateFilter("sort", null);
     setIsOpen(false);
   };
   const setColumCount = useGridStore((state) => state.setColumCount);
@@ -113,13 +128,13 @@ const FilterBar = () => {
             <ul className={styles.sortMenu}>
               {sortOptions.map((option) => (
                 <li
-                  key={option}
+                  key={option.name}
                   onClick={() => handleSelect(option)}
                   className={`${styles.sortItem} ${
-                    selected === option ? styles.active : ""
+                    selected === option.name ? styles.active : ""
                   }`}
                 >
-                  {option}
+                  {option.name}
                 </li>
               ))}
             </ul>

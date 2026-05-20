@@ -23,6 +23,9 @@ import { CategoryService } from '../category/category.service';
 import { CollectionService } from '../collection/collection.service';
 import { GenderType } from '@/shared/enums/typeGenderProduct.enm';
 import { VariantService } from '../variant/variant.service';
+import { IImage } from '@/shared/interfaces/image';
+import { ProductFilterDto } from './dto/product-filter.dto';
+import { ProductSortType } from '@/shared/enums/productSortType.enum';
 
 @Injectable()
 export class ProductService {
@@ -60,23 +63,23 @@ export class ProductService {
   ) {
     let { name, ...otherFields } = createProductDto;
     const slug = await this.generateSlugUnique(name);
-    if (files.length === 0) {
-      throw new BadRequestException('Please choose atleast 1 picture');
+    if (!files || files.length === 0) {
+      throw new BadRequestException('Please choose at least 1 picture');
     }
     const uploadedImages = await this.cloudinaryService.uploadMultiFiles(files);
-    const simplifiedImages = uploadedImages.map((img) => ({
-      public_id: img.public_id,
-      secure_url: img.secure_url,
-      width: img.width,
-      height: img.height,
-    }));
-    const newProduct = await this.productModel.create({
-      images: simplifiedImages,
-      name,
-      slug,
-      ...otherFields,
-    });
-    return newProduct;
+    try {
+      const newProduct = await this.productModel.create({
+        images: uploadedImages,
+        name,
+        slug,
+        ...otherFields,
+      });
+      return newProduct;
+    } catch (error) {
+      console.error('Error while creating new product:', error);
+      const delete_image_ids = uploadedImages.map((image) => image.public_id);
+      await this.cloudinaryService.deleteFiles(delete_image_ids);
+    }
   }
 
   async findAllForAdmin(query: string, current: number, pageSize: number) {
@@ -190,12 +193,49 @@ export class ProductService {
       pipeline,
     );
   }
-  async findAll(query: any, current: number, pageSize: number) {
-    const queryParams = new URLSearchParams(query);
-    const { gender, category } = query;
-
+  async findAll(filterDto: ProductFilterDto) {
     const customMatchStage: any = {};
+    const gender = filterDto.gender;
+    const category = filterDto.filterCategory;
+    const brand = filterDto.filterBrand;
+    const current = filterDto.current ?? 1;
+    const pageSize = filterDto.pageSize ?? 10;
+    const minPrice = filterDto.minPrice;
+    const maxPrice = filterDto.maxPrice;
 
+    const variantAttributeMatch: any[] = [];
+    const priceMatch: any = {};
+
+    if (minPrice !== undefined) {
+      priceMatch.$gte = Number(minPrice);
+    }
+
+    if (maxPrice !== undefined) {
+      priceMatch.$lte = Number(maxPrice);
+    }
+
+    let sortPipeLine: Record<string, 1 | -1> = {
+      createAt: -1,
+    };
+
+    if (sortPipeLine) {
+      switch (filterDto.sort) {
+        case ProductSortType.DATE_ASC:
+          sortPipeLine = { createdAt: 1 };
+          break;
+        case ProductSortType.DATE_DESC:
+          sortPipeLine = { createdAt: -1 };
+          break;
+        case ProductSortType.PRICE_ASC:
+          sortPipeLine = { currentPrice: 1 };
+          break;
+        case ProductSortType.PRICE_DESC:
+          sortPipeLine = { currentPrice: -1 };
+          break;
+        default:
+          sortPipeLine = { createAt: -1 };
+      }
+    }
     if (gender) {
       if (gender === GenderType.MEN) {
         customMatchStage.gender = { $in: [GenderType.MEN, GenderType.UNISEX] };
@@ -206,16 +246,44 @@ export class ProductService {
       } else {
         customMatchStage.gender = gender;
       }
-      queryParams.delete('gender');
     }
 
     if (category) {
-      const categoryId = await this.categoryService.findIdBySlug(category);
-      if (categoryId) {
-        customMatchStage.categoryId = new Types.ObjectId(categoryId);
+      const categoryIds = await this.categoryService.findIdBySlugs(category);
+      if (categoryIds) {
+        customMatchStage.categoryId = { $in: categoryIds };
       }
-      queryParams.delete('category');
     }
+
+    if (brand) {
+      const supplierIds = await this.supplierService.findIdBySlugs(brand);
+      if (supplierIds) {
+        customMatchStage.supplierId = { $in: supplierIds };
+      }
+    }
+
+    if (filterDto.filterColor) {
+      variantAttributeMatch.push({
+        'variants.attributes': {
+          $elemMatch: {
+            k: 'Color',
+            v: filterDto.filterColor,
+          },
+        },
+      });
+    }
+
+    if (filterDto.filterSize) {
+      variantAttributeMatch.push({
+        'variants.attributes': {
+          $elemMatch: {
+            k: 'Size',
+            v: filterDto.filterSize,
+          },
+        },
+      });
+    }
+
     const pipeline = [
       {
         $lookup: {
@@ -225,7 +293,53 @@ export class ProductService {
           as: 'variants',
         },
       },
+      {
+        $lookup: {
+          from: 'suppliers',
+          localField: 'supplierId',
+          foreignField: '_id',
+          as: 'supplier',
+        },
+      },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'categoryId',
+          foreignField: '_id',
+          as: 'categories',
+        },
+      },
+      {
+        $unwind: {
+          path: '$categories',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unwind: {
+          path: '$supplier',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       { $unwind: { path: '$variants', preserveNullAndEmptyArrays: true } },
+      ...(variantAttributeMatch.length > 0
+        ? [
+            {
+              $match: {
+                $and: variantAttributeMatch,
+              },
+            },
+          ]
+        : []),
+      ...(Object.keys(priceMatch).length > 0
+        ? [
+            {
+              $match: {
+                'variants.currentPrice': priceMatch,
+              },
+            },
+          ]
+        : []),
       { $sort: { 'variants.currentPrice': 1 } },
       {
         $group: {
@@ -249,16 +363,16 @@ export class ProductService {
         },
       },
     ];
-
     return paginationAggregateNew(
       this.productModel,
-      queryParams.toString(),
       current,
       pageSize,
+      sortPipeLine,
       pipeline,
       customMatchStage,
     );
   }
+
   async findBySupplier(
     supplierSlug: string,
     query: string,
@@ -849,33 +963,21 @@ export class ProductService {
     files: Express.Multer.File[],
   ) {
     const product = await this.productModel.findById(_id);
-    if (!product) throw new BadRequestException('Không tìm thấy sản phẩm');
+    if (!product)
+      throw new BadRequestException('Can not find product to update');
 
+    //Must have this to use synImage from cloudinaryService
     const keptImages = updateProductDto.existingImages
       ? JSON.parse(updateProductDto.existingImages)
       : [];
-    for (const oldImage of product.images) {
-      const isStillUsed = keptImages.find(
-        (img: any) => img.public_id === oldImage.public_id,
-      );
+    const currentImages = product.images ?? [];
 
-      if (!isStillUsed) {
-        await this.cloudinaryService.deleteFile(oldImage.public_id);
-      }
-    }
+    const finalImages = await this.cloudinaryService.synImages(
+      currentImages,
+      keptImages,
+      files,
+    );
 
-    let uploadedImages = [];
-    if (files && files.length > 0) {
-      const data = await this.cloudinaryService.uploadMultiFiles(files);
-      uploadedImages = data.map((img) => ({
-        public_id: img.public_id,
-        secure_url: img.secure_url,
-        width: img.width,
-        height: img.height,
-      }));
-    }
-
-    const finalImages = [...keptImages, ...uploadedImages];
     product.images = finalImages;
     product.name = updateProductDto.name;
     product.description = updateProductDto.description;
@@ -897,7 +999,7 @@ export class ProductService {
   async remove(_id: string) {
     const data = await this.productModel.findById(_id);
     if (!data) {
-      throw new BadRequestException('Không tìm thấy id sản phẩm ');
+      throw new BadRequestException('Không tìm thấy id sản phẩm');
     }
     const id_image = data?.images.map((img) => img.public_id);
     await this.cloudinaryService.deleteFiles(id_image);

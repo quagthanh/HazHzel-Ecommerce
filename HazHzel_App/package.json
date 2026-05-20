@@ -2,8 +2,7 @@
   "name": "01-next-rn",
   "version": "0.1.0",
   "author": {
-    "name": "Hỏi Dân IT",
-    "url": "https://hoidanit.vn"
+    "name": "qthanh"
   },
   "private": true,
   "scripts": {
@@ -19,6 +18,7 @@
     "axios": "^1.13.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.5.0",
+    "lucide-react": "^1.14.0",
     "next": "14.2.5",
     "next-auth": "^5.0.0-beta.20",
     "nextjs-toploader": "^3.9.17",

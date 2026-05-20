@@ -38,3 +38,15 @@ export interface ProductResponseData {
   };
   result: any[];
 }
+export interface IProductQueryParams {
+  current?: number;
+  pageSize?: number;
+  gender?: string;
+  filterCategory?: string;
+  filterBrand?: string;
+  filterSize?: string;
+  filterColor?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  sort?: string;
+}

@@ -1,4 +1,5 @@
 import { StaticImageData } from "next/image";
+import { linkType, typeNavMenuItem } from "../enum";
 
 export interface NavMenuColumn {
   title: string;
@@ -28,11 +29,19 @@ export interface NavGroup {
   items: NavItem[];
 }
 export interface NavMenuItem {
-  type: "dynamic" | "static"; // Phân biệt loại menu
+  type: typeNavMenuItem.DYNAMIC | typeNavMenuItem.STATIC;
   label: string;
-  // Dành cho dynamic (API)
   baseParams?: string;
+  linkType?: linkType.PRODUCTS | linkType.STORES;
   items?: any[];
-  // Dành cho static (Hardcoded)
   href?: string;
+}
+export interface IFilterConfig {
+  filter_config: {
+    productTypeName: any[];
+    brandName: any[];
+    sizeFilter: string[];
+    colorFilter: string[];
+    prices: number[];
+  };
 }
