@@ -1,0 +1,41 @@
+.addressCard {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow 0.2s ease;
+ 
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.addressName {
+  font-weight: 600;
+  font-size: 14px;
+  color: #111;
+}
+
+.defaultTag {
+  font-size: 11px;
+}
+
+.addressBody {
+  flex: 1;
+ 
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+  }
+}

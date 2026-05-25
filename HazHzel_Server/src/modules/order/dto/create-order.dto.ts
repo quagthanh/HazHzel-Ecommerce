@@ -5,7 +5,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { AddressDto } from '@/modules/address/dto/create-address.dto';
+import { CreateAddressDto } from '@/modules/address/dto/create-address.dto';
 import { statusOrderEnum } from '@/shared/enums/statusOrder.enum';
 import { PaymentMethodType } from '@/shared/enums/methodPayment.enum';
 import { Type } from 'class-transformer';
@@ -13,15 +13,11 @@ import { Type } from 'class-transformer';
 export class CreateOrderDto {
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => AddressDto)
-  shippingAddress: AddressDto;
+  @Type(() => CreateAddressDto)
+  shippingAddress: CreateAddressDto;
 
   @IsOptional()
   discountCode?: string;
-
-  @IsEnum(statusOrderEnum)
-  @IsOptional()
-  status?: statusOrderEnum;
 
   @IsEnum(PaymentMethodType)
   @IsNotEmpty()

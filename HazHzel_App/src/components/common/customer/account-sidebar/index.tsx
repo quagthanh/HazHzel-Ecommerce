@@ -20,10 +20,20 @@ const NAV_ITEMS = [
   { label: "Orders", href: "/account/orders", icon: ShoppingBag },
   { label: "Profile", href: "/account/profile", icon: User },
   { label: "Addresses", href: "/account/addresses", icon: MapPin },
-  { label: "Wishlist", href: "/account/wishlist", icon: Heart },
-  { label: "Alert Back in Stock", href: "/account/alerts", icon: Bell },
-  { label: "Assistance", href: "/account/assistance", icon: MessageSquare },
-] as const;
+  { label: "Wishlist", href: "/account/wishlist", icon: Heart, disabled: true },
+  {
+    label: "Alert Back in Stock",
+    href: "/account/alerts",
+    icon: Bell,
+    disabled: true,
+  },
+  {
+    label: "Assistance",
+    href: "/account/assistance",
+    icon: MessageSquare,
+    disabled: true,
+  },
+];
 
 export function AccountSidebar() {
   const pathname = usePathname();
@@ -33,8 +43,25 @@ export function AccountSidebar() {
       <p className={styles.heading}>My Account</p>
       <nav className={styles.nav}>
         <ul className={styles.navList}>
-          {NAV_ITEMS.map(({ label, href, icon: Icon }, i) => {
+          {NAV_ITEMS.map(({ label, href, icon: Icon, disabled }, i) => {
             const isActive = pathname === href;
+            if (disabled) {
+              return (
+                <motion.li
+                  key={href}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.04, duration: 0.3 }}
+                >
+                  <div className={styles.disabledLink}>
+                    <Icon size={14} strokeWidth={1.5} className={styles.icon} />
+                    <span>{label}</span>
+
+                    <span className={styles.badge}>Comming Soon</span>
+                  </div>
+                </motion.li>
+              );
+            }
             return (
               <motion.li
                 key={href}

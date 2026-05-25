@@ -1,0 +1,85 @@
+.addButton {
+  border-radius: 999px !important;
+  background: #111 !important;
+  border-color: #111 !important;
+  color: #fff !important;
+  font-weight: 500;
+  height: 40px;
+  padding: 0 20px;
+ 
+  &:hover {
+    background: #333 !important;
+    border-color: #333 !important;
+  }
+}
+.editButton {
+  font-size: 13px;
+  color: #555;
+  border: none;
+  padding: 0 8px;
+  height: auto;
+ 
+  &:hover {
+    color: #111;
+    background: transparent !important;
+  }
+}
+ 
+.addressModal {
+  :global(.ant-modal-title) {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+  }
+ 
+  :global(.ant-modal-content) {
+    border-radius: 12px;
+  }
+ 
+  :global(.ant-modal-close) {
+    border: 1.5px solid #e8e8e8;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+  }
+}
+
+.addressForm {
+  margin-top: 16px;
+ 
+  :global(.ant-form-item) {
+    margin-bottom: 12px;
+  }
+ 
+  :global(.ant-input),
+  :global(.ant-select-selector) {
+    border-radius: 6px !important;
+    border-color: #d9d9d9 !important;
+    font-size: 13px;
+  }
+}
+
+.formFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.saveButton {
+  border-radius: 999px !important;
+  background: #111 !important;
+  border-color: #111 !important;
+  color: #fff !important;
+  font-weight: 500;
+  height: 40px;
+  padding: 0 28px;
+ 
+  &:hover {
+    background: #333 !important;
+    border-color: #333 !important;
+  }
+}

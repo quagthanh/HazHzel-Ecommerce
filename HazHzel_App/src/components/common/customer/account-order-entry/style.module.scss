@@ -1,0 +1,162 @@
+.orderEntry {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0;
+  padding: 28px 0;
+ 
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+ 
+.entryMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 24px;
+  padding-top: 2px;
+  border-right: 1px solid gray;
+ 
+  @media (max-width: 600px) {
+    flex-direction: row;
+    align-items: center;
+    border-right: none;
+    border-bottom: 1px solid gray;
+    padding-right: 0;
+    padding-bottom: 12px;
+  }
+}
+ 
+.entryIndex {
+  font-family: "Courier New", monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: black;
+  letter-spacing: -0.02em;
+  line-height: 1;
+ 
+  @media (max-width: 600px) {
+    font-size: 16px;
+    margin-right: auto;
+  }
+}
+ 
+.entryDate {
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  color: gray;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+ 
+.entryId {
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  color: gray;
+  letter-spacing: 0.1em;
+}
+ 
+.entryContent {
+  padding-left: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+ 
+  @media (max-width: 600px) {
+    padding-left: 0;
+  }
+}
+ 
+.entryTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+ 
+.paymentMethod {
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: gray;
+}
+
+.itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.entryFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding-top: 16px;
+  border-top: 1px solid gray;
+ 
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+}
+ 
+.shippingInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+ 
+.shippingLabel {
+  font-family: "Courier New", monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: gray;
+}
+ 
+.shippingName {
+  font-size: 12px;
+  font-weight: 600;
+  color: gray;
+  font-family: "Georgia", serif;
+}
+
+.shippingAddress {
+  font-size: 11px;
+  color: gray;
+  font-family: "Georgia", serif;
+  line-height: 1.4;
+  max-width: 200px;
+}
+ 
+.priceSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 180px;
+  text-align: right;
+}
+ 
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  color: gray;
+}
+
+.priceRowTotal {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: black;
+  border-top: 1px solid gray;
+  padding-top: 6px;
+  margin-top: 2px;
+}

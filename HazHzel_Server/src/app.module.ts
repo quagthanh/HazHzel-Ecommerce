@@ -22,13 +22,13 @@ import { VariantModule } from './modules/variant/variant.module';
 import { CollectionModule } from './modules/collection/collection.module';
 import { TitleAggregationModule } from './modules/title-aggregation/title-aggregation.module';
 import { PaymentModule } from './modules/payment/payment.module';
-import { AddressModule } from './modules/address/address.module';
 import { Discount } from './modules/discount/schemas/discount.schema';
 import { DiscountModule } from './modules/discount/discount.module';
 import { CartModule } from './modules/cart/cart.module';
 import { CartItemModule } from './modules/cart-item/cart-item.module';
 import { Order } from './modules/order/schemas/order.schema';
 import { OrderModule } from './modules/order/order.module';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
@@ -80,11 +80,11 @@ import { OrderModule } from './modules/order/order.module';
     CollectionModule,
     TitleAggregationModule,
     PaymentModule,
-    AddressModule,
     DiscountModule,
     CartModule,
     CartItemModule,
     OrderModule,
+    AddressModule,
   ],
   controllers: [AppController],
   providers: [

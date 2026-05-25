@@ -55,7 +55,6 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            # 1. Đi vào thư mục dự án
             cd /home/thanh/HazHzel-Ecommerce
 
             echo "AUTH_SECRET=$FE_AUTH_SECRET" > HazHzel_App/.env
