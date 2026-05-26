@@ -7,13 +7,14 @@ import { usePathname } from "next/navigation";
 import { useContext } from "react";
 
 const AdminSideBar = () => {
-  const { Sider } = Layout;
-  const context = useContext(AdminDashboadContext);
   const pathname = usePathname();
-
+  const context = useContext(AdminDashboadContext);
   if (!context) {
     return null;
   }
+
+  const { Sider } = Layout;
+
   const { collapsed } = context;
   const checkPoint = (pathname: string) => {
     if (pathname === "/admin/dashboard/product/list") return "product-list";

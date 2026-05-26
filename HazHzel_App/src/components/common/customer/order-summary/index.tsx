@@ -10,12 +10,11 @@ import { useEffect } from "react";
 import { Checkout } from "@/services/order.api";
 import { message } from "antd";
 import { useRouter } from "next/navigation";
-enum PaymentMethodType {
-  COD = "COD",
-  BANK_TRANSFER = "BANK_TRANSFER",
-}
+import { formatPriceHelper } from "@/utils/helper";
+
 export default function OrderSummary() {
-  const { items, fetchCart, getTotalPrice, isLoading } = useCartStore();
+  const { items, fetchCart, getTotalPrice, isLoading, clearCart } =
+    useCartStore();
   const router = useRouter();
   useEffect(() => {
     fetchCart();
@@ -23,13 +22,6 @@ export default function OrderSummary() {
   const subtotal = getTotalPrice();
   const total = subtotal;
 
-  const formatPrice = (amount: number) =>
-    new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(amount);
-
-  if (isLoading && items.length === 0) return <div>Loading cart...</div>;
   const handlePayNow = async () => {
     const payload = {
       shippingAddress: {
@@ -42,12 +34,27 @@ export default function OrderSummary() {
       paymentMethod: "BANK_TRANSFER",
     };
 
-    const res = await Checkout(payload);
-    if (res.statusCode == 201) {
-      message.success("Your order is successfully created");
-      router.push("/");
+    try {
+      const res = await Checkout(payload);
+
+      console.log("Check API Response:", res);
+
+      if (res?.statusCode === 201) {
+        message.success("Your order is successfully created");
+        router.push("/");
+
+        setTimeout(() => {
+          clearCart();
+        }, 100);
+      } else {
+        message.error("Checkout failed. Please check the console.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi gọi API Checkout:", error);
+      message.error("Có lỗi xảy ra trong quá trình thanh toán!");
     }
   };
+  if (isLoading && items.length === 0) return <div>Loading cart...</div>;
   return (
     <div className={styles.orderSummary}>
       {items.map((item) => (
@@ -55,7 +62,7 @@ export default function OrderSummary() {
           key={item._id}
           image={item.variantId?.images?.[0]?.secure_url || "/placeholder.webp"}
           name={item.productId?.name}
-          price={formatPrice(item.variantId?.currentPrice)}
+          price={formatPriceHelper(item.variantId?.currentPrice)}
           quantity={item.quantity}
         />
       ))}
@@ -64,7 +71,7 @@ export default function OrderSummary() {
 
       <SummaryRow
         label={`Subtotal · ${items.length} items`}
-        value={formatPrice(subtotal)}
+        value={formatPriceHelper(subtotal)}
       />
 
       {/* <SummaryRow label="Shipping" value={formatPrice(shippingFee)} /> */}
@@ -73,7 +80,7 @@ export default function OrderSummary() {
         label="Total"
         value={
           <>
-            <small>VND</small> {formatPrice(total)}
+            <small>VND</small> {formatPriceHelper(total)}
           </>
         }
         isTotal

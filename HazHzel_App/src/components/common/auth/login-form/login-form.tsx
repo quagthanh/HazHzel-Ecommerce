@@ -19,7 +19,7 @@ import Logo from "@/components/common/auth/login-logo";
 import styles from "@/components/common/auth/login-form/style.module.scss";
 import { handleLogin } from "@/services/auth.api";
 import { authenticate } from "@/utils/actions";
-import ModalChangePassword from "@/components/common/auth/modal.change.password";
+// import ModalChangePassword from "@/components/common/auth/modal.change.password";
 import { useRouter, useSearchParams } from "next/navigation";
 import ModalReactive from "@/components/common/auth/reactive-model/modal.reactive";
 const { Title, Text, Link } = Typography;

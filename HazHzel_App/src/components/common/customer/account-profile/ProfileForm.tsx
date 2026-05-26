@@ -84,9 +84,9 @@ export function ProfileForm({ data }: ProfileFormProps) {
           {" "}
           <p className={styles.legalText}>
             {" "}
-            BY CREATING YOUR ACCOUNT, YOU SUBSCRIBED TO POLÈNE'S NEWSLETTER.{" "}
-            <br /> BY PROVIDING YOUR PHONE NUMBER, YOU AGREED TO RECEIVE
-            INFORMATIONAL SMS MESSAGES FROM POLÈNE.{" "}
+            BY CREATING YOUR ACCOUNT, YOU SUBSCRIBED TO POLe NEWSLETTER. <br />{" "}
+            BY PROVIDING YOUR PHONE NUMBER, YOU AGREED TO RECEIVE INFORMATIONAL
+            SMS MESSAGES FROM .{" "}
           </p>{" "}
           <p className={styles.legalText}>
             {" "}

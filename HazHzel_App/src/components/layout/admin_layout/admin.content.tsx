@@ -11,14 +11,14 @@ const AdminContent = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { Content } = Layout;
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
   const context = useContext(AdminDashboadContext);
   if (!context) {
     return null;
   }
+  const { Content } = Layout;
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
   const { collapsed, setCollapsed } = context;
 
   return (
