@@ -1,6 +1,6 @@
 "use client";
 
-import type { AccountData } from "@/types/account/index";
+import type { AccountData, OrderItem } from "@/types/account/index";
 import { WelcomeCard } from "../account-welcome-card/index";
 import { LatestOrderCard } from "../account-latest-order-card/index";
 import { AssistanceCard } from "../account-assistance-card";

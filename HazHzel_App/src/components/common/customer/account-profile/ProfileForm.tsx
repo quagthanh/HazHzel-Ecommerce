@@ -7,11 +7,11 @@ import styles from "./style.module.scss";
 import CustomButton from "../public-button";
 
 interface ProfileFormProps {
-  data: UserProfile[];
+  data: UserProfile;
 }
 
 export function ProfileForm({ data }: ProfileFormProps) {
-  const initialData = data?.[0];
+  const initialData = data;
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
 

@@ -1,5 +1,4 @@
 "use client";
-
 import styles from "@/components/common/customer/order-summary/style.module.scss";
 import CustomButton from "../public-button";
 import OrderItem from "../checkout-item";
@@ -12,49 +11,62 @@ import { message } from "antd";
 import { useRouter } from "next/navigation";
 import { formatPriceHelper } from "@/utils/helper";
 
-export default function OrderSummary() {
-  const { items, fetchCart, getTotalPrice, isLoading, clearCart } =
-    useCartStore();
+interface Address {
+  name: string;
+  phone: string;
+  street: string;
+  ward: string;
+  city: string;
+}
+
+interface OrderSummaryProps {
+  selectedAddress: Address | null;
+}
+
+export default function OrderSummary({ selectedAddress }: OrderSummaryProps) {
+  const { items, fetchCart, getTotalPrice, isLoading } = useCartStore();
   const router = useRouter();
+
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
+
   const subtotal = getTotalPrice();
   const total = subtotal;
 
   const handlePayNow = async () => {
+    if (!selectedAddress) {
+      message.warning("Please select a shipping address.");
+      return;
+    }
+
     const payload = {
       shippingAddress: {
-        name: "Nguyễn Văn A",
-        phone: "0987654321",
-        street: "123 Đường ABC",
-        ward: "Phường 1",
-        city: "Hồ Chí Minh",
+        name: selectedAddress.name,
+        phone: selectedAddress.phone,
+        street: selectedAddress.street,
+        ward: selectedAddress.ward,
+        city: selectedAddress.city,
       },
       paymentMethod: "BANK_TRANSFER",
     };
 
     try {
       const res = await Checkout(payload);
-
-      console.log("Check API Response:", res);
-
       if (res?.statusCode === 201) {
         message.success("Your order is successfully created");
-        router.push("/");
-
-        setTimeout(() => {
-          clearCart();
-        }, 100);
+        router.push("/?checkout_success=true");
       } else {
-        message.error("Checkout failed. Please check the console.");
+        message.error("Checkout failed. Please try again.");
       }
     } catch (error) {
-      console.error("Lỗi khi gọi API Checkout:", error);
-      message.error("Có lỗi xảy ra trong quá trình thanh toán!");
+      console.error("Checkout error:", error);
+      message.error("An error occurred during checkout.");
     }
   };
+
   if (isLoading && items.length === 0) return <div>Loading cart...</div>;
+
   return (
     <div className={styles.orderSummary}>
       {items.map((item) => (
@@ -74,8 +86,6 @@ export default function OrderSummary() {
         value={formatPriceHelper(subtotal)}
       />
 
-      {/* <SummaryRow label="Shipping" value={formatPrice(shippingFee)} /> */}
-
       <SummaryRow
         label="Total"
         value={
@@ -87,7 +97,10 @@ export default function OrderSummary() {
       />
 
       <div className={styles.checkoutBtn}>
-        <CustomButton onClick={handlePayNow} disabled={items.length === 0}>
+        <CustomButton
+          onClick={handlePayNow}
+          disabled={items.length === 0 || !selectedAddress}
+        >
           pay now
         </CustomButton>
       </div>

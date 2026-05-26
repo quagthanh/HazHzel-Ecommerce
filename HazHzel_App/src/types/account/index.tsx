@@ -1,7 +1,7 @@
 export interface AccountUser {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
 }
 
 export interface AccountData {

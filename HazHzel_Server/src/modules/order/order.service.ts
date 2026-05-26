@@ -91,7 +91,7 @@ export class OrderService {
 
   async findOneByUserId(userId: string) {
     const order = await this.orderModel
-      .find({ userId })
+      .findOne({ userId })
       .sort({ craetedAt: 1 })
       .exec();
     if (!order) {

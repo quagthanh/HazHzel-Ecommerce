@@ -21,6 +21,8 @@ import {
 } from '@/auth/dto/checkcode-auth.dto';
 import { RoleEnum } from '@/shared/enums/role.enum';
 import { Role } from '../role/schemas/role.schema';
+import { Order } from '../order/schemas/order.schema';
+import { OrderService } from '../order/order.service';
 
 @Injectable()
 export class UsersService {
@@ -28,6 +30,7 @@ export class UsersService {
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly mailerService: MailerService,
     @InjectModel(Role.name) private readonly roleModel: Model<Role>,
+    private readonly orderService: OrderService,
   ) {}
   isEmailExist = async (email: string) => {
     const user = await this.userModel.exists({ email });
@@ -70,11 +73,14 @@ export class UsersService {
     return this.findOne(userId);
   }
   async findMyOverview(userId: string) {
-    return this.findOne(userId);
+    const myAccount = await this.findOne(userId);
+    const myLatestOrder = await this.orderService.findMyOrder(userId);
+    const res = { user: myAccount, latestOrder: myLatestOrder };
+    return res;
   }
 
   async findOne(_id: string) {
-    return this.userModel.find({ _id }, { password: 0, codeId: 0 });
+    return this.userModel.findById(_id);
   }
   async findByEmail(email: string) {
     const user = await this.userModel.findOne({ email });

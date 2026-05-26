@@ -27,8 +27,10 @@ export function LatestOrderCard({ order }: LatestOrderCardProps) {
 
       {order ? (
         <div className={styles.orderInfo}>
-          <p className={styles.orderId}>Order #{order.id}</p>
-          <p className={styles.orderDate}>{order.date}</p>
+          <p className={styles.orderId}>Order #{order._id}</p>
+          <p className={styles.orderDate}>
+            {new Date(order.createdAt).toLocaleDateString("vi-VN")}
+          </p>
           <p className={styles.orderStatus}>{order.status}</p>
         </div>
       ) : (

@@ -11,8 +11,11 @@ import { getTopSuppliers } from "@/services/supplier.api";
 import { Suspense } from "react";
 import ShopFavoritesContainer from "./public.newbrand";
 import SkeletonGrid from "@/components/common/customer/skeleton/product";
-
-const PublicHomePage = async () => {
+import CartInitializer from "@/utils/cartInitializer";
+interface PublicHomePageProps {
+  shouldClearCart: boolean;
+}
+const PublicHomePage = async ({ shouldClearCart }: PublicHomePageProps) => {
   let topSuppliers: any = [];
   const topSuppliersData = getTopSuppliers();
   const [resultTopSupplier] = await Promise.allSettled([topSuppliersData]);
@@ -28,6 +31,7 @@ const PublicHomePage = async () => {
   }
   return (
     <>
+      <CartInitializer shouldClear={shouldClearCart} />
       <MarqueeText />
       <HeroPublic />
       <UnisexCollections />

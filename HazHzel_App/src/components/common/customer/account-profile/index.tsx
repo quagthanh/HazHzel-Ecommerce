@@ -7,7 +7,7 @@ import type { UserProfile } from "@/types/account";
 import styles from "./style.module.scss";
 
 interface ProfileContentProps {
-  initialData: UserProfile[];
+  initialData: UserProfile;
 }
 
 export function ProfileContent({ initialData }: ProfileContentProps) {

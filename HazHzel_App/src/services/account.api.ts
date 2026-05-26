@@ -13,11 +13,19 @@ export async function getAccountData(): Promise<AccountData> {
     latestOrder: null,
   };
 }
+
+export async function getMyAccountOverview() {
+  const res = await sendRequestFile<any>({
+    url: "/users/me/overview",
+    method: "GET",
+  });
+  return res;
+}
+
 export async function getMyAccount() {
   const res = await sendRequestFile<any>({
     url: "/users/me",
     method: "GET",
   });
-  console.log("Check client address", res);
   return res;
 }
