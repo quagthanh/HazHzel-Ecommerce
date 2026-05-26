@@ -76,15 +76,13 @@ export function AddressFormModal(props: Props) {
 
   const initialValues = isEdit
     ? {
-        firstName: props.address.firstName,
-        lastName: props.address.lastName,
-        streetAddress: props.address.streetAddress,
-        apt: props.address.apt,
-        city: props.address.city,
-        zip: props.address.zip,
-        state: props.address.state,
-        country: props.address.country,
-        phoneNumber: props.address.phoneNumber,
+        firstName: props.address.name,
+        streetAddress: props.address.street,
+        apt: props.address.city,
+        zip: props.address.zipCode,
+        state: props.address.phone,
+        country: props.address.typeAddress,
+        phoneNumber: props.address.ward,
         isDefault: props.address.isDefault,
       }
     : { country: "United States", isDefault: false };
@@ -105,7 +103,6 @@ export function AddressFormModal(props: Props) {
       if (isEdit) {
         // Replace with your update API call
         // await updateAddress(props.address.id, values);
-        console.log("Update address:", props.address.id, values);
       } else {
         const addressPayload = {
           name: values.name ?? "",

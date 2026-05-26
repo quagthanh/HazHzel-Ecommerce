@@ -17,7 +17,6 @@ export function AddressActions({ address }: AddressActionsProps) {
     try {
       // Replace with your delete API call
       // await deleteAddress(address.id);
-      console.log("Delete address:", address.id);
       // router.refresh() — call after successful delete to revalidate server data
     } catch {
       // Handle error

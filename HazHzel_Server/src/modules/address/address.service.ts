@@ -35,6 +35,15 @@ export class AddressService {
     return address;
   }
 
+  async findMyAddress(userId: any) {
+    console.log('Check req user:', userId);
+    const address = await this.addressModel.find({ userId: userId }).exec();
+    if (!address) {
+      throw new NotFoundException(`Address with user ID ${userId} not found`);
+    }
+    return address;
+  }
+
   async update(id: string, updateAddressDto: UpdateAddressDto) {
     const existingAddress = await this.findOne(id);
 

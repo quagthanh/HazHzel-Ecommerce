@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Montserrat } from "next/font/google";
-import "@/scss/partial/_body.scss";
+import { Poppins } from "next/font/google";
+import "@/scss/main.scss";
 import { auth } from "@/auth";
 import TopLoader from "@/components/common/progress-bar";
 import AuthInitializer from "@/utils/authInitializer";
 
-const montserrat = Montserrat({
+const mainFont = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
+  variable: "--font-main",
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={`${mainFont.className} ${mainFont.variable}`}>
         <AntdRegistry>
           <TopLoader />
           <AuthInitializer user={session?.user} />

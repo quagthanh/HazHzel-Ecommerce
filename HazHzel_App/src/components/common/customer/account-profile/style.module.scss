@@ -1,5 +1,4 @@
 .profileContainer {
-  max-width: 680px;
   width: 100%;
   background: #f5f2ee;
   padding: 40px;
@@ -44,20 +43,10 @@
   }
 }
 
-/* =========================
-   FORM WRAPPER
-========================= */
+  //  FORM WRAPPER
 
 .formWrapper {
   width: 100%;
-}
-
-.userEmail {
-  margin-bottom: 28px;
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #000;
 }
 
 /* =========================
@@ -86,103 +75,6 @@
   width: 100%;
 }
 
-.gridRow {
-  display: grid;
-  grid-template-columns: 100px 1fr 1fr;
-  gap: 16px;
-  align-items: start;
-
-  @media (max-width: 576px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* =========================
-   CUSTOM FIELD
-========================= */
-
-.customField {
-  width: 100%;
-  height: 64px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  padding: 10px 14px;
-
-  border: 1px solid #d9d9d9;
-  background: #fff;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-
-  &:focus-within {
-    border-color: #000;
-  }
-}
-.fullSelect {
-  width: 100%;
-}
-.fieldLabel {
-  margin-bottom: 6px;
-
-  font-size: 9px;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  color: #777;
-}
-
-.fieldContent {
-  width: 100%;
-
-  :global {
-    .ant-input,
-    .ant-select-selector {
-      padding: 0 !important;
-      border: none !important;
-      box-shadow: none !important;
-      background: transparent !important;
-
-      height: auto !important;
-      min-height: auto !important;
-
-      font-size: 14px;
-      color: #000;
-    }
-
-    .ant-select-selection-item {
-      line-height: 1.4 !important;
-    }
-
-    .ant-input {
-      line-height: 1.4;
-    }
-
-    .ant-select {
-      width: 100%;
-    }
-
-    .ant-input-group {
-      display: flex;
-      align-items: center;
-    }
-
-    .ant-input-group-addon {
-      padding: 0 8px 0 0;
-      border: none;
-      background: transparent;
-    }
-
-    .ant-input-affix-wrapper {
-      padding: 0 !important;
-      border: none !important;
-      box-shadow: none !important;
-      background: transparent !important;
-    }
-  }
-}
 
 /* =========================
    PHONE

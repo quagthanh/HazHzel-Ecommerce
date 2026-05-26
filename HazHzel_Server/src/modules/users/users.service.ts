@@ -66,8 +66,15 @@ export class UsersService {
     );
   }
 
+  async findMyAccount(userId: string) {
+    return this.findOne(userId);
+  }
+  async findMyOverview(userId: string) {
+    return this.findOne(userId);
+  }
+
   async findOne(_id: string) {
-    return this.userModel.findOne({ _id });
+    return this.userModel.find({ _id }, { password: 0, codeId: 0 });
   }
   async findByEmail(email: string) {
     const user = await this.userModel.findOne({ email });

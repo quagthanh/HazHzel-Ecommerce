@@ -1,4 +1,6 @@
-@use "../../../../scss/dependencies/variables" as *;
+@use "@/scss/abstracts/_variables" as *;
+@use "@/scss/abstracts/_mixins" as *;
+
 .sectionSpacing {
   background-color: $primary-color;
 }

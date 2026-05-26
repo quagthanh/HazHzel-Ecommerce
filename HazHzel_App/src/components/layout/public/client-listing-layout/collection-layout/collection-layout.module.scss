@@ -1,4 +1,6 @@
-@use "@/scss/dependencies/variables" as *;
+@use "@/scss/abstracts/_variables" as *;
+@use "@/scss/abstracts/_mixins" as *;
+
 .container {
   width: 100%;
   background-color: $primary-color; // Hoặc màu nền bạn muốn

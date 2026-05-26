@@ -1,5 +1,4 @@
-@use "../../../../scss/dependencies/variables" as *;
-
+@use "@/scss/abstracts/_variables" as *;
 .summaryCard {
   background-color: #fcfcfc;
   padding: 30px;
@@ -90,29 +89,15 @@
   margin-bottom: 25px;
 }
 
-.checkoutBtn {
-  height: 52px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  background-color: #000;
-  font-size: 14px;
-  border-radius: 4px;
-  
-  &:hover {
-    background-color: #333 !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-}
-
 .trustSection {
   margin-top: 25px;
   text-align: center;
   border-top: 1px dashed #ddd;
   padding-top: 20px;
 }
-
+.checkoutAction{
+  width: 100%;
+}
 .trustHeader {
   font-size: 12px;
   color: #777;

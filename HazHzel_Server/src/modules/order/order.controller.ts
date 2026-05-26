@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
+  Request,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -17,9 +17,17 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post('/checkout')
-  create(@Req() req, @Body() createOrderDto: CreateOrderDto) {
+  create(@Request() req, @Body() createOrderDto: CreateOrderDto) {
     const { user: userId } = req;
     return this.orderService.checkout(userId, createOrderDto);
+  }
+
+  @Get('me')
+  @ResponseMessage('Get all orders successful')
+  findMyOrder(@Request() req) {
+    const { user } = req;
+    const userId = user._id;
+    return this.orderService.findMyOrder(userId);
   }
 
   @Get()

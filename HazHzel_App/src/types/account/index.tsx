@@ -11,27 +11,21 @@ export interface AccountData {
 
 export interface UserProfile {
   email: string;
-  title: "MR" | "MRS" | "MS";
-  firstName: string;
-  lastName: string;
-  phoneCode: string;
-  phoneNumber: string;
-  birthdate?: string;
-  newsletterSubscribed: boolean;
-  smsSubscribed: boolean;
+  name: string;
+  phone: string;
+  isActive: boolean;
+  accountType: string;
 }
 
 export interface Address {
-  id: string;
-  firstName: string;
-  lastName: string;
-  streetAddress: string;
-  apt?: string;
+  _id: string;
+  name: string;
+  street: string;
+  ward: string;
   city: string;
-  zip: string;
-  state: string;
-  country: string;
-  phoneNumber: string;
+  zipCode: string;
+  phone: string;
+  typeAddress: string;
   isDefault: boolean;
 }
 

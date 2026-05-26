@@ -29,7 +29,6 @@
 }
  
 .entryIndex {
-  font-family: "Courier New", monospace;
   font-size: 20px;
   font-weight: 700;
   color: black;
@@ -43,7 +42,6 @@
 }
  
 .entryDate {
-  font-family: "Courier New", monospace;
   font-size: 10px;
   color: gray;
   letter-spacing: 0.04em;
@@ -51,7 +49,6 @@
 }
  
 .entryId {
-  font-family: "Courier New", monospace;
   font-size: 10px;
   color: gray;
   letter-spacing: 0.1em;
@@ -76,7 +73,6 @@
 }
  
 .paymentMethod {
-  font-family: "Courier New", monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -109,7 +105,6 @@
 }
  
 .shippingLabel {
-  font-family: "Courier New", monospace;
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -120,13 +115,11 @@
   font-size: 12px;
   font-weight: 600;
   color: gray;
-  font-family: "Georgia", serif;
 }
 
 .shippingAddress {
   font-size: 11px;
   color: gray;
-  font-family: "Georgia", serif;
   line-height: 1.4;
   max-width: 200px;
 }
@@ -143,7 +136,6 @@
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  font-family: "Courier New", monospace;
   font-size: 11px;
   color: gray;
 }
@@ -152,7 +144,6 @@
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  font-family: "Courier New", monospace;
   font-size: 13px;
   font-weight: 700;
   color: black;

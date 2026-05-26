@@ -72,11 +72,9 @@ const CartItem = ({ layout = "vertical" }: CartItemProps) => {
               </p>
 
               <div className={styles.attributes}>
-                {variant?.attributes?.map((attr: any) => (
-                  <span key={attr.k}>
-                    {attr.k}: {attr.v}{" "}
-                  </span>
-                ))}
+                {variant?.attributes
+                  ?.map((attr: any) => `${attr.k}: ${attr.v}`)
+                  .join(" - ")}
               </div>
 
               <div className={styles.quantityItem}>

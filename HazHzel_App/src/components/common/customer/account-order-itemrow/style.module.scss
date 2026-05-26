@@ -40,18 +40,15 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: "Georgia", serif;
 }
  
 .itemQty {
-  font-family: "Courier New", monospace;
   font-size: 11px;
   color: gray;
   flex-shrink: 0;
 }
  
 .itemPrice {
-  font-family: "Courier New", monospace;
   font-size: 12px;
   color: black;
   flex-shrink: 0;

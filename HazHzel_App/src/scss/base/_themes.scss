@@ -1,0 +1,37 @@
+@use '../abstracts/variables' as *;
+
+:root {
+  // Reference for root style
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+
+  --black-background: #{$black-background};
+  --bg-color: #{$background};
+  --text-color: #{$text-color};
+  --white-text-color: #{$white-text-color};
+  
+  // Reference for Button Variables
+  --button-text-transform: #{$button-text-transform};
+  --button-font: #{$button-font};
+  --button-letter-spacing: #{$button-letter-spacing};
+  --button-text-color: #{$button-text-color}; 
+  --button-outline-color: #{$button-outline-color};
+  --button-border-radius: #{$button-border-radius};
+  
+  --light-border-bottom: #{$light-border-bottom-color};
+  --border-header: #{$border-header-color};
+  --border-color: #{$border-color};
+  
+  --initial-background-position: #{$initial-background-position};
+  --hover-background-position: #{$hover-background-position};
+  --hover-gradient: #{$hover-gradient};
+  
+  // [TẠO MỚI] - TODO: Khai báo --initial-gradient vì trong code cũ có gọi var(--initial-gradient) nhưng thiếu data.
+  --initial-gradient: linear-gradient(rgba(51, 139, 56, 1), rgba(51, 139, 56, 1)); 
+}
+
+// Dark mode for future
+// [data-theme='dark'] {
+//   --bg-color: #{$black-background};
+//   --text-color: #{$white-text-color};
+// }

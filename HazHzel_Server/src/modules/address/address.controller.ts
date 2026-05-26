@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { CreateAddressDto } from './dto/create-address.dto';
@@ -26,6 +27,14 @@ export class AddressController {
   @ResponseMessage('Get all addresses successful')
   findAll() {
     return this.addressService.findAll();
+  }
+
+  @Get('me')
+  @ResponseMessage('Find my address successful')
+  findMyAddress(@Request() req) {
+    const { user } = req;
+    const userId = user._id;
+    return this.addressService.findMyAddress(userId);
   }
 
   @Get(':id')

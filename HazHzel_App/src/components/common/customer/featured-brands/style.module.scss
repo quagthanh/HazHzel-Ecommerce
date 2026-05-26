@@ -1,4 +1,5 @@
-@use "../../../../scss/dependencies/variables" as *;
+@use "@/scss/abstracts/_variables" as *;
+@use "@/scss/abstracts/_mixins" as *;
 .colorSchema {
   background-color: $primary-color;
 }

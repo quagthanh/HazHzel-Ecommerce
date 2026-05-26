@@ -19,3 +19,11 @@ export async function GetOrders(slug: string) {
   });
   return res;
 }
+
+export async function GetMyOrders() {
+  const res = await sendRequest<any>({
+    url: `/order`,
+    method: "GET",
+  });
+  return res;
+}

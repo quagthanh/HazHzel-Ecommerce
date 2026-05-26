@@ -1,0 +1,66 @@
+// SCSS VARIABLES
+// Dùng để tham chiếu, không dùng trực tiếp để style nếu muốn làm Theme
+
+
+// --- BẢNG MÀU CHÍNH (Main Colors) ---
+// Màu nền chính của toàn bộ web (Màu kem)
+$primary-color: rgb(255, 251, 245); 
+
+// [ĐÃ SỬA] Màu phụ trợ. Cũ: xanh lá #2ecc71 (rất chói). 
+// Mới: Đổi sang màu xám nhạt để làm nền cho các khối nổi bật nhẹ hoặc hover.
+$secondary-color: #f3f4f6; 
+
+// --- COLOR SCHEMA LIGHT (Màu sắc giao diện sáng) ---
+// Màu đen dùng cho nền các button hoặc footer
+$black-background: rgb(28, 28, 28); 
+
+// Màu chữ chính (Đen xám, đỡ gắt hơn đen tuyền #000)
+$text-color: rgb(28, 28, 28); 
+
+// Màu chữ trắng (Dùng khi nền tối)
+$white-text-color: rgb(255, 255, 255); 
+
+// [ĐÃ SỬA] Cũ: xanh neon (0, 255, 166). Mới: Xám đen đồng bộ với màu header.
+// Dùng làm viền dưới (border-bottom) cho các thanh điều hướng.
+$light-border-bottom-color: rgb(221, 218, 212); 
+
+// Màu nền tái sử dụng
+$background: rgb(255, 251, 245); 
+
+// [ĐÃ SỬA] Viền header. Dùng màu viền xám nhạt thay vì màu đen (28, 28, 28) để header đỡ bị nặng nề.
+$border-header-color: rgb(221, 218, 212); 
+
+// Màu viền chung cho toàn dự án (Ví dụ: viền input, viền card)
+$border-color: rgb(221, 218, 212); 
+
+// --- TYPOGRAPHY (Font chữ) ---
+$heading-font-weight: 600;
+$text-font-weight: 400;
+$text-font-family: var(--font-main), sans-serif !important;
+
+// --- COMPONENT: BUTTON ---
+$button-text-transform: uppercase;
+$button-font: 400 1rem/1.5 var(--font-main), sans-serif;
+$button-letter-spacing: 0.05em;
+
+// Màu chữ trong button mặc định
+$button-text-color: 255, 255, 255; // [ĐÃ SỬA] Cũ là 0, 0, 0 (đen). Thường nút nền đen thì chữ phải trắng.
+
+// [ĐÃ SỬA] Nền button. Cũ: xanh lá (51, 139, 56). Mới: Đen xám đồng bộ (28, 28, 28)
+$button-background: 28, 28, 28; 
+
+// [ĐÃ SỬA] Viền button. Mới: Đen xám đồng bộ
+$button-outline-color: 28, 28, 28; 
+$button-border-radius: 2px;
+
+// [CHƯA DÙNG NHƯNG GIỮ LẠI] Nút hình tròn (ví dụ: nút next/prev của slider)
+$circle-button-background: rgb(255, 255, 255);
+$circle-button-text-color: rgb(28, 28, 28);
+
+// --- HIỆU ỨNG BUTTON (Hover Effects) ---
+$hover-gradient: linear-gradient(transparent, transparent);
+$initial-background-position: 100% 100%;
+$hover-background-position: 0% 100%;
+
+// [CHƯA DÙNG TỚI] Dùng cho animation CSS transform (điểm bắt đầu hiệu ứng từ góc dưới bên phải)
+$transform-origin-end: 100% 100%;

@@ -1,4 +1,5 @@
-@use "../../../../scss/dependencies/variables" as *;
+@use "@/scss/abstracts/_variables" as *;
+@use "@/scss/abstracts/_mixins" as *;
 .sectionSpacing {
   @include section-spacing;
   background-color: $primary-color;
@@ -82,13 +83,5 @@
   p {
     font-size: 16px;
     margin: 0;
-  }
-  .antBtn {
-    font-size: 16px;
-    color: rgb(var(--button-text-color));
-    background-color: transparent;
-    border: 1px solid rgb(var(--button-outline-color));
-    padding: 0.65rem 1.75rem;
-    text-transform: var(--button-text-transform);
   }
 }

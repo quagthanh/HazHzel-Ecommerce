@@ -7,7 +7,7 @@ import type { UserProfile } from "@/types/account";
 import styles from "./style.module.scss";
 
 interface ProfileContentProps {
-  initialData: UserProfile;
+  initialData: UserProfile[];
 }
 
 export function ProfileContent({ initialData }: ProfileContentProps) {
@@ -19,7 +19,7 @@ export function ProfileContent({ initialData }: ProfileContentProps) {
       transition={{ duration: 0.4 }}
     >
       <ProfileHeader />
-      <ProfileForm initialData={initialData} />
+      <ProfileForm data={initialData} />
     </motion.div>
   );
 }

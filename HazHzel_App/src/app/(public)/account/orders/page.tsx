@@ -2,23 +2,10 @@ import { Order } from "@/types/account";
 import styles from "./style.module.scss";
 import { EmptyOrders } from "@/components/common/customer/account-order-emptyorder";
 import { OrderEntry } from "@/components/common/customer/account-order-entry";
-import { GetOrders } from "@/services/order.api";
-
-async function getOrders(): Promise<Order[]> {
-  // Replace with your actual API call
-  // const res = await fetch(`${process.env.API_URL}/orders`, {
-  //   cache: "no-store",
-  //   headers: { Authorization: `Bearer ${token}` },
-  // });
-  // const json = await res.json();
-  // return json.data;
-  return [];
-}
+import { GetMyOrders } from "@/services/order.api";
 
 export default async function OrdersPage() {
-  const slug = "6928813e6e593e00382bb3df";
-
-  const res = await GetOrders(slug);
+  const res = await GetMyOrders();
   const orders: Order[] = res?.data ?? [];
   return (
     <div className={styles.container}>

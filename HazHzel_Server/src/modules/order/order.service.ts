@@ -81,15 +81,22 @@ export class OrderService {
     return newOrder;
   }
 
+  async findMyOrder(userId: string) {
+    return this.findOneByUserId(userId);
+  }
+
   async findAll() {
     return this.orderModel.find().exec();
   }
 
   async findOneByUserId(userId: string) {
-    const address = await this.orderModel.find({ userId }).exec();
-    if (!address) {
+    const order = await this.orderModel
+      .find({ userId })
+      .sort({ craetedAt: 1 })
+      .exec();
+    if (!order) {
       throw new NotFoundException(`Order with userID ${userId} not found`);
     }
-    return address;
+    return order;
   }
 }

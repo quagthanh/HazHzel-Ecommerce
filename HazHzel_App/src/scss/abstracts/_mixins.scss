@@ -1,0 +1,32 @@
+// MIXINS REUSABLE
+
+// Spacing
+@mixin section-spacing($ptd: 48px, $pbd: 48px, $ptm: 30px, $pbm: 30px) {
+  padding-top: $ptd;
+  padding-bottom: $pbd;
+  @media (max-width: 767px) {
+    padding-top: $ptm;
+    padding-bottom: $pbm;
+  }
+}
+
+@mixin container($pld: 48px, $prd: 48px, $plm: 10px, $prm: 10px) {
+  padding-left: $pld;
+  padding-right: $prd;
+  @media (max-width: 767px) {
+    padding-left: $plm;
+    padding-right: $prm;
+  }
+}
+
+// Layout
+@mixin wrap() {
+  flex-wrap: wrap;
+}
+
+// Can add new mixin Flexbox/Grid that usually use right here. For example:
+// @mixin flex-center {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }

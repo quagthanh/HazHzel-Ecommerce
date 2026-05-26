@@ -1,5 +1,4 @@
 .addButton {
-  border-radius: 999px !important;
   background: #111 !important;
   border-color: #111 !important;
   color: #fff !important;
@@ -13,15 +12,16 @@
   }
 }
 .editButton {
-  font-size: 13px;
-  color: #555;
-  border: none;
-  padding: 0 8px;
-  height: auto;
+  background: #111 !important;
+  border-color: #111 !important;
+  color: #fff !important;
+  font-weight: 500;
+  height: 40px;
+  padding: 0 20px;
  
   &:hover {
-    color: #111;
-    background: transparent !important;
+    background: #333 !important;
+    border-color: #333 !important;
   }
 }
  

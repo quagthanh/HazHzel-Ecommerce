@@ -1,4 +1,6 @@
-import type { AccountData, UserProfile } from "@/types/account/index";
+"use server";
+import type { AccountData } from "@/types/account/index";
+import { sendRequestFile } from "@/utils/api";
 
 // Replace with real API/DB calls in production
 export async function getAccountData(): Promise<AccountData> {
@@ -11,18 +13,11 @@ export async function getAccountData(): Promise<AccountData> {
     latestOrder: null,
   };
 }
-export async function getProfileData(): Promise<UserProfile> {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 800));
-  return {
-    email: "DINHQUANGTHANH11@GMAIL.COM",
-    title: "MR",
-    firstName: "ĐINH",
-    lastName: "QUANG THÀNH",
-    phoneCode: "+84",
-    phoneNumber: "987 364 536",
-    birthdate: "",
-    newsletterSubscribed: true,
-    smsSubscribed: true,
-  };
+export async function getMyAccount() {
+  const res = await sendRequestFile<any>({
+    url: "/users/me",
+    method: "GET",
+  });
+  console.log("Check client address", res);
+  return res;
 }

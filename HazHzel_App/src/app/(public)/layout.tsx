@@ -25,31 +25,37 @@ const PublicLayout = async ({
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#7D7D7D",
-            fontFamily: "Montserrat, sans-serif",
+            colorPrimary: "var(--black-background)",
+            fontFamily: "var(--font-main), sans-serif",
+            colorText: "var(--text-color)",
+            colorBorder: "var(--border-color)",
           },
           components: {
             Input: {
-              colorText: "#343534",
-              colorBgContainer: "#fffbf5",
+              colorText: "var(--text-color)",
+              colorBgContainer: "var(--bg-color)",
+              activeBorderColor: "var(--black-background)",
+              hoverBorderColor: "var(--black-background)",
+              activeShadow: "none",
             },
             Button: {
-              colorBgContainer: "#fffbf5",
+              colorBgContainer: "var(--bg-color)",
             },
             Pagination: {
-              colorBgContainer: "#fffbf5",
+              colorBgContainer: "var(--bg-color)",
             },
             Select: {
-              colorBgContainer: "#fffbf5",
+              colorBgContainer: "var(--bg-color)",
+              optionSelectedBg: "var(--black-background)",
+              optionSelectedColor: "var(--white-text-color)",
             },
             InputNumber: {
-              activeBg: "#fffbf5",
-              colorBgContainer: "#fffbf5",
+              activeBg: "var(--bg-color)",
             },
             Table: {
-              colorBgContainer: "#fffbf5",
-              rowHoverBg: "#fffbf5",
-              headerBg: "#fffbf5",
+              colorBgContainer: "var(--bg-color)",
+              rowHoverBg: "var(--secondary-color)",
+              headerBg: "var(--bg-color)",
             },
           },
         }}

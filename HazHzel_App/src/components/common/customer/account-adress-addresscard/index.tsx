@@ -1,6 +1,3 @@
-// app/account/addresses/AddressCard.tsx
-// SERVER COMPONENT — renders a single saved address card
-
 import { Tag } from "antd";
 import styles from "./style.module.scss";
 import { Address } from "@/types/account";
@@ -11,44 +8,33 @@ interface AddressCardProps {
 }
 
 export function AddressCard({ address }: AddressCardProps) {
-  const {
-    firstName,
-    lastName,
-    streetAddress,
-    apt,
-    city,
-    zip,
-    state,
-    country,
-    phoneNumber,
-    isDefault,
-  } = address;
+  const { name, street, ward, city, zipCode, phone, isDefault } = address;
 
   return (
     <div className={styles.addressCard}>
       <div className={styles.cardHeader}>
-        <span className={styles.addressName}>
-          {firstName} {lastName}
-        </span>
-        {isDefault && (
-          <Tag color="default" className={styles.defaultTag}>
-            Default
-          </Tag>
-        )}
+        <div className={styles.userInfo}>
+          <span className={styles.addressName}>{name}</span>
+
+          {isDefault && <Tag className={styles.defaultTag}>Default</Tag>}
+        </div>
+
+        <span className={styles.phone}>{phone}</span>
       </div>
 
       <div className={styles.addressBody}>
-        <p>{streetAddress}</p>
-        {apt && <p>{apt}</p>}
+        <p>{street}</p>
+
         <p>
-          {city}, {state} {zip}
+          {ward}, {city}
         </p>
-        <p>{country}</p>
-        <p>{phoneNumber}</p>
+
+        <p>{zipCode}</p>
       </div>
 
-      {/* Client component handles edit/delete interactions */}
-      <AddressActions address={address} />
+      <div className={styles.actionWrapper}>
+        <AddressActions address={address} />
+      </div>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -30,6 +31,20 @@ export class UsersController {
     @Query('pageSize') pageSize: string,
   ) {
     return this.usersService.findAll(query, +current, +pageSize);
+  }
+
+  @Get('me')
+  async findMyAccount(@Request() req) {
+    const { user } = req;
+    const userId = user._id;
+    return this.usersService.findMyAccount(userId);
+  }
+
+  @Get('me/overview')
+  async findMyOverview(@Request() req) {
+    const { user } = req;
+    const userId = user._id;
+    return this.usersService.findMyOverview(userId);
   }
 
   @Get(':id')
