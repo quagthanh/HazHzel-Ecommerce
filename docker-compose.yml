@@ -7,9 +7,9 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongo_data:/data/db/ecom # Giữ lại dữ liệu khi tắt container
+      - mongo_data:/data/db/ecom
 
-  # 2. BACKEND: Express JS
+  # 2. BACKEND: Nestjs
   backend:
     image: quagthanh/ecommerce-backend:latest
     container_name: ecom_backend
@@ -33,6 +33,5 @@ services:
     depends_on:
       - backend
 
-# Khai báo volume để lưu trữ dữ liệu database
 volumes:
   mongo_data:
