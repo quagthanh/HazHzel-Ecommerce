@@ -1,5 +1,4 @@
-@use "../../../../scss/dependencies/variables" as *;
-
+@use "@/scss/abstracts/_variables" as *;
 .pageWrapper {
   max-width: 1400px;
   margin: 0 auto;

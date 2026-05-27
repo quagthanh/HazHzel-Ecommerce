@@ -3,13 +3,14 @@ import FilterSidebar from "@/components/common/customer/filter-sidebar.tsx";
 import { getCategory } from "@/services/category.api";
 import { getSupplier } from "@/services/supplier.api";
 import { getProducts } from "@/services/product.api";
+import { getNavMetadata } from "@/services/dynamicNavigation.api";
 
 const ListingLayout = async ({ children }: { children: React.ReactNode }) => {
   let colorFilter: any[] = [];
   let sizeFilter: any[] = [];
   const prices: number[] = [];
 
-  let productTypePromise = getCategory();
+  let productTypePromise = getNavMetadata();
   let brandPromise = getSupplier();
   let productPromise = getProducts({});
 
@@ -27,7 +28,7 @@ const ListingLayout = async ({ children }: { children: React.ReactNode }) => {
   if (resultCategoryName.status == "fulfilled") {
     const res = resultCategoryName.value;
     if (res?.data) {
-      productTypeName = res?.data?.result;
+      productTypeName = res?.data;
     }
   } else {
     console.error(

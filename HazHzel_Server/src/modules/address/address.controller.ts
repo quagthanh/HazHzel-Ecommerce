@@ -6,31 +6,52 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { AddressService } from './address.service';
+import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
+import { ResponseMessage } from '@/shared/decorators/customize';
 
 @Controller('address')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
+  @Post()
+  @ResponseMessage('Create address successful')
+  create(@Body() createAddressDto: CreateAddressDto) {
+    return this.addressService.create(createAddressDto);
+  }
+
   @Get()
+  @ResponseMessage('Get all addresses successful')
   findAll() {
     return this.addressService.findAll();
   }
 
+  @Get('me')
+  @ResponseMessage('Find my address successful')
+  findMyAddress(@Request() req) {
+    const { user } = req;
+    const userId = user._id;
+    return this.addressService.findMyAddress(userId);
+  }
+
   @Get(':id')
+  @ResponseMessage('Find address successful')
   findOne(@Param('id') id: string) {
-    return this.addressService.findOne(+id);
+    return this.addressService.findOne(id);
   }
 
   @Patch(':id')
+  @ResponseMessage('Update address successful')
   update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
-    return this.addressService.update(+id, updateAddressDto);
+    return this.addressService.update(id, updateAddressDto);
   }
 
   @Delete(':id')
+  @ResponseMessage('Delete address successful')
   remove(@Param('id') id: string) {
-    return this.addressService.remove(+id);
+    return this.addressService.remove(id);
   }
 }

@@ -1,19 +1,25 @@
 import {
   IsBoolean,
+  IsEnum,
+  IsMongoId,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
+import { TypeAddress } from '@/shared/enums/typeAddressUser.enum'; // Đảm bảo đường dẫn đúng
 
-export class AddressDto {
-  @IsString()
+export class CreateAddressDto {
+  @IsMongoId()
   @IsOptional()
-  name?: string;
+  userId?: string;
 
   @IsString()
-  @IsOptional()
-  street?: string;
+  @IsNotEmpty()
+  name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  street: string;
 
   @IsString()
   @IsOptional()
@@ -27,17 +33,19 @@ export class AddressDto {
   @IsOptional()
   country?: string;
 
+  @IsString()
   @IsOptional()
   zipCode?: string;
 
+  @IsString()
   @IsNotEmpty()
   phone: string;
 
-  @IsString()
+  @IsEnum(TypeAddress)
   @IsOptional()
-  typeAddress?: string;
+  typeAddress?: TypeAddress;
 
   @IsBoolean()
   @IsOptional()
-  isDefault?: string;
+  isDefault?: boolean;
 }

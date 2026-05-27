@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -31,7 +35,7 @@ export class OrderService {
       const product = item.productId as any;
       const variant = item.variantId as any;
       if (!product || !variant) {
-        throw new BadRequestException('Sản phẩm hoặc biến thể không tồn tại');
+        throw new BadRequestException('Product or variant not found');
       }
       itemsToReduceInSTock.push({
         variantId: variant._id.toString(),
@@ -43,7 +47,7 @@ export class OrderService {
         name: variant.name,
         price: variant.currentPrice,
         quantity: item.quantity,
-        image: variant.image,
+        image: product.images[0].secure_url,
       });
 
       subTotal += variant.currentPrice * item.quantity;
@@ -75,5 +79,24 @@ export class OrderService {
     await this.cartService.removeCart(userId);
 
     return newOrder;
+  }
+
+  async findMyOrder(userId: string) {
+    return this.findOneByUserId(userId);
+  }
+
+  async findAll() {
+    return this.orderModel.find().exec();
+  }
+
+  async findOneByUserId(userId: string) {
+    const order = await this.orderModel
+      .findOne({ userId })
+      .sort({ craetedAt: 1 })
+      .exec();
+    if (!order) {
+      throw new NotFoundException(`Order with userID ${userId} not found`);
+    }
+    return order;
   }
 }

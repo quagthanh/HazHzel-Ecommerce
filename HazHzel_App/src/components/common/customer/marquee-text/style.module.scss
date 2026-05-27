@@ -1,4 +1,4 @@
-@use "../../../../scss/dependencies/variables" as *;
+@use "@/scss/abstracts/_variables" as *;
 .marqueeText {
   color: $white-text-color;
   background-color: $black-background;

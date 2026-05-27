@@ -1,0 +1,13 @@
+@use '../abstracts/variables' as *;
+
+body {
+  font-family: var(--font-main), sans-serif;
+  font-weight: $text-font-weight;
+  color: var(--text-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-main), sans-serif;
+  font-weight: $heading-font-weight;
+  color: var(--text-color);
+}

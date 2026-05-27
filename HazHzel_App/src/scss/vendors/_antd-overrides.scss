@@ -1,0 +1,40 @@
+// ANT DESIGN OVERRIDES
+
+// .antBtn {
+//   appearance: none;
+//   text-transform: var(--button-text-transform);
+//   font: var(--button-font);
+//   letter-spacing: var(--button-letter-spacing);
+//   text-shadow: none;
+//   text-align: center;
+//   cursor: pointer;
+  
+//   color: rgb(var(--button-text-color));
+//   border: 1px solid rgb(var(--button-outline-color));
+//   border-radius: var(--button-border-radius);
+//   background-color: transparent;
+  
+//   background-image: var(--initial-gradient), var(--hover-gradient);
+//   background-size: 100% 100%, 0 100%;
+//   background-position: var(--initial-background-position);
+//   background-repeat: no-repeat;
+  
+//   display: inline-flex;
+//   justify-content: center;
+//   align-items: center;
+//   column-gap: 1.125rem;
+//   padding: 0.65rem 1.75rem;
+  
+//   transition: background-size 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86),
+//     background-position 0.45s step-end,
+//     color 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86),
+//     border 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+//   position: relative;
+
+//   &:hover {
+//     background-size: 0 100%, 100% 100%;
+//     background-position: var(--hover-background-position);
+//     color: rgb(var(--button-text-color));
+//     border-color: rgb(var(--button-outline-color));
+//   }
+// }

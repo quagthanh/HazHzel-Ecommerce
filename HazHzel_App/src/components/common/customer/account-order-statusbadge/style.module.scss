@@ -1,0 +1,26 @@
+.statusBadge {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 2px;
+ 
+  &[data-variant="outline"] {
+    border: 1px solid black;
+    color: black;
+    background: transparent;
+  }
+ 
+  &[data-variant="filled"] {
+    border: 1px solid black;
+    color: white;
+    background: black;
+  }
+ 
+  &[data-variant="muted"] {
+    border: 1px solid gray;
+    color: gray;
+    background: gray;
+  }
+}

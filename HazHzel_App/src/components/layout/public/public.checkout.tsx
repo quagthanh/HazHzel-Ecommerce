@@ -5,8 +5,8 @@ import { useCartStore } from "@/library/stores/useCartStore";
 import { redirect } from "next/navigation";
 
 const PublicCheckoutPage = () => {
-  const { items } = useCartStore();
-  if (!items || items.length == 0) {
+  const items = useCartStore((state) => state.items);
+  if (!items?.length) {
     redirect("/cart");
   }
   return <CheckoutPage />;

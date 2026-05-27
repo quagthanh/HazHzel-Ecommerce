@@ -1,5 +1,4 @@
 "use client";
-
 import styles from "@/components/common/customer/order-summary/style.module.scss";
 import CustomButton from "../public-button";
 import OrderItem from "../checkout-item";
@@ -10,44 +9,64 @@ import { useEffect } from "react";
 import { Checkout } from "@/services/order.api";
 import { message } from "antd";
 import { useRouter } from "next/navigation";
-enum PaymentMethodType {
-  COD = "COD",
-  BANK_TRANSFER = "BANK_TRANSFER",
+import { formatPriceHelper } from "@/utils/helper";
+
+interface Address {
+  name: string;
+  phone: string;
+  street: string;
+  ward: string;
+  city: string;
 }
-export default function OrderSummary() {
+
+interface OrderSummaryProps {
+  selectedAddress: Address | null;
+}
+
+export default function OrderSummary({ selectedAddress }: OrderSummaryProps) {
   const { items, fetchCart, getTotalPrice, isLoading } = useCartStore();
   const router = useRouter();
+
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
+
   const subtotal = getTotalPrice();
   const total = subtotal;
 
-  const formatPrice = (amount: number) =>
-    new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(amount);
-
-  if (isLoading && items.length === 0) return <div>Loading cart...</div>;
   const handlePayNow = async () => {
+    if (!selectedAddress) {
+      message.warning("Please select a shipping address.");
+      return;
+    }
+
     const payload = {
       shippingAddress: {
-        name: "Nguyễn Văn A",
-        phone: "0987654321",
-        street: "123 Đường ABC",
-        ward: "Phường 1",
-        city: "Hồ Chí Minh",
+        name: selectedAddress.name,
+        phone: selectedAddress.phone,
+        street: selectedAddress.street,
+        ward: selectedAddress.ward,
+        city: selectedAddress.city,
       },
       paymentMethod: "BANK_TRANSFER",
     };
 
-    const res = await Checkout(payload);
-    if (res.statusCode == 201) {
-      message.success("Your order is successfully created");
-      router.push("/");
+    try {
+      const res = await Checkout(payload);
+      if (res?.statusCode === 201) {
+        message.success("Your order is successfully created");
+        router.push("/?checkout_success=true");
+      } else {
+        message.error("Checkout failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      message.error("An error occurred during checkout.");
     }
   };
+
+  if (isLoading && items.length === 0) return <div>Loading cart...</div>;
+
   return (
     <div className={styles.orderSummary}>
       {items.map((item) => (
@@ -55,7 +74,7 @@ export default function OrderSummary() {
           key={item._id}
           image={item.variantId?.images?.[0]?.secure_url || "/placeholder.webp"}
           name={item.productId?.name}
-          price={formatPrice(item.variantId?.currentPrice)}
+          price={formatPriceHelper(item.variantId?.currentPrice)}
           quantity={item.quantity}
         />
       ))}
@@ -64,23 +83,24 @@ export default function OrderSummary() {
 
       <SummaryRow
         label={`Subtotal · ${items.length} items`}
-        value={formatPrice(subtotal)}
+        value={formatPriceHelper(subtotal)}
       />
-
-      {/* <SummaryRow label="Shipping" value={formatPrice(shippingFee)} /> */}
 
       <SummaryRow
         label="Total"
         value={
           <>
-            <small>VND</small> {formatPrice(total)}
+            <small>VND</small> {formatPriceHelper(total)}
           </>
         }
         isTotal
       />
 
       <div className={styles.checkoutBtn}>
-        <CustomButton onClick={handlePayNow} disabled={items.length === 0}>
+        <CustomButton
+          onClick={handlePayNow}
+          disabled={items.length === 0 || !selectedAddress}
+        >
           pay now
         </CustomButton>
       </div>

@@ -1,0 +1,46 @@
+.emptyState {
+  padding: 64px 0 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+ 
+.emptyGlyph {
+  font-size: 40px;
+  color: rgb(159, 158, 158);
+  line-height: 1;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.emptyTitle {
+  font-size: 18px;
+  color: black;
+  margin: 0;
+  font-weight: 400;
+}
+ 
+.emptyText {
+  font-size: 13px;
+  color: gray;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.shopLink {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: black;
+  text-decoration: none;
+  border-bottom: 1px solid black;
+  padding-bottom: 1px;
+ 
+  &:hover {
+    color: gray;
+    border-color: gray;
+  }
+}

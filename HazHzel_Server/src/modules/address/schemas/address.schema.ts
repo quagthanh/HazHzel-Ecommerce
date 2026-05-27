@@ -1,11 +1,14 @@
 import { TypeAddress } from '@/shared/enums/typeAddressUser.enum';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 export type AddressDocument = HydratedDocument<Address>;
 
 @Schema({ timestamps: true })
 export class Address {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  userId: mongoose.Types.ObjectId;
+
   @Prop({ required: true })
   name: string;
 

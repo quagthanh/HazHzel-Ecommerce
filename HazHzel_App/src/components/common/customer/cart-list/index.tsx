@@ -86,23 +86,43 @@ const CartList = () => {
               min={1}
               max={record?.variantId?.stock}
               value={tempQty[record._id] ?? record.quantity}
+              variant="filled"
+              controls
+              className={styles.inputNumber}
               onChange={(val) => {
-                if (val) {
-                  setTempQty((prev) => ({
-                    ...prev,
-                    [record._id]: val,
-                  }));
+                if (!val || val < 1) return;
+
+                setTempQty((prev) => ({
+                  ...prev,
+                  [record._id]: val,
+                }));
+              }}
+              onBlur={() => {
+                const value = tempQty[record._id] ?? record.quantity;
+                const finalValue = Math.max(1, value);
+
+                if (finalValue !== record.quantity) {
+                  updateQuantity(record._id, finalValue);
                 }
               }}
-              onPressEnter={(e) => {
-                const value = Number((e.target as HTMLInputElement).value);
-                updateQuantity(record._id, value);
-              }}
               onStep={(value) => {
-                updateQuantity(record._id, value);
+                if (!value || value < 1) return;
+
+                if (value !== record.quantity) {
+                  updateQuantity(record._id, value);
+                }
               }}
-              className={styles.inputNumber}
+              parser={(value) => {
+                const parsed = Number(value?.replace(/\D/g, ""));
+
+                if (parsed < 1 || Number.isNaN(parsed)) {
+                  return "1";
+                }
+
+                return String(parsed);
+              }}
             />
+
             <Button
               type="text"
               danger

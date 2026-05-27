@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { useCartStore } from "@/library/stores/useCartStore";
 import styles from "./style.module.scss";
+import CustomButton from "../public-button";
 
 const CartSummary = () => {
   const subtotal = useCartStore((state) => state.getTotalPrice());
@@ -83,15 +84,8 @@ const CartSummary = () => {
       </div>
 
       <div className={styles.checkoutAction}>
-        <Link href="/checkout" style={{ width: "100%" }}>
-          <Button
-            type="primary"
-            size="large"
-            block
-            className={styles.checkoutBtn}
-          >
-            CHECKOUT
-          </Button>
+        <Link href="/checkout">
+          <CustomButton> check out </CustomButton>
         </Link>
 
         <div className={styles.trustSection}>

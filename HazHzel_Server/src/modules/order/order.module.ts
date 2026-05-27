@@ -14,5 +14,6 @@ import { InventoryModule } from '../inventory/inventory.module';
   ],
   controllers: [OrderController],
   providers: [OrderService],
+  exports: [OrderService, MongooseModule],
 })
 export class OrderModule {}

@@ -27,7 +27,10 @@
 .dropdownContent.open {
   max-height: 2000px;
 }
-
+.treeWrapper :global(.ant-tree-list-holder-inner) {
+  padding-top: 8px;
+  background-color: rgb(255, 251, 245);
+}
 .dropdownList {
   list-style: none;
   margin: 0.5rem 0 0;

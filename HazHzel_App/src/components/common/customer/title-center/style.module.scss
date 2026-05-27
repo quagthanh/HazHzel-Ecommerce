@@ -1,5 +1,4 @@
-@use "../../../../scss/dependencies/variables" as *;
-
+@use "@/scss/abstracts/_variables" as *;
 .wrapper {
   position: relative;
   background-color: $primary-color;

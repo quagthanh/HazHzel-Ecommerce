@@ -1,85 +1,82 @@
-@use "../../../../scss/dependencies/variables" as *;
+@use "@/scss/abstracts/_variables" as *;
 
-.checkoutForm {
-  background: $primary-color;
-  padding: 16px;
-  border-radius: 8px;
-}
-
-.expressCheckout {
+.sectionTitle {
+  color: $text-color;
   margin-bottom: 16px;
-  padding-top: 40px;
-}
-.wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
+  text-transform: uppercase;
 }
 
-.expressBtn {
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
+.userInfo {
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  gap: 12px;
+  margin-bottom: 20px;
+}
 
-  img {
-    display: block;
-  }
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: $secondary-color;
+  border: 1px solid $border-color;
+  flex-shrink: 0;
+}
+
+.userMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.userName {
+  font-size: 14px;
+  font-weight: $heading-font-weight;
+  color: $text-color;
+}
+
+.userEmail {
+  font-size: 13px;
+  color: $light-border-bottom-color;
+}
+
+.logoutBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: $text-color;
+  text-decoration: underline;
+  padding: 0;
 
   &:hover {
-    opacity: 0.9;
-  }
-  @media (max-width: 1000px) {
-    padding: 4px 8px;
+    opacity: 0.7;
   }
 }
-.emailSection {
-  font-size: 14px;
-  margin-bottom: 16px;
+
+.row {
   display: flex;
-  justify-content: space-between;
-}
+  gap: 16px;
+  width: 100%;
 
-.deliverySection {
-  margin-bottom: 16px;
-
-  h3 {
-    margin-bottom: 8px;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .deliveryOption {
-    display: flex;
-    align-items: center;
-    padding: 10px 0px;
-    border-radius: 6px;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.03);
-    }
+  > * {
+    flex: 1;
+    min-width: 0;
   }
 }
 
-.form {
-  margin-top: 8px;
-}
-.deliveryOption > span:last-child {
-  display: block;
+.formItem {
   width: 100%;
-}
-.optionRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+
+  :global(.ant-form-item-label > label) {
+    font-size: 11px;
+    font-weight: $heading-font-weight;
+    letter-spacing: 0.06em;
+    color: $light-border-bottom-color;
+    text-transform: uppercase;
+  }
 }
 
-.price {
-  font-weight: 500;
-  color: #000;
+.select {
+  width: 100%;
 }

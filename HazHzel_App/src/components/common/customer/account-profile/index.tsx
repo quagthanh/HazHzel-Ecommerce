@@ -19,7 +19,7 @@ export function ProfileContent({ initialData }: ProfileContentProps) {
       transition={{ duration: 0.4 }}
     >
       <ProfileHeader />
-      <ProfileForm initialData={initialData} />
+      <ProfileForm data={initialData} />
     </motion.div>
   );
 }

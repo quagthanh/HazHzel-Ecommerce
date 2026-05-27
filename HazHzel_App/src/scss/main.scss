@@ -1,19 +1,15 @@
-@import "dependencies/variables";
-/*
-responsive
-Extra small devices (phones, 600px and down) 
-@media only screen and (max-width: 600px) {...}
+// 1. Abstracts
+@use 'abstracts/variables';
+@use 'abstracts/functions';
+@use 'abstracts/mixins';
 
- Small devices (portrait tablets and large phones, 600px and up) 
-@media only screen and (min-width: 600px) {...}
+// 2. Base
+@use 'base/reset';
+@use 'base/themes';
+@use 'base/typography';
 
- Medium devices (landscape tablets, 768px and up) 
-@media only screen and (min-width: 768px) {...}
+// 3. Vendors
+@use 'vendors/antd-overrides';
 
- Large devices (laptops/desktops, 992px and up) 
-@media only screen and (min-width: 992px) {...}
-
- Extra large devices (large laptops and desktops, 1200px and up) 
- @media only screen and (min-width: 1200px) {...}
-
-*/
+// 4. Utilities
+@use 'utilities/helpers';
