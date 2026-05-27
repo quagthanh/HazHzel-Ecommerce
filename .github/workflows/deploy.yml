@@ -82,6 +82,7 @@ jobs:
             echo "CLOUDINARY_API_SECRET=$BE_CLOUDINARY_API_SECRET" >> HazHzel_Server/.env
 
             # 3. PULL CODE AND OPERATE
+            git config --global --add safe.directory /home/thanh/HazHzel-Ecommerce
             git pull origin main
             docker compose pull
             docker compose up -d --force-recreate
