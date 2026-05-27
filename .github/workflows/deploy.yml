@@ -48,8 +48,16 @@ jobs:
 
         env:
           FE_AUTH_SECRET: ${{ secrets.FE_AUTH_SECRET }}
+
+          BE_PORT: ${{ secrets.BE_PORT }}
           BE_MONGODB_URI: ${{ secrets.BE_MONGODB_URI }}
           BE_JWT_SECRET: ${{ secrets.BE_JWT_SECRET }}
+          BE_JWT_ACCESS_TOKEN_EXPIRED: ${{ secrets.BE_JWT_ACCESS_TOKEN_EXPIRED }}
+          BE_MAILDEV_INCOMING_USER: ${{ secrets.BE_MAILDEV_INCOMING_USER }}
+          BE_MAILDEV_INCOMING_PASS: ${{ secrets.BE_MAILDEV_INCOMING_PASS }}
+          BE_CLOUDINARY_NAME: ${{ secrets.BE_CLOUDINARY_NAME }}
+          BE_CLOUDINARY_API_KEY: ${{ secrets.BE_CLOUDINARY_API_KEY }}
+          BE_CLOUDINARY_API_SECRET: ${{ secrets.BE_CLOUDINARY_API_SECRET }}
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USERNAME }}
@@ -57,22 +65,26 @@ jobs:
           script: |
             cd /home/thanh/HazHzel-Ecommerce
 
+            # 1. CREATE .ENV FILE FOR FRONTEND
             echo "AUTH_SECRET=$FE_AUTH_SECRET" > HazHzel_App/.env
             echo "NEXT_PUBLIC_BACKEND_URL=/api/v1" >> HazHzel_App/.env
+            echo "INTERNAL_BACKEND_URL=http://backend:8000/api/v1" >> HazHzel_App/.env
 
-            echo "PORT=8000" > HazHzel_Server/.env
+            # 2. CREATE .ENV FILE FOR BACKEND
+            echo "PORT=$BE_PORT" > HazHzel_Server/.env
             echo "MONGODB_URI=$BE_MONGODB_URI" >> HazHzel_Server/.env
             echo "JWT_SECRET=$BE_JWT_SECRET" >> HazHzel_Server/.env
-            echo "JWT_ACCESS_TOKEN_EXPIRED=1000d" >> HazHzel_Server/.env
+            echo "JWT_ACCESS_TOKEN_EXPIRED=$BE_JWT_ACCESS_TOKEN_EXPIRED" >> HazHzel_Server/.env
+            echo "MAILDEV_INCOMING_USER=$BE_MAILDEV_INCOMING_USER" >> HazHzel_Server/.env
+            echo "MAILDEV_INCOMING_PASS=$BE_MAILDEV_INCOMING_PASS" >> HazHzel_Server/.env
+            echo "CLOUDINARY_NAME=$BE_CLOUDINARY_NAME" >> HazHzel_Server/.env
+            echo "CLOUDINARY_API_KEY=$BE_CLOUDINARY_API_KEY" >> HazHzel_Server/.env
+            echo "CLOUDINARY_API_SECRET=$BE_CLOUDINARY_API_SECRET" >> HazHzel_Server/.env
 
-            # 2. Lấy file docker-compose.yml mới nhất về
+            # 3. PULL CODE AND OPERATE
             git pull origin main
-
-            # 3. Kéo Image đã build sẵn từ Docker Hub về (Rất nhẹ, không tốn RAM)
             docker compose pull
-
-            # 4. Khởi động lại các container với Image mới
             docker compose up -d --force-recreate
 
-            # 5. Xóa hết env
+            # 4. DELETE ENV FILES FOR SECURITY
             rm HazHzel_App/.env HazHzel_Server/.env
