@@ -72,7 +72,7 @@ jobs:
             docker compose pull
 
             # 4. Khởi động lại các container với Image mới
-            docker compose up -d
+            docker compose up -d --force-recreate
 
             # 5. Xóa hết env
             rm HazHzel_App/.env HazHzel_Server/.env
