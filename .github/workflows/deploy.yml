@@ -62,6 +62,9 @@ jobs:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
+
+          envs: FE_AUTH_SECRET
+
           script: |
             cd /home/thanh/HazHzel-Ecommerce
 
