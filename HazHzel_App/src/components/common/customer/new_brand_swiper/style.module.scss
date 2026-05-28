@@ -32,3 +32,17 @@
 
 .prev { left: -22px; }
 .next { right: -22px; }
+@media (max-width: 768px) {
+  .prev {
+    left: 8px;
+  }
+
+  .next {
+    right: 8px;
+  }
+
+  .navButton {
+    width: 36px;
+    height: 36px;
+  }
+}
