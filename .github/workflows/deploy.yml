@@ -63,21 +63,21 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
 
-          envs: FE_AUTH_SECRET
+          envs: FE_AUTH_SECRET,BE_PORT,BE_MONGODB_URI,BE_JWT_SECRET,BE_JWT_ACCESS_TOKEN_EXPIRED,BE_MAILDEV_INCOMING_USER,BE_MAILDEV_INCOMING_PASS,BE_CLOUDINARY_NAME,BE_CLOUDINARY_API_KEY,BE_CLOUDINARY_API_SECRET
 
           script: |
             cd /home/thanh/HazHzel-Ecommerce
 
-            # 3. PULL CODE AND OPERATE
+            # 1. PULL CODE AND OPERATE
             git fetch origin
             git reset --hard origin/main
 
-             # 1. CREATE .ENV FILE FOR FRONTEND
+             # 2. CREATE .ENV FILE FOR FRONTEND
             echo "AUTH_SECRET=$FE_AUTH_SECRET" > HazHzel_App/.env
             echo "NEXT_PUBLIC_BACKEND_URL=/api/v1" >> HazHzel_App/.env
             echo "INTERNAL_BACKEND_URL=http://backend:8000/api/v1" >> HazHzel_App/.env
 
-            # 2. CREATE .ENV FILE FOR BACKEND
+            # 3. CREATE .ENV FILE FOR BACKEND
             echo "PORT=$BE_PORT" > HazHzel_Server/.env
             echo "MONGODB_URI=$BE_MONGODB_URI" >> HazHzel_Server/.env
             echo "JWT_SECRET=$BE_JWT_SECRET" >> HazHzel_Server/.env
