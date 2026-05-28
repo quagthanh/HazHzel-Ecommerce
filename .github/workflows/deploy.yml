@@ -66,8 +66,8 @@ jobs:
             cd /home/thanh/HazHzel-Ecommerce
 
             # 3. PULL CODE AND OPERATE
-            git config --global --add safe.directory /home/thanh/HazHzel-Ecommerce
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
 
              # 1. CREATE .ENV FILE FOR FRONTEND
             echo "AUTH_SECRET=$FE_AUTH_SECRET" > HazHzel_App/.env
