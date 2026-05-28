@@ -14,7 +14,7 @@ interface Address {
 }
 
 const CheckoutPage = () => {
-  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+  const [addressData, setAddressData] = useState<Address | null>(null);
 
   return (
     <div className={styles.sectionSpacing}>
@@ -22,10 +22,10 @@ const CheckoutPage = () => {
         <div className={styles.checkoutWrapper}>
           <Row>
             <Col span={12} className={styles.leftCol}>
-              <CheckoutForm onAddressChange={setSelectedAddress} />
+              <CheckoutForm onAddressChange={setAddressData} />
             </Col>
             <Col span={12} className={styles.rightCol}>
-              <OrderSummary selectedAddress={selectedAddress} />
+              <OrderSummary selectedAddress={addressData} />
             </Col>
           </Row>
         </div>

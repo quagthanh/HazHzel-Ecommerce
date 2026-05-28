@@ -1,6 +1,6 @@
 "use client";
 
-import AnalyticsPreview from "../../login-analytics-preview"; // Đảm bảo đường dẫn đúng với component của bạn
+import AnalyticsPreview from "../../login-analytics-preview";
 import styles from "@/components/common/auth/register/register-page/style.module.scss";
 import RegisterForm from "../../register-form";
 
