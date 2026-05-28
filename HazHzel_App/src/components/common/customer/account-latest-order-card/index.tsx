@@ -7,10 +7,11 @@ import type { Order } from "@/types/account/index";
 import styles from "./style.module.scss";
 
 interface LatestOrderCardProps {
-  order: Order | null;
+  order: Order[];
 }
 
 export function LatestOrderCard({ order }: LatestOrderCardProps) {
+  const latestOrder = order[0];
   return (
     <motion.div
       className={styles.card}
@@ -25,13 +26,13 @@ export function LatestOrderCard({ order }: LatestOrderCardProps) {
 
       <div className={styles.divider} />
 
-      {order ? (
+      {latestOrder ? (
         <div className={styles.orderInfo}>
-          <p className={styles.orderId}>Order #{order._id}</p>
+          <p className={styles.orderId}>Order #{latestOrder._id}</p>
           <p className={styles.orderDate}>
-            {new Date(order.createdAt).toLocaleDateString("vi-VN")}
+            {new Date(latestOrder.createdAt).toLocaleDateString("vi-VN")}
           </p>
-          <p className={styles.orderStatus}>{order.status}</p>
+          <p className={styles.orderStatus}>{latestOrder.status}</p>
         </div>
       ) : (
         <p className={styles.emptyText}>You don&apos;t have any order yet.</p>

@@ -22,7 +22,7 @@ export async function GetOrders(slug: string) {
 
 export async function GetMyOrders() {
   const res = await sendRequest<any>({
-    url: `/order`,
+    url: `/order/me`,
     method: "GET",
   });
   return res;

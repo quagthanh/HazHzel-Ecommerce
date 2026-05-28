@@ -20,9 +20,15 @@ interface Address {
   typeAddress: string;
   isDefault: boolean;
 }
-
+interface CheckoutAddress {
+  name: string;
+  phone: string;
+  street: string;
+  ward: string;
+  city: string;
+}
 interface CheckoutFormProps {
-  onAddressChange?: (address: Address | null) => void;
+  onAddressChange?: (address: CheckoutAddress | null) => void;
 }
 
 export default function CheckoutForm({ onAddressChange }: CheckoutFormProps) {
@@ -54,11 +60,23 @@ export default function CheckoutForm({ onAddressChange }: CheckoutFormProps) {
 
   const handleAddressSelect = (value: string) => {
     setSelectedAddressId(value);
-    if (value === "placeholder" || !defaultAddress) {
+
+    if (value === "placeholder") {
       form.resetFields();
-      onAddressChange?.(null);
+
+      onAddressChange?.({
+        name: "",
+        phone: "",
+        street: "",
+        ward: "",
+        city: "",
+      });
+
       return;
     }
+
+    if (!defaultAddress) return;
+
     form.setFieldsValue({
       name: defaultAddress.name,
       phone: defaultAddress.phone,
@@ -68,7 +86,14 @@ export default function CheckoutForm({ onAddressChange }: CheckoutFormProps) {
       zipCode: defaultAddress.zipCode,
       typeAddress: defaultAddress.typeAddress,
     });
-    onAddressChange?.(defaultAddress);
+
+    onAddressChange?.({
+      name: defaultAddress.name,
+      phone: defaultAddress.phone,
+      street: defaultAddress.street,
+      ward: defaultAddress.ward,
+      city: defaultAddress.city,
+    });
   };
 
   const addressLabel = defaultAddress
@@ -112,7 +137,20 @@ export default function CheckoutForm({ onAddressChange }: CheckoutFormProps) {
           <Spin size="small" /> <span>Đang tải địa chỉ...</span>
         </div>
       ) : (
-        <Form form={form} layout="vertical" className={styles.form}>
+        <Form
+          form={form}
+          layout="vertical"
+          className={styles.form}
+          onValuesChange={(_, allValues) => {
+            onAddressChange?.({
+              name: allValues.name || "",
+              phone: allValues.phone || "",
+              street: allValues.street || "",
+              ward: allValues.ward || "",
+              city: allValues.city || "",
+            });
+          }}
+        >
           <Form.Item label="Choose address" className={styles.formItem}>
             <Select
               value={selectedAddressId}
@@ -204,8 +242,6 @@ export default function CheckoutForm({ onAddressChange }: CheckoutFormProps) {
       )}
 
       <Divider dashed />
-
-      <div className={styles.sectionTitle}>Shipping Method</div>
     </div>
   );
 }

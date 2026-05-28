@@ -35,8 +35,15 @@ export default function OrderSummary({ selectedAddress }: OrderSummaryProps) {
   const total = subtotal;
 
   const handlePayNow = async () => {
-    if (!selectedAddress) {
-      message.warning("Please select a shipping address.");
+    if (
+      !selectedAddress ||
+      !selectedAddress.name ||
+      !selectedAddress.phone ||
+      !selectedAddress.street ||
+      !selectedAddress.ward ||
+      !selectedAddress.city
+    ) {
+      message.warning("Please fill in all shipping address fields.");
       return;
     }
 
@@ -53,6 +60,7 @@ export default function OrderSummary({ selectedAddress }: OrderSummaryProps) {
 
     try {
       const res = await Checkout(payload);
+
       if (res?.statusCode === 201) {
         message.success("Your order is successfully created");
         router.push("/?checkout_success=true");
@@ -97,12 +105,7 @@ export default function OrderSummary({ selectedAddress }: OrderSummaryProps) {
       />
 
       <div className={styles.checkoutBtn}>
-        <CustomButton
-          onClick={handlePayNow}
-          disabled={items.length === 0 || !selectedAddress}
-        >
-          pay now
-        </CustomButton>
+        <CustomButton onClick={handlePayNow}>pay now</CustomButton>
       </div>
     </div>
   );

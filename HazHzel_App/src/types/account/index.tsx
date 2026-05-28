@@ -6,7 +6,7 @@ export interface AccountUser {
 
 export interface AccountData {
   user: AccountUser;
-  latestOrder: Order | null;
+  latestOrder: Order[];
 }
 
 export interface UserProfile {
