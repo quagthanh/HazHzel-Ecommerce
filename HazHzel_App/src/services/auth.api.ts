@@ -1,11 +1,13 @@
 "use server";
-import { loginDTO } from "@/types/backend";
+import {
+  checkCodeDTO,
+  retryActiveDTO,
+  loginDTO,
+  registerDTO,
+} from "@/types/auth";
 import { sendRequest } from "@/utils/api";
 import http from "@/utils/axios-server";
 
-export type retryActiveDTO = {
-  email: string;
-};
 export async function handleLogin(loginDTO: loginDTO) {
   try {
     const res = await sendRequest<any>({
@@ -24,10 +26,15 @@ export async function handleLogin(loginDTO: loginDTO) {
   }
 }
 
-type checkCodeDTO = {
-  _id: string;
-  code: string;
-};
+export async function handleSignIn(registerDTO: registerDTO) {
+  const res = await sendRequest<any>({
+    url: `/auth/register`,
+    method: "POST",
+    body: registerDTO,
+  });
+  return res;
+}
+
 export async function handleRetryActive(
   retryActive: retryActiveDTO,
 ): Promise<any> {
@@ -42,13 +49,10 @@ export async function handleRetryActive(
   }
 }
 export async function handleCheckCode(checkCode: checkCodeDTO): Promise<any> {
-  try {
-    const result = await http.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/check-code`,
-      checkCode,
-    );
-    return result;
-  } catch (error) {
-    return error;
-  }
+  const res = await sendRequest<any>({
+    url: `/auth/check-code`,
+    method: "POST",
+    body: checkCode,
+  });
+  return res;
 }

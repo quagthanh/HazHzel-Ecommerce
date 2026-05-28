@@ -6,13 +6,10 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import {
-  handleCheckCode,
-  handleRetryActive,
-  retryActiveDTO,
-} from "@/services/auth.api";
+import { handleCheckCode, handleRetryActive } from "@/services/auth.api";
 import styles from "@/components/common/auth/reactive-model/style.module.scss";
 import { useHasMounted } from "@/utils/hooks/useHasMounted";
+import { checkCodeDTO, retryActiveDTO } from "@/types/auth";
 export default function ModalReactive(props: any) {
   const { isModalOpen, onClose, userEmail } = props;
   const [current, setCurrent] = useState(0);
@@ -40,7 +37,7 @@ export default function ModalReactive(props: any) {
     const { email } = value;
     const res = await handleRetryActive({ email });
     if (res?.data) {
-      setUserId(res?.data?.data?._id);
+      setUserId(res?.data?._id);
       setCurrent(1);
     } else {
       notification.error({
@@ -50,7 +47,10 @@ export default function ModalReactive(props: any) {
     }
   };
 
-  const onFinishStep1 = async (value: any) => {
+  const onFinishStep1 = async (value: checkCodeDTO) => {
+    console.log("STEP 1 SUBMIT", value);
+    console.log("STEP 1 userId", userId);
+
     const { code } = value;
     if (!userId) {
       return null;
@@ -64,7 +64,7 @@ export default function ModalReactive(props: any) {
       setCurrent(2);
     } else {
       notification.error({
-        message: res.message,
+        message: res?.message,
         description: "Lỗi khi gửi code xác nhận lại",
       });
     }

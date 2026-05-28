@@ -131,7 +131,7 @@ export class UsersService {
 
     await this.mailerService.sendMail({
       to: user.email,
-      subject: 'Kích hoạt tài khoản của bạn',
+      subject: 'Active your account',
       template: './register',
       context: {
         name: user?.name ?? user.email,
@@ -147,7 +147,7 @@ export class UsersService {
     const data = await this.userModel.findOne({ _id: _id, codeId: code });
     if (!data) {
       throw new BadRequestException({
-        message: 'Mã code không hợp lệ hoặc đã hết hạn ',
+        message: 'Code is not valid or expired',
       });
     }
     //check code's expired
@@ -156,7 +156,7 @@ export class UsersService {
       await this.userModel.updateOne({ _id: data._id }, { isActive: true });
     } else {
       throw new BadRequestException({
-        message: 'Mã code không hợp lệ hoặc đã hết hạn ',
+        message: 'Code is not valid or expired',
       });
     }
     return { isBeforeCheck };
@@ -166,14 +166,14 @@ export class UsersService {
     try {
       const user = await this.userModel.findOne({ email });
       if (!user) {
-        throw new BadRequestException('Tài khoản không tồn tại');
+        throw new BadRequestException('Account is not exist');
       }
       if (user.isActive) {
-        throw new BadRequestException('Tài khoản đã được kích hoạt');
+        throw new BadRequestException('Account have already activated');
       }
       const codeId = uuidv4();
       if (!codeId) {
-        throw new BadRequestException('Tạo code kích hoạt lại thất bại');
+        throw new BadRequestException('Create active code failed');
       }
       await this.userModel.updateOne(
         { _id: user._id },
@@ -181,7 +181,7 @@ export class UsersService {
       );
       await this.mailerService.sendMail({
         to: user.email,
-        subject: 'Kích hoạt lại tài khoản của bạn',
+        subject: 'Reactive your account',
         template: './reactive',
         context: {
           name: user?.name ?? user.email,

@@ -15,28 +15,23 @@ import Link from "next/link";
 import { sendRequest } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { IBackendRes } from "@/types/backend";
+import { checkCodeDTO } from "@/types/auth";
+import { handleCheckCode } from "@/services/auth.api";
 
 export default function Verify({ id }: any) {
   const router = useRouter();
 
-  const onFinish = async (values: any) => {
-    const { _id, code } = values;
-    const res = await sendRequest<IBackendRes<any>>({
-      method: "POST",
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/check-code`,
-      body: {
-        _id: _id,
-        code: code,
-      },
-    });
+  const onFinish = async (values: checkCodeDTO) => {
+    values = { _id: values._id, code: values.code };
+    const res = await handleCheckCode(values);
 
     if (res?.data) {
-      message.info("Kích hoạt tài khoản thành công");
+      message.info("Active account successfully");
       router.push(`/auth/login`);
     } else {
       notification.error({
         message: "Verify failed",
-        description: res?.data?.message,
+        description: res?.message,
       });
     }
   };
@@ -52,7 +47,7 @@ export default function Verify({ id }: any) {
             borderRadius: "5px",
           }}
         >
-          <legend>Kích hoạt tài khoản</legend>
+          <legend>Active Account</legend>
           <Form
             name="basic"
             onFinish={onFinish}
@@ -62,7 +57,7 @@ export default function Verify({ id }: any) {
             <Form.Item label="User's id" name="_id" initialValue={id} hidden>
               <Input disabled />
             </Form.Item>
-            <div>Mã kích hoạt của bạn đã được gửi về email !</div>
+            <div>Your active code have send to your gmail!</div>
             <Divider></Divider>
             <Form.Item
               label="Activate Code"
@@ -84,11 +79,11 @@ export default function Verify({ id }: any) {
             </Form.Item>
           </Form>
           <Link href={"/"}>
-            <ArrowLeftOutlined /> Quay lại trang chủ
+            <ArrowLeftOutlined /> Back to hom page
           </Link>
           <Divider />
           <div style={{ textAlign: "center" }}>
-            Đã có tài khoản? <Link href={"/auth/login"}>Đăng nhập</Link>
+            Already have account? <Link href={"/auth/login"}>Login</Link>
           </div>
         </fieldset>
       </Col>

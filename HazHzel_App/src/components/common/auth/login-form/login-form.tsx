@@ -69,7 +69,7 @@ const LoginForm = () => {
         </Link>
 
         <Title level={2} className={styles.loginFormTitle}>
-          Log in to your accountsss
+          Log in to your account
         </Title>
 
         <div className={styles.loginForm}>
@@ -167,7 +167,7 @@ const LoginForm = () => {
 
             <div className={styles.loginLink}>
               <Text className={styles.loginLinkText}>
-                Do not have an account?
+                Do not have an account?<span> </span>
                 <Link
                   href={"/auth/register"}
                   className={styles.loginLinkAction}

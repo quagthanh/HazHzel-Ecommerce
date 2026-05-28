@@ -1,39 +1,36 @@
-.loginFormContainer {
+.registerFormContainer {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
-  background-color: rgb(255, 251, 245);;
+  background-color: rgb(255, 251, 245);
+
   @media (max-width: 768px) {
     padding: 20px;
   }
 }
 
-.loginFormWrapper {
+.registerFormWrapper {
   width: 100%;
   max-width: 420px;
 }
 
-.loginFormTitle {
+.registerFormTitle {
   margin-bottom: 32px !important;
   font-weight: 600 !important;
   font-size: 28px !important;
   color: #1f2937;
 }
 
-.loginForm {
-  .formField {
-    margin-bottom: 20px;
-  }
-
-.formItem {
-  :global {
-    .ant-form-item-label > label {
-      font-size: 16px;
+.registerForm {
+  .formItem {
+    :global {
+      .ant-form-item-label > label {
+        font-size: 16px;
+      }
     }
   }
-}
 
   .formInput {
     border-radius: 8px;
@@ -52,51 +49,38 @@
     }
   }
 
-   .formOptions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
+  .checkboxItem {
+    margin-bottom: 24px !important;
     margin-top: -8px;
+  }
 
-    .checkboxItem {
-      margin-bottom: 0 !important;
-      flex: 1;
-    }
+  .checkbox {
+    :global {
+      .ant-checkbox-inner {
+        border-radius: 4px;
+        border-color: #d1d5db;
+        transition: all 0.3s;
+      }
 
-    .checkbox {
-      :global {
-        .ant-checkbox-inner {
-          border-radius: 4px;
-          border-color: #d1d5db;
-          transition: all 0.3s;
-        }
+      .ant-checkbox-checked .ant-checkbox-inner {
+        background-color: #0a4d4d;
+        border-color: #0a4d4d;
+      }
 
-        .ant-checkbox-checked .ant-checkbox-inner {
-          background-color: #0a4d4d;
-          border-color: #0a4d4d;
-        }
-
-        .ant-checkbox:hover .ant-checkbox-inner {
-          border-color: #0a4d4d;
-        }
+      .ant-checkbox:hover .ant-checkbox-inner {
+        border-color: #0a4d4d;
       }
     }
+  }
 
-    .checkboxText {
-      font-size: 14px;
-      color: #6b7280;
-      user-select: none;
-    }
-
-    .forgotPassword {
-      font-size: 14px;
+  .checkboxText {
+    font-size: 14px;
+    color: #6b7280;
+    user-select: none;
+    
+    a {
       font-weight: 500;
       color: #0a4d4d;
-      transition: all 0.2s;
-      white-space: nowrap;
-      margin-left: 12px;
-
       &:hover {
         color: #0d6464;
         text-decoration: underline;
@@ -182,22 +166,3 @@
     }
   }
 }
-
-
-/*
-  <div className={styles.formField}>
-            <label className={styles.formLabel}>Email</label>
-            <Input
-              type="email"
-              placeholder="Enter your mail"
-              size="large"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              className={styles.formInput}
-            />
-          </div>
-
-
-*/

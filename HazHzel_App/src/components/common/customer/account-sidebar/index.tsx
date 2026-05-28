@@ -13,6 +13,8 @@ import {
   LogOut,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { signOut } from "next-auth/react";
+
 import styles from "./style.module.scss";
 
 const NAV_ITEMS = [
@@ -37,6 +39,7 @@ const NAV_ITEMS = [
 
 export function AccountSidebar() {
   const pathname = usePathname();
+  const handleClick = () => {};
 
   return (
     <aside className={styles.sidebar}>
@@ -83,7 +86,11 @@ export function AccountSidebar() {
 
         <div className={styles.divider} />
 
-        <button className={styles.logoutBtn} type="button">
+        <button
+          onClick={() => signOut()}
+          className={styles.logoutBtn}
+          type="button"
+        >
           <LogOut size={14} strokeWidth={1.5} className={styles.icon} />
           <span>Log Out</span>
         </button>

@@ -33,10 +33,7 @@ export interface ILogin {
   };
   access_token: string;
 }
-export type loginDTO = {
-  username: string;
-  password: string;
-};
+
 export interface IUser {
   _id: string;
   name: string;

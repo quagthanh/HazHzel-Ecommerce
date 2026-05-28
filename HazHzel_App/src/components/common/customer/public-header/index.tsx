@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import logo from "@/../public/assets/test6.png";
 import styles from "@/components/common/customer/public-header/style.module.scss";
 import { Header } from "antd/es/layout/layout";
 import { Button } from "antd";
@@ -14,6 +13,8 @@ import { INavItem } from "@/components/layout/public/client-layout/customer.head
 import { staticItemsConfig } from "@/shared/configs/header";
 import { NavMenuItem } from "@/types/navbar";
 import { typeNavMenuItem } from "@/types/enum";
+import Logo from "@/components/common/auth/login-logo";
+
 interface NavBarProps {
   navGroups: INavItem[] | [];
 }
@@ -63,7 +64,7 @@ const NavBar: React.FC<NavBarProps> = ({ navGroups = [] }) => {
         </div>
         <div className={styles.centerLogo}>
           <Link href="/" className={styles.headerLogo}>
-            <Image style={{ objectFit: "contain" }} alt="Logo" src={logo} />
+            <Logo></Logo>
           </Link>
         </div>
       </div>

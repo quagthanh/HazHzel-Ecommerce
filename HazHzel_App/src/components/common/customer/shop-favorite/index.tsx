@@ -25,7 +25,7 @@ const ShopFavoritesUI = ({ products = [] }: ShopFavoritesProps) => {
         <div className={styles.container}>
           <div className={styles.sectionStack}>
             <div className={styles.shopFavoriteCarousel}>
-              <h1 className={styles.title}>NEW BRAND</h1>
+              <h1 className={styles.title}>NEW BRAND - NIKE</h1>
 
               <NewBrandSwiper
                 breakpoints={{
@@ -87,7 +87,7 @@ const ShopFavoritesUI = ({ products = [] }: ShopFavoritesProps) => {
               </NewBrandSwiper>
 
               <div className={styles.cardContent}>
-                <Link href="/collections/all">
+                <Link href="/stores/nike">
                   <CustomButton>VIEW ALL</CustomButton>
                 </Link>
               </div>
