@@ -48,6 +48,7 @@ jobs:
 
         env:
           FE_AUTH_SECRET: ${{ secrets.FE_AUTH_SECRET }}
+          FE_AUTH_TRUST_HOST: ${{ secrets.FE_AUTH_TRUST_HOST }}
 
           BE_PORT: ${{ secrets.BE_PORT }}
           BE_MONGODB_URI: ${{ secrets.BE_MONGODB_URI }}
@@ -63,7 +64,7 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
 
-          envs: FE_AUTH_SECRET,BE_PORT,BE_MONGODB_URI,BE_JWT_SECRET,BE_JWT_ACCESS_TOKEN_EXPIRED,BE_MAILDEV_INCOMING_USER,BE_MAILDEV_INCOMING_PASS,BE_CLOUDINARY_NAME,BE_CLOUDINARY_API_KEY,BE_CLOUDINARY_API_SECRET
+          envs: FE_AUTH_SECRET,BE_PORT,BE_MONGODB_URI,BE_JWT_SECRET,BE_JWT_ACCESS_TOKEN_EXPIRED,BE_MAILDEV_INCOMING_USER,BE_MAILDEV_INCOMING_PASS,BE_CLOUDINARY_NAME,BE_CLOUDINARY_API_KEY,BE_CLOUDINARY_API_SECRET,FE_AUTH_TRUST_HOST
 
           script: |
             cd /home/thanh/HazHzel-Ecommerce
@@ -76,6 +77,7 @@ jobs:
             echo "AUTH_SECRET=$FE_AUTH_SECRET" > HazHzel_App/.env
             echo "NEXT_PUBLIC_BACKEND_URL=/api/v1" >> HazHzel_App/.env
             echo "INTERNAL_BACKEND_URL=http://backend:8000/api/v1" >> HazHzel_App/.env
+            echo "AUTH_TRUST_HOST=$FE_AUTH_TRUST_HOST" >> HazHzel_App/.env
 
             # 3. CREATE .ENV FILE FOR BACKEND
             echo "PORT=$BE_PORT" > HazHzel_Server/.env
