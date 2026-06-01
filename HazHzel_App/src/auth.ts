@@ -6,8 +6,8 @@ import {
   SystemError,
 } from "./utils/error";
 import { IUser } from "./types/next-auth";
-import { loginDTO } from "./types/backend";
 import { handleLogin } from "./services/auth.api";
+import { loginDTO } from "./types/auth";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
