@@ -30,7 +30,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ isLoading: true });
     try {
       const res = await getCartByUserId();
-      set({ items: res?.data?.items, isLoading: false });
+      set({ items: res?.data?.items ?? [], isLoading: false });
     } catch (error) {
       console.error("Failed to fetch cart in useCartStore:", error);
       set({ isLoading: false });
@@ -75,6 +75,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   getTotalPrice: () => {
+    console.log("Calculating total price for items:", get().items);
     return get().items.reduce((total, item) => {
       const price = item?.variantId?.currentPrice ?? 0;
       const quantity = item?.quantity ?? 0;

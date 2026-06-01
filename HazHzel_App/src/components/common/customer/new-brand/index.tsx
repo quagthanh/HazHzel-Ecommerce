@@ -9,10 +9,10 @@ import Link from "next/link";
 const newBrand: INewBrand[] = [
   {
     src: logo,
-    href: "/collections/seva-monts",
-    label: "Seva Mont",
+    href: "/stores/anna-field",
+    label: "ANNA FIELD",
     description:
-      "Seva Mont is a Sydney‑based menswear label reimagining modern style with bold elegance and vintage‑inspired touches. Rooted in purpose, each piece blends quiet confidence with considered details—where relaxed luxury meets tailored street style.",
+      "ANNA FIELD is a Sydney‑based menswear label reimagining modern style with bold elegance and vintage‑inspired touches. Rooted in purpose, each piece blends quiet confidence with considered details—where relaxed luxury meets tailored street style.",
   },
 ];
 const NewBrand = () => {
