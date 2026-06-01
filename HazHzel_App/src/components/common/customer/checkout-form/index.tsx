@@ -206,13 +206,6 @@ export default function CheckoutForm({ onAddressChange }: CheckoutFormProps) {
               <Input placeholder="Enter zip code" />
             </Form.Item>
           </div>
-
-          <Form.Item name="typeAddress" className={styles.formItem}>
-            <Checkbox.Group>
-              <Checkbox value="HOMEADDRESS">Home</Checkbox>
-              <Checkbox value="WORKADDRESS">Company</Checkbox>
-            </Checkbox.Group>
-          </Form.Item>
         </Form>
       )}
 
