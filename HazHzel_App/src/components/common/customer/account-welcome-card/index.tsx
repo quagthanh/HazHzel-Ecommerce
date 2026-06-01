@@ -23,7 +23,7 @@ export function WelcomeCard({ user }: WelcomeCardProps) {
       <div className={styles.info}>
         <div className={styles.welcomeRow}>
           <User size={16} strokeWidth={1.5} className={styles.userIcon} />
-          <span className={styles.welcomeText}>Welcome {user.name}</span>
+          <span className={styles.welcomeText}>Welcomes {user.name}</span>
         </div>
 
         <div className={styles.divider} />
