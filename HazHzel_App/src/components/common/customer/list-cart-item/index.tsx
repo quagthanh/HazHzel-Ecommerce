@@ -12,20 +12,17 @@ interface CartItemProps {
 }
 
 const CartItem = ({ layout = "vertical" }: CartItemProps) => {
-  const { items, fetchCart, isLoading, updateQuantity, removeItem } = useCartStore();
+  const { items, fetchCart, isLoading, updateQuantity, removeItem } =
+    useCartStore();
 
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
 
-  // ==========================================
-  // GIẢI PHÁP: Sử dụng render có điều kiện tập trung tại khối return chính
-  // Không viết câu lệnh "return sớm" ngắt ngang xương ở đây nữa.
-  // ==========================================
   return (
     <>
-      {/* TRẠNG THÁI 1: ĐANG LOADING */}
-      {isLoading && items.length === 0 && (
+      {/* State 1: Cart loading */}
+      {isLoading && items?.length === 0 && (
         <>
           {[1, 2, 3].map((key) => (
             <CartItemSkeleton key={key} layout={layout} />
@@ -33,7 +30,7 @@ const CartItem = ({ layout = "vertical" }: CartItemProps) => {
         </>
       )}
 
-      {/* TRẠNG THÁI 2: GIỎ HÀNG TRỐNG */}
+      {/* State 2: Cart empty */}
       {!isLoading && (!items || items.length === 0) && (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -41,9 +38,9 @@ const CartItem = ({ layout = "vertical" }: CartItemProps) => {
         />
       )}
 
-      {/* TRẠNG THÁI 3: CÓ SẢN PHẨM (Hiển thị danh sách) */}
-      {items.length > 0 &&
-        items.map((item) => {
+      {/* State 3:Have products */}
+      {items?.length > 0 &&
+        items?.map((item) => {
           const product = item.productId;
           const variant = item.variantId;
 
@@ -91,7 +88,9 @@ const CartItem = ({ layout = "vertical" }: CartItemProps) => {
                     <span className={styles.qtyValue}>{item.quantity}</span>
                     <button
                       className={styles.qtyBtn}
-                      onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                      onClick={() =>
+                        updateQuantity(item._id, item.quantity + 1)
+                      }
                     >
                       +
                     </button>
