@@ -12,7 +12,6 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 
 const PublicCartPage = () => {
   const { items, isLoading, fetchCart } = useCartStore();
-  console.log("Check items:", items);
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);

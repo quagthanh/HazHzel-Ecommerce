@@ -102,34 +102,16 @@ export default function CheckoutForm({ onAddressChange }: CheckoutFormProps) {
 
   return (
     <div className={styles.checkoutForm}>
-      <div className={styles.expressCheckout}>
-        <div className={styles.wrapper}>
-          <button
-            className={styles.expressBtn}
-            style={{ backgroundColor: "#9aa5e4ff" }}
-          >
-            <Image src={visa} alt="Visa" width={100} height={60} />
-          </button>
-          <button
-            className={styles.expressBtn}
-            style={{ backgroundColor: "#944b4bff" }}
-          >
-            <Image src={mastercard} alt="Mastercard" width={100} height={60} />
-          </button>
-        </div>
-      </div>
+      <Divider></Divider>
 
-      <Divider>OR</Divider>
-
-      <div className={styles.sectionTitle}>THÔNG TIN GIAO HÀNG</div>
+      <div className={styles.sectionTitle}>ADDRESS INFORMATION</div>
 
       <div className={styles.userInfo}>
-        <div className={styles.avatar} />
         <div className={styles.userMeta}>
           <span className={styles.userName}>{userName}</span>
           <span className={styles.userEmail}>({userEmail})</span>
         </div>
-        <button className={styles.logoutBtn}>Đăng xuất</button>
+        {/* <button className={styles.logoutBtn}>Đăng xuất</button> */}
       </div>
 
       {loadingAddresses ? (
@@ -202,11 +184,7 @@ export default function CheckoutForm({ onAddressChange }: CheckoutFormProps) {
               className={styles.formItem}
               style={{ flex: 1 }}
             >
-              <Select placeholder="Ward">
-                <Select.Option value="hcm">Hồ Chí Minh</Select.Option>
-                <Select.Option value="hn">Hà Nội</Select.Option>
-                <Select.Option value="dn">Đà Nẵng</Select.Option>
-              </Select>
+              <Input placeholder="Enter ward" />
             </Form.Item>
           </div>
 
@@ -217,10 +195,7 @@ export default function CheckoutForm({ onAddressChange }: CheckoutFormProps) {
               className={styles.formItem}
               style={{ flex: 1 }}
             >
-              <Select placeholder="Street">
-                <Select.Option value="q1">Quận 1</Select.Option>
-                <Select.Option value="q2">Quận 2</Select.Option>
-              </Select>
+              <Input placeholder="Enter street" />
             </Form.Item>
             <Form.Item
               label="Zip Code"
