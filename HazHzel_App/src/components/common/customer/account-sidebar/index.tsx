@@ -39,7 +39,6 @@ const NAV_ITEMS = [
 
 export function AccountSidebar() {
   const pathname = usePathname();
-  const handleClick = () => {};
 
   return (
     <aside className={styles.sidebar}>
