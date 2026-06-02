@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styles from "./style.module.scss";
 
 export function EmptyOrders() {
@@ -8,10 +9,10 @@ export function EmptyOrders() {
       <p className={styles.emptyText}>
         Your order history will appear here once you&apos;ve made a purchase.
       </p>
-      {/* Replace with your Link/Button component */}
-      <a href="/stores" className={styles.shopLink}>
+
+      <Link href="/stores" className={styles.shopLink}>
         Browse the shop
-      </a>
+      </Link>
     </div>
   );
 }

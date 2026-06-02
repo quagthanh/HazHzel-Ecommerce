@@ -87,12 +87,38 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .info {
+    padding: 32px;
+  }
+}
+
 @media (max-width: 768px) {
   .card {
     grid-template-columns: 1fr;
   }
 
+  .info {
+    padding: 24px 20px;
+  }
+
+  .editBtn {
+    max-width: 100%;
+    width: 100%;
+    padding: 14px 0; 
+  }
+
   .imageWrapper {
-    height: 260px;
+    height: 220px;
+  }
+}
+
+@media (max-width: 528px) {
+  .info {
+    padding: 20px 16px;
+  }
+  
+  .imageWrapper {
+    height: 180px;
   }
 }

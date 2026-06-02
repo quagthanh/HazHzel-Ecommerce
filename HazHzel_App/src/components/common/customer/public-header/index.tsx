@@ -46,7 +46,6 @@ const NavBar: React.FC<NavBarProps> = ({ navGroups = [] }) => {
     backgroundColor: "rgb(255, 251, 245)",
     display: "flex",
     alignItems: "center",
-    padding: "10px 48px",
     justifyContent: "space-between",
     fontWeight: "600",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
