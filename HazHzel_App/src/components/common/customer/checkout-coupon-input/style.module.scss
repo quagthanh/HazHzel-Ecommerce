@@ -8,6 +8,10 @@
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 6px;
+
+  @media (max-width: 768px) {
+    padding: 12px;
+  }
 }
 
 .button {
@@ -20,5 +24,10 @@
 
   &:hover {
     background: #eee;
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px 20px;
+    font-weight: 500;
   }
 }

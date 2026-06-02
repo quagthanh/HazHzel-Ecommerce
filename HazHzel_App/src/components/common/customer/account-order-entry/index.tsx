@@ -38,7 +38,6 @@ export function OrderEntry({ order, index }: OrderEntryProps) {
 
   return (
     <article className={styles.orderEntry}>
-      {/* Left column: index + meta */}
       <aside className={styles.entryMeta}>
         <span className={styles.entryIndex}>
           #{String(index).padStart(2, "0")}
@@ -49,9 +48,7 @@ export function OrderEntry({ order, index }: OrderEntryProps) {
         <span className={styles.entryId}>{shortId}</span>
       </aside>
 
-      {/* Right column: content */}
       <div className={styles.entryContent}>
-        {/* Top row: status + payment method */}
         <div className={styles.entryTopRow}>
           <OrderStatusBadge status={order.status} />
           <span className={styles.paymentMethod}>
@@ -59,7 +56,6 @@ export function OrderEntry({ order, index }: OrderEntryProps) {
           </span>
         </div>
 
-        {/* Item list */}
         <div className={styles.itemList}>
           {order.items.map((item) => (
             <OrderItemRow
@@ -69,7 +65,6 @@ export function OrderEntry({ order, index }: OrderEntryProps) {
           ))}
         </div>
 
-        {/* Footer: shipping info + totals */}
         <div className={styles.entryFooter}>
           <div className={styles.shippingInfo}>
             <span className={styles.shippingLabel}>Ship to</span>

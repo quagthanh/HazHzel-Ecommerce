@@ -7,6 +7,7 @@ import { GetMyOrders } from "@/services/order.api";
 export default async function OrdersPage() {
   const res = await GetMyOrders();
   const orders: Order[] = res?.data ? res?.data : [];
+
   return (
     <div className={styles.container}>
       <header className={styles.pageHeader}>

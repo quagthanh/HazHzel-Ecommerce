@@ -3,13 +3,14 @@
   grid-template-columns: 80px 1fr;
   gap: 0;
   padding: 28px 0;
- 
-  @media (max-width: 600px) {
+
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 16px;
+    padding: 20px 0;
   }
 }
- 
+
 .entryMeta {
   display: flex;
   flex-direction: column;
@@ -17,61 +18,62 @@
   padding-right: 24px;
   padding-top: 2px;
   border-right: 1px solid gray;
- 
-  @media (max-width: 600px) {
+
+  @media (max-width: 768px) {
     flex-direction: row;
     align-items: center;
     border-right: none;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid rgb(220, 220, 220);
     padding-right: 0;
     padding-bottom: 12px;
   }
 }
- 
+
 .entryIndex {
   font-size: 20px;
   font-weight: 700;
   color: black;
   letter-spacing: -0.02em;
   line-height: 1;
- 
-  @media (max-width: 600px) {
+
+  @media (max-width: 768px) {
     font-size: 16px;
     margin-right: auto;
   }
 }
- 
+
 .entryDate {
   font-size: 10px;
   color: gray;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
- 
+
 .entryId {
   font-size: 10px;
   color: gray;
   letter-spacing: 0.1em;
 }
- 
+
 .entryContent {
   padding-left: 28px;
   display: flex;
   flex-direction: column;
   gap: 20px;
- 
-  @media (max-width: 600px) {
+
+  @media (max-width: 768px) {
     padding-left: 0;
+    gap: 16px;
   }
 }
- 
+
 .entryTopRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
- 
+
 .paymentMethod {
   font-size: 10px;
   letter-spacing: 0.08em;
@@ -92,25 +94,26 @@
   gap: 24px;
   padding-top: 16px;
   border-top: 1px solid gray;
- 
-  @media (max-width: 480px) {
+
+  @media (max-width: 768px) {
     flex-direction: column;
+    gap: 16px;
   }
 }
- 
+
 .shippingInfo {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
- 
+
 .shippingLabel {
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: gray;
 }
- 
+
 .shippingName {
   font-size: 12px;
   font-weight: 600;
@@ -122,19 +125,27 @@
   color: gray;
   line-height: 1.4;
   max-width: 200px;
+  
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 }
- 
+
 .priceSummary {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   min-width: 180px;
-  text-align: right;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: unset;
+  }
 }
- 
+
 .priceRow {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; 
   gap: 16px;
   font-size: 11px;
   color: gray;
@@ -142,12 +153,12 @@
 
 .priceRowTotal {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; 
   gap: 16px;
   font-size: 13px;
   font-weight: 700;
   color: black;
   border-top: 1px solid gray;
-  padding-top: 6px;
-  margin-top: 2px;
+  padding-top: 8px;
+  margin-top: 4px;
 }

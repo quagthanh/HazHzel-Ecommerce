@@ -21,10 +21,10 @@ const CheckoutPage = () => {
       <div className={styles.container}>
         <div className={styles.checkoutWrapper}>
           <Row>
-            <Col span={12} className={styles.leftCol}>
+            <Col xs={24} lg={12} className={styles.leftCol}>
               <CheckoutForm onAddressChange={setAddressData} />
             </Col>
-            <Col span={12} className={styles.rightCol}>
+            <Col xs={24} lg={12} className={styles.rightCol}>
               <OrderSummary selectedAddress={addressData} />
             </Col>
           </Row>

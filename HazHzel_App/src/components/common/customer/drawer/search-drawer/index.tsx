@@ -24,6 +24,7 @@ import {
 } from "@/services/search.api";
 import CustomButton from "../../public-button";
 import { ProductSkeleton } from "../../skeleton/search";
+import Logo from "@/components/common/auth/login-logo";
 
 const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -113,19 +114,8 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
       maskClosable={true}
     >
       <div className={styles.headerWrapper}>
-        <Row align="middle" gutter={[16, 0]}>
-          <Col xs={4} sm={3} md={2}>
-            <div className={styles.logoContainer}>
-              <Image
-                src={logo}
-                alt="Logo"
-                fill
-                style={{ objectFit: "contain" }}
-              />
-            </div>
-          </Col>
-
-          <Col xs={16} sm={19} md={20}>
+        <Row align="middle" gutter={[12, 0]}>
+          <Col xs={22} sm={22} md={22}>
             <div className={styles.searchBox}>
               <SearchOutlined className={styles.searchIcon} />
               <Input
@@ -139,7 +129,7 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
             </div>
           </Col>
 
-          <Col xs={4} sm={2} md={2} style={{ textAlign: "right" }}>
+          <Col xs={2} sm={2} md={2} style={{ textAlign: "right" }}>
             <CloseOutlined className={styles.closeIcon} onClick={onClose} />
           </Col>
         </Row>

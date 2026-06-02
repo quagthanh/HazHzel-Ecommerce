@@ -1,4 +1,3 @@
-// KHÔNG DÙNG "use client" NỮA (trừ khi CustomButton bắt buộc dùng)
 import styles from "@/components/common/customer/featured-brands/style.module.scss";
 import Link from "next/link";
 import CustomButton from "@/components/common/customer/public-button";

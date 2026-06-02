@@ -94,18 +94,21 @@ export default function OrderSummary({ selectedAddress }: OrderSummaryProps) {
         value={formatPriceHelper(subtotal)}
       />
 
-      <SummaryRow
-        label="Total"
-        value={
-          <>
-            <small>VND</small> {formatPriceHelper(total)}
-          </>
-        }
-        isTotal
-      />
+      {/* YÊU CẦU 2: Wrapper cho Sticky Bottom Bar */}
+      <div className={styles.stickyBottomBar}>
+        <SummaryRow
+          label="Total"
+          value={
+            <>
+              <small>VND</small> {formatPriceHelper(total)}
+            </>
+          }
+          isTotal
+        />
 
-      <div className={styles.checkoutBtn}>
-        <CustomButton onClick={handlePayNow}>pay now</CustomButton>
+        <div className={styles.checkoutBtn}>
+          <CustomButton onClick={handlePayNow}>pay now</CustomButton>
+        </div>
       </div>
     </div>
   );

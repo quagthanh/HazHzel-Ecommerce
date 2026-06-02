@@ -1,12 +1,47 @@
+@use "@/scss/abstracts/_variables" as *;
+
 .orderSummary {
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding-top: 60px;
+
+  @media (max-width: 991px) {
+    padding-top: 24px;
+    padding-bottom: 140px; 
+  }
+}
+
+.stickyBottomBar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (max-width: 991px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: $primary-color;
+    padding: 16px 20px;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+    z-index: 999;
+    border-top: 1px solid $border-color;
+  }
 }
 
 .checkoutBtn {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 991px) {
+    width: 100%;
+    
+    :global(button), > * {
+      width: 100%;
+      padding: 14px 0; 
+      font-size: 13px;
+    }
+  }
 }
