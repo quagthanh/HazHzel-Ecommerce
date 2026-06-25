@@ -34,6 +34,7 @@ const AdminSideBar = () => {
     if (pathname === "/admin/dashboard/shopping-cart/list")
       return "shopping-cart-list";
     if (pathname === "/admin/dashboard/checkout") return "checkout";
+    if (pathname === "/admin/dashboard/chat") return "chat";
     return "dashboard";
   };
 

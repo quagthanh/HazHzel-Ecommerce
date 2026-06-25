@@ -5,6 +5,8 @@ import "@/scss/main.scss";
 import { auth } from "@/auth";
 import TopLoader from "@/components/common/progress-bar";
 import AuthInitializer from "@/utils/authInitializer";
+import ClientChatWidget from "@/components/common/admin/chat/chat-widget";
+import Providers from "@/providers/SessionProvider";
 
 const mainFont = Poppins({
   subsets: ["latin"],
@@ -26,9 +28,12 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${mainFont.className} ${mainFont.variable}`}>
         <AntdRegistry>
-          <TopLoader />
-          <AuthInitializer user={session?.user} />
-          {children}
+          <Providers>
+            <TopLoader />
+            <AuthInitializer user={session?.user} />
+            {children}
+            <ClientChatWidget />
+          </Providers>
         </AntdRegistry>
       </body>
     </html>

@@ -11,13 +11,15 @@ import {
 } from './dto/checkcode-auth.dto';
 import { AuthResponseDto, UserResponseDto } from './dto/auth-response.dto';
 import { RoleService } from '@/modules/role/role.service';
+import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly roleService: RoleService,
-  ) {}
+    private readonly configService: ConfigService
+  ) { }
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
@@ -31,8 +33,9 @@ export class AuthService {
     }
     return user;
   }
+
   async login(user: UserResponseDto) {
-    const payload = { username: user.email, sub: user._id, roles: user.roles };
+    const payload = { username: user.email, sub: user._id, roles: user.roles, appId: this.configService.get<string>("CHAT_APP_ID") };
     const role = await this.roleService.findOne(user.roles[0]);
     let result = {
       user: {

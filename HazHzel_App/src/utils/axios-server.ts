@@ -11,6 +11,7 @@ const http = axios.create({
   baseURL: baseURL,
   headers: {
     "Content-Type": "application/json",
+    'x-app-id': process.env.NEXT_PUBLIC_CHAT_APP_ID,
   },
 });
 

@@ -13,6 +13,7 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import { Menu, type MenuProps } from "antd";
+import { MessageSquare } from "lucide-react";
 import Link from "next/link";
 type MenuItem = Required<MenuProps>["items"][number];
 export const itemsSidebar: MenuItem[] = [
@@ -188,6 +189,11 @@ export const itemsSidebar: MenuItem[] = [
         key: "checkout",
         label: <Link href="/admin/dashboard/checkout">Checkout</Link>,
         icon: <CreditCardOutlined />,
+      },
+      {
+        key: "chat",
+        label: <Link href="/admin/dashboard/chat">Messages</Link>,
+        icon: <MessageSquare width={16} />,
       },
     ],
   },
