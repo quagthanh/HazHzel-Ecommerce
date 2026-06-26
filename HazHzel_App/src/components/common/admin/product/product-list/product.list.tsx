@@ -13,6 +13,7 @@ import ProductCreateModal from "../product-modal/product-create-modal";
 import ProductEditModal from "../product-modal/product-edit-modal";
 import { deleteProductsForAdmin } from "@/services/product.api";
 import { getProductColumns } from "../product-columns";
+import useLoadingStore from "@/library/stores/useLoadingStore";
 
 interface ProductListClientProps {
   initialData: IProduct[];
@@ -40,15 +41,15 @@ const ProductListClient = ({
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [dataUpdate, setDataUpdate] = useState<any>(null);
+  const { loading, setLoading } = useLoadingStore();
 
   useEffect(() => {
-    setIsLoading(false);
+    setLoading(false);
   }, [searchParams]);
 
   const onChange = (pagination: any) => {
-    setIsLoading(true);
+    setLoading(true);
     const params = new URLSearchParams(searchParams);
     params.set("current", pagination.current?.toString() ?? "1");
     params.set("pageSize", meta?.pageSize?.toString() ?? "10");
@@ -68,7 +69,7 @@ const ProductListClient = ({
     try {
       await deleteProductsForAdmin(id);
     } catch {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -109,7 +110,7 @@ const ProductListClient = ({
         onFilter={() => console.log("Filter")}
       />
 
-      <Spin spinning={isLoading} size="large">
+      <Spin spinning={loading} size="large">
         <Table
           rowSelection={{ type: selectionType, ...rowSelection }}
           bordered

@@ -1,5 +1,6 @@
 "use client";
 
+import useLoadingStore from "@/library/stores/useLoadingStore";
 import { createCategory } from "@/services/category.api";
 import { FileType } from "@/types/product";
 import { buildTree, getBase64 } from "@/utils/helper";
@@ -18,6 +19,7 @@ import {
   Image,
   Select,
   TreeSelect,
+  Spin,
 } from "antd";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -34,7 +36,7 @@ const CategoryCreateModal = ({
   categoryOptions,
 }: CategoryCreateModalProps) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(false);
+  const { loading, setLoading } = useLoadingStore();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -45,10 +47,6 @@ const CategoryCreateModal = ({
 
     const formData = new FormData();
     formData.append("name", values.name);
-    if (values.contactName) formData.append("contactName", values.contactName);
-    if (values.email) formData.append("email", values.email);
-    if (values.phone) formData.append("phone", values.phone);
-    if (values.address) formData.append("address", values.address);
     if (values.parentCategory)
       formData.append("parentCategory", values.parentCategory);
 
@@ -117,68 +115,70 @@ const CategoryCreateModal = ({
         width={800}
         confirmLoading={loading}
       >
-        <Form
-          layout="vertical"
-          form={form}
-          onFinish={onFinish}
-          autoComplete="off"
-        >
-          <Row gutter={24}>
-            <Col span={8}>
-              <Form.Item
-                label="Category Name"
-                name="name"
-                rules={[
-                  { required: true, message: "Please input category name" },
-                ]}
-              >
-                <Input placeholder="Category Name" />
-              </Form.Item>
-            </Col>
+        <Spin spinning={loading}>
+          <Form
+            layout="vertical"
+            form={form}
+            onFinish={onFinish}
+            autoComplete="off"
+          >
+            <Row gutter={24}>
+              <Col span={8}>
+                <Form.Item
+                  label="Category Name"
+                  name="name"
+                  rules={[
+                    { required: true, message: "Please input category name" },
+                  ]}
+                >
+                  <Input placeholder="Category Name" />
+                </Form.Item>
+              </Col>
 
-            <Col span={8}>
-              <Form.Item
-                label="Parent Category"
-                name="parentCategory"
-                rules={[{ required: false }]}
-              >
-                <TreeSelect
-                  treeData={treeData}
-                  fieldNames={{
-                    label: "name",
-                    value: "_id",
-                    children: "children",
-                  }}
-                  placeholder="Select Parent"
-                  allowClear
-                  treeDefaultExpandAll
-                  treeLine
-                  showSearch
-                  treeNodeFilterProp="name"
-                />
-              </Form.Item>
-            </Col>
+              <Col span={8}>
+                <Form.Item
+                  label="Parent Category"
+                  name="parentCategory"
+                  rules={[{ required: false }]}
+                >
+                  <TreeSelect
+                    treeData={treeData}
+                    fieldNames={{
+                      label: "name",
+                      value: "_id",
+                      children: "children",
+                    }}
+                    placeholder="Select Parent"
+                    allowClear
+                    treeDefaultExpandAll
+                    treeLine
+                    showSearch
+                    treeNodeFilterProp="name"
+                  />
+                </Form.Item>
+              </Col>
 
-            <Col span={8}>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item label="Logo">
-                    <Upload
-                      listType="picture-card"
-                      fileList={fileList}
-                      onPreview={handlePreview}
-                      onChange={handleChange}
-                      beforeUpload={beforeUpload}
-                      maxCount={1}
-                    >
-                      {fileList.length >= 1 ? null : uploadButton}
-                    </Upload>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Form>
+              <Col span={8}>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item label="Logo">
+                      <Upload
+                        listType="picture-card"
+                        fileList={fileList}
+                        onPreview={handlePreview}
+                        onChange={handleChange}
+                        beforeUpload={beforeUpload}
+                        maxCount={1}
+                      >
+                        {fileList.length >= 1 ? null : uploadButton}
+                      </Upload>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Form>
+        </Spin>
       </Modal>
 
       {previewImage && (

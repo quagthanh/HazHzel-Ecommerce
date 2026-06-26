@@ -8,11 +8,12 @@ import { ISupplier } from "@/types/interface";
 import PageHeader from "../../page-header";
 import FilterBar from "../../filter-bar";
 import PaginationInfo from "../../pagination-info";
-import { deleteSupplier } from "@/services/supplier.api";
+import { deleteSupplierForAdmin } from "@/services/supplier.api";
 import { getSupplierColumns } from "../supplier-columns";
 
 import SupplierCreateModal from "../supplier-modal/supplier-create-modal";
 import SupplierEditModal from "../supplier-modal/supplier-edit-modal";
+import useLoadingStore from "@/library/stores/useLoadingStore";
 
 interface SupplierListClientProps {
   initialData: ISupplier[];
@@ -33,17 +34,17 @@ const SupplierListClient = ({
   const router = useRouter();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { loading, setLoading } = useLoadingStore();
   const [dataUpdate, setDataUpdate] = useState<any>(null);
   const suppliers = initialData || [];
   const meta = initialMeta;
 
   useEffect(() => {
-    setIsLoading(false);
+    setLoading(false);
   }, [searchParams]);
 
   const onChange = (pagination: any) => {
-    setIsLoading(true);
+    setLoading(true);
     const params = new URLSearchParams(searchParams);
     params.set("current", pagination.current?.toString() ?? "1");
     params.set("pageSize", meta?.pageSize?.toString() ?? "10");
@@ -63,13 +64,9 @@ const SupplierListClient = ({
 
   const handleDeleteSupplier = async (id: string) => {
     try {
-      await deleteSupplier(id);
+      await deleteSupplierForAdmin(id);
     } catch {
-    } finally {
-      setTimeout(() => {
-        window.location.reload();
-      }, 0);
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -104,7 +101,7 @@ const SupplierListClient = ({
         onFilter={() => console.log("Filter")}
       />
 
-      <Spin spinning={isLoading} size="large">
+      <Spin spinning={loading} size="large">
         <Table
           rowSelection={{ type: "checkbox", ...rowSelection }}
           bordered
@@ -124,13 +121,11 @@ const SupplierListClient = ({
         />
       </Spin>
 
-      {/* MODAL TẠO MỚI */}
       <SupplierCreateModal
         isOk={isCreateModalOpen}
         isCancel={() => setIsCreateModalOpen(false)}
       />
 
-      {/* MODAL CHỈNH SỬA */}
       <SupplierEditModal
         isOk={isEditModalOpen}
         isCancel={() => {
@@ -138,6 +133,7 @@ const SupplierListClient = ({
           setDataUpdate(null);
         }}
         dataUpdate={dataUpdate}
+        setDataUpdate
       />
     </div>
   );

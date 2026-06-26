@@ -17,19 +17,18 @@ import {
   Image,
   Select,
   Col,
-  InputNumber,
   Row,
   Radio,
-  Checkbox,
   TreeSelect,
 } from "antd";
 import { useMemo, useState } from "react";
 import styles from "./style.module.scss";
 import { useRouter } from "next/navigation";
+import useLoadingStore from "@/library/stores/useLoadingStore";
 
 const ProductCreateModal = (props: any) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(false);
+  const { loading, setLoading } = useLoadingStore();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -104,12 +103,14 @@ const ProductCreateModal = (props: any) => {
   return (
     <>
       <Modal
-        maskClosable={true}
+        maskClosable={false}
         title="Add New Products"
         open={isOk}
         onOk={() => form.submit()}
         onCancel={handleCancel}
         width={1100}
+        confirmLoading={loading}
+        cancelButtonProps={{ disabled: loading }}
       >
         <Spin spinning={loading}>
           <div className={styles.subtitle}>

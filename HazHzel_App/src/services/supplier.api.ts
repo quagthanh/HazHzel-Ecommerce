@@ -35,7 +35,7 @@ export async function getSuppliersForAdmin(params: any) {
   return res;
 }
 
-export async function createSupplier(formData: FormData) {
+export async function createSupplierForAdmin(formData: FormData) {
   try {
     const res = await sendRequestFile<any>({
       url: "/suppliers",
@@ -53,7 +53,7 @@ export async function createSupplier(formData: FormData) {
   }
 }
 
-export async function updateSupplier({
+export async function updateSupplierForAdmin({
   _id,
   formData,
 }: {
@@ -68,7 +68,7 @@ export async function updateSupplier({
   });
 }
 
-export async function deleteSupplier(_id: string) {
+export async function deleteSupplierForAdmin(_id: string) {
   return sendRequest<any>({
     url: `/suppliers/${_id}`,
     method: "DELETE",

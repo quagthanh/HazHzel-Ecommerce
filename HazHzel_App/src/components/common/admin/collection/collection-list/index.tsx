@@ -11,17 +11,9 @@ import PaginationInfo from "../../pagination-info";
 import { getCollectionColumns } from "../collection-columns";
 import CollectionEditModal from "../collection-modal/collection-edit-modal";
 import CollectionCreateModal from "../collection-modal/collection-create-modal";
-import { deleteCollection } from "@/services/collection.api";
-
-interface CollectionListClientProps {
-  initialData: ICollection[];
-  initialMeta: {
-    current: number;
-    pageSize: number;
-    total: number;
-    pages: number;
-  };
-}
+import { deleteCollectionForAdmin } from "@/services/collection.api";
+import useLoadingStore from "@/library/stores/useLoadingStore";
+import { CollectionListClientProps } from "@/types/collection";
 
 const CollectionListClient = ({
   initialData,
@@ -32,17 +24,17 @@ const CollectionListClient = ({
   const router = useRouter();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { loading, setLoading } = useLoadingStore();
   const [dataUpdate, setDataUpdate] = useState<any>(null);
   const collections = initialData || [];
   const meta = initialMeta;
 
   useEffect(() => {
-    setIsLoading(false);
+    setLoading(false);
   }, [searchParams]);
 
   const onChange = (pagination: any) => {
-    setIsLoading(true);
+    setLoading(true);
     const params = new URLSearchParams(searchParams);
     params.set("current", pagination.current?.toString() ?? "1");
     params.set("pageSize", meta?.pageSize?.toString() ?? "10");
@@ -62,13 +54,9 @@ const CollectionListClient = ({
 
   const handleDeleteCollection = async (id: string) => {
     try {
-      await deleteCollection(id);
+      await deleteCollectionForAdmin(id);
     } catch {
-    } finally {
-      setTimeout(() => {
-        window.location.reload();
-      }, 0);
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -103,7 +91,7 @@ const CollectionListClient = ({
         onFilter={() => console.log("Filter")}
       />
 
-      <Spin spinning={isLoading} size="large">
+      <Spin spinning={loading} size="large">
         <Table
           rowSelection={{ type: "checkbox", ...rowSelection }}
           bordered

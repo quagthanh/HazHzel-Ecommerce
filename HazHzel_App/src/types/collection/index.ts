@@ -1,3 +1,5 @@
+import { ICollection } from "../interface";
+
 export enum EntityType {
   STORE = "STORE",
   COLLECTION = "COLLECTION",
@@ -13,5 +15,15 @@ export interface IMasonryItem {
     secure_url: string;
     width: number;
     height: number;
+  };
+}
+
+export interface CollectionListClientProps {
+  initialData: ICollection[];
+  initialMeta: {
+    current: number;
+    pageSize: number;
+    total: number;
+    pages: number;
   };
 }
