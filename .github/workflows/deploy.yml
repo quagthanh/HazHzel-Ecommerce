@@ -104,4 +104,4 @@ jobs:
             docker compose up -d --force-recreate
 
             # 4. DELETE ENV FILES FOR SECURITY
-            rm HazHzel_App/.env HazHzel_Server/.env
+            #rm HazHzel_App/.env HazHzel_Server/.env
