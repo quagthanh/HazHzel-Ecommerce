@@ -6,6 +6,7 @@ interface IUser {
   name: string;
   email: string;
   roles: string[];
+  roleName: string;
   isActive?: boolean;
   access_token: string;
   accountType: string;

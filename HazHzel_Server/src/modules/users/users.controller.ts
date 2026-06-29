@@ -17,7 +17,7 @@ import { Public } from '@/shared/decorators/customize';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Public()
   @Post()
@@ -27,10 +27,12 @@ export class UsersController {
   @Get()
   async findAll(
     @Query() query: string,
-    @Query('current') current: string,
-    @Query('pageSize') pageSize: string,
+    @Query('current') current?: string,
+    @Query('pageSize') pageSize?: string,
+    @Query('all') all?: string,
   ) {
-    return this.usersService.findAll(query, +current, +pageSize);
+    const isAll = all === 'true';
+    return this.usersService.findAll(query, +current, +pageSize, isAll);
   }
 
   @Get('me')

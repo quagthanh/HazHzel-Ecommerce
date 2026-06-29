@@ -7,6 +7,7 @@ import TopLoader from "@/components/common/progress-bar";
 import AuthInitializer from "@/utils/authInitializer";
 import ClientChatWidget from "@/components/common/admin/chat/chat-widget";
 import Providers from "@/providers/SessionProvider";
+import { roleAccount } from "@/types/enum";
 
 const mainFont = Poppins({
   subsets: ["latin"],
@@ -24,6 +25,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  const isSystemAdmin = session?.user?.roleName?.includes(
+    roleAccount.SYSTEM_ADMIN,
+  );
+  const shouldShowChat = session && !isSystemAdmin;
   return (
     <html lang="en">
       <body className={`${mainFont.className} ${mainFont.variable}`}>
@@ -32,7 +37,7 @@ export default async function RootLayout({
             <TopLoader />
             <AuthInitializer user={session?.user} />
             {children}
-            <ClientChatWidget />
+            {shouldShowChat && <ClientChatWidget session={session} />}
           </Providers>
         </AntdRegistry>
       </body>

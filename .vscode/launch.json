@@ -17,11 +17,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}/HazHzel_App",
       "runtimeExecutable": "node",
-      "runtimeArgs": [
-        "--inspect",
-        "node_modules/next/dist/bin/next",
-        "dev"
-      ],
+      "runtimeArgs": ["--inspect", "node_modules/next/dist/bin/next", "dev"],
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"]
     },

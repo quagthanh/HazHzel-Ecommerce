@@ -31,7 +31,7 @@ export class UsersService {
     private readonly mailerService: MailerService,
     @InjectModel(Role.name) private readonly roleModel: Model<Role>,
     private readonly orderService: OrderService,
-  ) {}
+  ) { }
   isEmailExist = async (email: string) => {
     const user = await this.userModel.exists({ email });
 
@@ -56,7 +56,8 @@ export class UsersService {
     return user;
   }
 
-  async findAll(query: string, current: number, pageSize: number) {
+  async findAll(query: string, current?: number, pageSize?: number, isAll?: boolean) {
+
     return pagination(
       this.userModel,
       query,
@@ -66,6 +67,7 @@ export class UsersService {
       {
         password: 0,
       },
+      isAll,
     );
   }
 

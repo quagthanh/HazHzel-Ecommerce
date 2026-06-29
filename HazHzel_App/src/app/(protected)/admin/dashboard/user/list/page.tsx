@@ -1,6 +1,5 @@
 import UserListClient from "@/components/common/admin/user/user.list";
 import { getUser } from "@/services/user.api";
-import { auth } from "@/auth";
 import { AdminPageProps } from "@/types/product";
 const ManageUserPage = async ({ searchParams }: AdminPageProps) => {
   const current = Number(searchParams?.current) || 1;

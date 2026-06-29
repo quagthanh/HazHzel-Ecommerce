@@ -11,7 +11,7 @@ const MasonryGallery = ({ items }: Props) => {
   return (
     <div className={styles.masonryWrapper}>
       {items.map((item) => (
-        <MasonryCard key={item.id} item={item} />
+        <MasonryCard key={item._id} item={item} />
       ))}
     </div>
   );

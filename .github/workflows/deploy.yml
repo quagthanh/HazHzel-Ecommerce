@@ -50,6 +50,9 @@ jobs:
           FE_AUTH_SECRET: ${{ secrets.FE_AUTH_SECRET }}
           FE_AUTH_TRUST_HOST: ${{ secrets.FE_AUTH_TRUST_HOST }}
           FE_AUTH_URL: ${{ secrets.FE_AUTH_URL }}
+          FE_NEXT_PUBLIC_CHAT_APP_ID: ${{ secrets.FE_NEXT_PUBLIC_CHAT_APP_ID }}
+          FE_NEXT_PUBLIC_CHAT_SERVICE_URL: ${{ secrets.FE_NEXT_PUBLIC_CHAT_SERVICE_URL }}
+          FE_NEXT_PUBLIC_ADMIN_ID: ${{ secrets.FE_NEXT_PUBLIC_ADMIN_ID }}
 
           BE_PORT: ${{ secrets.BE_PORT }}
           BE_MONGODB_URI: ${{ secrets.BE_MONGODB_URI }}
@@ -60,12 +63,13 @@ jobs:
           BE_CLOUDINARY_NAME: ${{ secrets.BE_CLOUDINARY_NAME }}
           BE_CLOUDINARY_API_KEY: ${{ secrets.BE_CLOUDINARY_API_KEY }}
           BE_CLOUDINARY_API_SECRET: ${{ secrets.BE_CLOUDINARY_API_SECRET }}
+          BE_CHAT_APP_ID: ${{ secrets.BE_CHAT_APP_ID }}
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
 
-          envs: FE_AUTH_SECRET,BE_PORT,BE_MONGODB_URI,BE_JWT_SECRET,BE_JWT_ACCESS_TOKEN_EXPIRED,BE_MAILDEV_INCOMING_USER,BE_MAILDEV_INCOMING_PASS,BE_CLOUDINARY_NAME,BE_CLOUDINARY_API_KEY,BE_CLOUDINARY_API_SECRET,FE_AUTH_TRUST_HOST,FE_AUTH_URL
+          envs: FE_AUTH_SECRET,BE_PORT,BE_MONGODB_URI,BE_JWT_SECRET,BE_JWT_ACCESS_TOKEN_EXPIRED,BE_MAILDEV_INCOMING_USER,BE_MAILDEV_INCOMING_PASS,BE_CLOUDINARY_NAME,BE_CLOUDINARY_API_KEY,BE_CLOUDINARY_API_SECRET,FE_AUTH_TRUST_HOST,FE_AUTH_URL,FE_NEXT_PUBLIC_CHAT_APP_ID,FE_NEXT_PUBLIC_CHAT_SERVICE_URL,FE_NEXT_PUBLIC_ADMIN_ID,BE_CHAT_APP_ID
 
           script: |
             cd /home/thanh/HazHzel-Ecommerce
@@ -80,6 +84,9 @@ jobs:
             echo "INTERNAL_BACKEND_URL=http://backend:8000/api/v1" >> HazHzel_App/.env
             echo "AUTH_TRUST_HOST=$FE_AUTH_TRUST_HOST" >> HazHzel_App/.env
             echo "AUTH_URL=$FE_AUTH_URL" >> HazHzel_App/.env
+            echo "NEXT_PUBLIC_CHAT_APP_ID=$FE_NEXT_PUBLIC_CHAT_APP_ID" >> HazHzel_App/.env
+            echo "NEXT_PUBLIC_CHAT_SERVICE_URL=$FE_NEXT_PUBLIC_CHAT_SERVICE_URL" >> HazHzel_App/.env
+            echo "NEXT_PUBLIC_ADMIN_ID=$FE_NEXT_PUBLIC_ADMIN_ID" >> HazHzel_App/.env
 
             # 3. CREATE .ENV FILE FOR BACKEND
             echo "PORT=$BE_PORT" > HazHzel_Server/.env
@@ -91,6 +98,8 @@ jobs:
             echo "CLOUDINARY_NAME=$BE_CLOUDINARY_NAME" >> HazHzel_Server/.env
             echo "CLOUDINARY_API_KEY=$BE_CLOUDINARY_API_KEY" >> HazHzel_Server/.env
             echo "CLOUDINARY_API_SECRET=$BE_CLOUDINARY_API_SECRET" >> HazHzel_Server/.env
+            echo "CHAT_APP_ID=$BE_CHAT_APP_ID" >> HazHzel_Server/.env
+
             docker compose pull
             docker compose up -d --force-recreate
 

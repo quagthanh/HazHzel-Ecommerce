@@ -5,7 +5,7 @@ export enum EntityType {
 }
 
 export interface IMasonryItem {
-  id: string;
+  _id: string;
   title: string;
   slug: string;
   type: EntityType;

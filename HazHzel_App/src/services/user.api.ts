@@ -1,22 +1,23 @@
 "use server";
 import { sendRequest, sendRequestFile } from "@/utils/api";
 import { IUserTable } from "@/types/backend";
-import { auth } from "@/auth";
 import { ResponseData } from "@/types/interface";
 
 export async function getUser({
   current,
   pageSize,
+  all,
 }: {
-  current: number;
-  pageSize: number;
-}) {
+  current?: number;
+  pageSize?: number;
+  all?: boolean;
+} = {}) {
   return sendRequest<ResponseData<IUserTable>>({
     url: "/users",
     method: "GET",
     queryParams: {
       current,
-      pageSize,
+      pageSize, all,
     },
   });
 }

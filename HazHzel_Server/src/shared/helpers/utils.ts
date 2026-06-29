@@ -11,7 +11,7 @@ const saltOrRounds = 10;
 export const hashPassword = async (plainPassword: string) => {
   try {
     return await bcrypt.hash(plainPassword, saltOrRounds);
-  } catch (error) {}
+  } catch (error) { }
 };
 export const comparePassword = async (
   plainPassword: string,
@@ -19,7 +19,7 @@ export const comparePassword = async (
 ) => {
   try {
     return await bcrypt.compare(plainPassword, hashPassword);
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const isValidId = (id: string): boolean => mongoose.isValidObjectId(id);
@@ -35,6 +35,7 @@ export async function pagination(
   pageSize: number = 5,
   populate: any[] = [],
   baseProjection?: any,
+  isAll: boolean = false,
 ) {
   const { filter, sort, projection } = aqp(query);
   if (!current) current = 1;
@@ -43,26 +44,29 @@ export async function pagination(
   if (filter.current) delete filter.current;
   if (filter.pageSize) delete filter.pageSize;
 
-  const totalItems = await model.countDocuments(filter);
-  const totalPages = Math.ceil(totalItems / pageSize);
+  if (filter.all) delete filter.all;
 
-  const skip = (current - 1) * pageSize;
-  let finalProjection = projection;
-  finalProjection = projection
-    ? { ...baseProjection, ...projection }
-    : baseProjection;
-  const result = await model
+  const totalItems = await model.countDocuments(filter);
+  let finalProjection = projection ? { ...baseProjection, ...projection } : baseProjection;
+
+  let resultQuery = model
     .find(filter)
-    .skip(skip)
-    .limit(pageSize)
     .select(finalProjection)
     .sort(sort as any)
     .populate(populate);
+
+  if (!isAll) {
+    const skip = (current - 1) * pageSize;
+    resultQuery = resultQuery.skip(skip).limit(pageSize);
+  }
+
+  const result = await resultQuery;
+
   return {
     meta: {
-      current: current,
-      pageSize: pageSize,
-      pages: totalPages,
+      current: isAll ? 1 : current,
+      pageSize: isAll ? totalItems : pageSize,
+      pages: isAll ? 1 : Math.ceil(totalItems / pageSize),
       total: totalItems,
     },
     result,

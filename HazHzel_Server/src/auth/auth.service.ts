@@ -35,14 +35,17 @@ export class AuthService {
   }
 
   async login(user: UserResponseDto) {
-    const payload = { username: user.email, sub: user._id, roles: user.roles, appId: this.configService.get<string>("CHAT_APP_ID") };
     const role = await this.roleService.findOne(user.roles[0]);
+
+    const payload = { username: user.email, sub: user._id, roles: user.roles, roleName: role.name, appId: this.configService.get<string>("CHAT_APP_ID") };
+
     let result = {
       user: {
         _id: user._id,
         name: user.name,
         email: user.email,
-        roles: user.roles || role,
+        roles: user.roles,
+        roleName: role.name,
       },
       access_token: this.jwtService.sign(payload),
     } as AuthResponseDto;

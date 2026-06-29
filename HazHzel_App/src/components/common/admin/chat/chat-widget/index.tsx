@@ -1,16 +1,25 @@
 "use client";
-
+import { mutate } from "swr";
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Input, Spin, Avatar, Typography } from "antd";
+import { Button, Input, Spin, Avatar, Typography, FloatButton } from "antd";
 import { MessageCircle, X, Send } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useChatService } from "@/utils/hooks/useChatService";
 import { useChatStore } from "@/library/stores/useChatStore";
+import styles from "@/components/common/admin/chat/chat-widget/style.module.scss";
+import {
+  CloseOutlined,
+  MessageOutlined,
+  SendOutlined,
+} from "@ant-design/icons";
+import { roleAccount } from "@/types/enum";
 
 const ADMIN_ID = process.env.NEXT_PUBLIC_ADMIN_ID || "admin";
+interface SessionProps {
+  session: any;
+}
 
-export default function ClientChatWidget() {
-  const { data: session } = useSession();
+export default function ClientChatWidget({ session }: SessionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -38,122 +47,77 @@ export default function ClientChatWidget() {
   }, [messages, isOpen]);
 
   const handleSendMessage = () => {
-    if (!inputValue.trim() || !socket) return;
+    if (!inputValue.trim() || !socket) {
+      console.log(
+        "Blocked! Missing data. Please check if the active Chat UserId is null",
+      );
+      return;
+    }
 
-    socket.emit(
-      "send message",
-      {
-        receivedId: ADMIN_ID,
-        content: inputValue,
-      },
-      (response: any) => {
-        if (response.success) {
-          setInputValue("");
+    const payload = {
+      receivedId: ADMIN_ID,
+      content: inputValue,
+    };
 
-          if (!activeConversationId && response.message?.conversationId) {
-            setActiveChat(response.message.conversationId, ADMIN_ID);
-          }
+    socket.emit("send message", payload, (response: any) => {
+      if (response.success) {
+        setInputValue("");
+
+        if (!activeConversationId && response.message?.conversationId) {
+          setActiveChat(response.message.conversationId, ADMIN_ID);
         }
-      },
-    );
+
+        if (activeConversationId || response.message?.conversationId) {
+          const convId =
+            activeConversationId || response.message.conversationId;
+          const token = session?.access_token;
+
+          mutate([`/api/chat/messages/${convId}`, token]);
+          mutate([`/api/chat/inbox`, token]);
+        }
+      } else {
+        console.error("Server error:", response.error);
+      }
+    });
   };
 
-  if (!session) return null;
-
   return (
-    <div
-      style={{ position: "fixed", bottom: "24px", right: "24px", zIndex: 9999 }}
-    >
+    <div className={styles.widgetContainer}>
       {isOpen && (
-        <div
-          style={{
-            width: "350px",
-            height: "500px",
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
-            display: "flex",
-            flexDirection: "column",
-            marginBottom: "16px",
-            overflow: "hidden",
-            border: "1px solid #e5e7eb",
-          }}
-        >
-          {/* Header */}
-          <div
-            style={{
-              padding: "16px",
-              backgroundColor: "#1677ff",
-              color: "#fff",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <div className={styles.chatPanel}>
+          <div className={styles.header}>
+            <div className={styles.headerInfo}>
               <Avatar
                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ADMIN_ID}`}
               />
               <div>
-                <div style={{ fontWeight: "bold", fontSize: "14px" }}>
-                  Hỗ trợ khách hàng
-                </div>
-                <div style={{ fontSize: "12px", opacity: 0.8 }}>
-                  Chúng tôi luôn sẵn sàng hỗ trợ bạn
-                </div>
+                <div className={styles.title}>Customer Support</div>
+                <div className={styles.subtitle}>We are here to help you</div>
               </div>
             </div>
             <Button
               type="text"
-              icon={<X color="#fff" size={20} />}
+              icon={<CloseOutlined style={{ color: "#fff" }} />}
               onClick={() => setIsOpen(false)}
-              style={{ padding: 0 }}
             />
           </div>
 
-          {/* Vùng Tin Nhắn */}
-          <div
-            style={{
-              flex: 1,
-              overflowY: "auto",
-              padding: "16px",
-              backgroundColor: "#f9fafb",
-            }}
-          >
+          <div className={styles.messageArea}>
             <Spin spinning={loadingMessages}>
               {!messages || messages.length === 0 ? (
-                <div
-                  style={{
-                    textAlign: "center",
-                    marginTop: "50px",
-                    color: "#9ca3af",
-                  }}
-                >
-                  Hãy gửi lời chào đến nhân viên tư vấn!
+                <div className={styles.emptyState}>
+                  Say hello to our support agent!
                 </div>
               ) : (
                 messages.map((msg: any) => (
                   <div
                     key={msg.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: msg.isMine ? "flex-end" : "flex-start",
-                      marginBottom: "12px",
-                    }}
+                    className={`${styles.messageRow} ${msg.isMine ? styles.isMine : ""}`}
                   >
                     <div
-                      style={{
-                        maxWidth: "75%",
-                        padding: "10px 14px",
-                        borderRadius: "12px",
-                        borderBottomRightRadius: msg.isMine ? "4px" : "12px",
-                        borderBottomLeftRadius: !msg.isMine ? "4px" : "12px",
-                        backgroundColor: msg.isMine ? "#1677ff" : "#ffffff",
-                        color: msg.isMine ? "#fff" : "#1f2937",
-                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
-                        border: msg.isMine ? "none" : "1px solid #e5e7eb",
-                        fontSize: "14px",
-                      }}
+                      className={`${styles.messageBubble} ${
+                        msg.isMine ? styles.mine : styles.theirs
+                      }`}
                     >
                       {msg.content}
                     </div>
@@ -164,26 +128,24 @@ export default function ClientChatWidget() {
             </Spin>
           </div>
 
-          {/* Ô Nhập Liệu */}
-          <div
-            style={{
-              padding: "12px",
-              borderTop: "1px solid #f0f0f0",
-              backgroundColor: "#fff",
-            }}
-          >
+          {/* Input Area */}
+          <div className={styles.inputArea}>
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onPressEnter={handleSendMessage}
-              placeholder="Nhập tin nhắn..."
+              placeholder="Type a message..."
+              style={{ borderRadius: "20px" }}
               suffix={
                 <Button
                   type="text"
                   icon={
-                    <Send
-                      size={18}
-                      color={inputValue.trim() ? "#1677ff" : "#9ca3af"}
+                    <SendOutlined
+                      style={{
+                        color: inputValue.trim()
+                          ? "var(--ant-color-primary)"
+                          : "#9ca3af",
+                      }}
                     />
                   }
                   onClick={handleSendMessage}
@@ -191,24 +153,23 @@ export default function ClientChatWidget() {
                   style={{ padding: 0 }}
                 />
               }
-              style={{ borderRadius: "20px", padding: "8px 16px" }}
             />
           </div>
         </div>
       )}
 
-      {/* BONG BÓNG CHAT (Floating Button) */}
+      {/* Floating Action Button */}
       {!isOpen && (
-        <Button
+        <FloatButton
           type="primary"
-          shape="circle"
-          size="large"
-          icon={<MessageCircle size={28} />}
+          icon={<MessageOutlined />}
           onClick={() => setIsOpen(true)}
           style={{
-            width: "60px",
-            height: "60px",
-            boxShadow: "0 4px 12px rgba(22, 119, 255, 0.4)",
+            position: "relative",
+            bottom: 0,
+            right: 0,
+            width: 60,
+            height: 60,
           }}
         />
       )}

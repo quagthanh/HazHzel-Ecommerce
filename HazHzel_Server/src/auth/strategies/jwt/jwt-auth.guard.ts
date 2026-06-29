@@ -30,7 +30,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (err || !user) {
       throw (
         err ||
-        new UnauthorizedException('Access token không hợp lệ hoặc đã hết hạn')
+        new UnauthorizedException('Access token is not valid or expired')
       );
     }
     return user;

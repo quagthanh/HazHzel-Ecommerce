@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react';
-import { io, Socket } from 'socket.io-client';
-import useSWR, { mutate } from 'swr';
+import { useEffect } from 'react';
+import { io } from 'socket.io-client';
+import useSWR from 'swr';
 import axios from 'axios';
 import { useChatStore } from '@/library/stores/useChatStore';
 import { useSession } from 'next-auth/react';
-const CHAT_API_URL = 'http://localhost:3005';
-const APP_ID = process.env.NEXT_PUBLIC_CHAT_APP_ID || '2c2b40ba-acdc-4461-b42d-cea2b282526e';
+const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_API_URL || 'http://localhost:3005';
+const APP_ID = process.env.NEXT_PUBLIC_CHAT_APP_ID;
 
 const fetcher = async (url: string, token: string) => {
     const res = await axios.get(`${CHAT_API_URL}${url}`, {
@@ -16,32 +16,28 @@ const fetcher = async (url: string, token: string) => {
 
 export const useChatService = () => {
     const { data: session, status } = useSession();
-    const token = session?.access_token as string;
+    const token = session?.access_token;
 
     const { socket, setSocket, activeConversationId } = useChatStore();
 
     useEffect(() => {
-        // Chỉ chạy khi đã load xong Auth và chưa có socket nào đang kết nối
         if (status === "loading" || !token || !APP_ID) return;
-        if (socket?.connected) return; // Nếu đã có socket đang sống thì không tạo mới
+        if (socket?.connected) return;
 
-        console.log("⏳ Đang khởi tạo kết nối Socket mới...");
 
         const newSocket = io(CHAT_API_URL, {
             auth: { token, appId: APP_ID },
-            reconnection: true, // Tự động kết nối lại nếu rớt mạng
+            reconnection: true,
         });
 
         newSocket.on('connect', () => {
-            console.log('✅ Socket đã kết nối thành công! ID:', newSocket.id);
-            setSocket(newSocket); // Lưu vào global store
+            setSocket(newSocket);
         });
 
         newSocket.on('connect_error', (error) => {
-            console.error('❌ Lỗi kết nối Socket:', error.message);
+            console.error('Error while connect to Socket:', error.message);
         });
 
-        // Cleanup khi component bị hủy hẳn
         return () => {
             newSocket.disconnect();
             setSocket(null);
