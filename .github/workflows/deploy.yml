@@ -40,6 +40,11 @@ jobs:
           context: ./HazHzel_App
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-frontend:latest
+          build-args: |
+            NEXT_PUBLIC_BACKEND_URL=/api/v1
+            NEXT_PUBLIC_CHAT_APP_ID=${{ secrets.FE_NEXT_PUBLIC_CHAT_APP_ID }}
+            NEXT_PUBLIC_CHAT_SERVICE_URL=${{ secrets.FE_NEXT_PUBLIC_CHAT_SERVICE_URL }}
+            NEXT_PUBLIC_ADMIN_ID=${{ secrets.FE_NEXT_PUBLIC_ADMIN_ID }}
 
   deploy:
     name: Deploy to VPS
