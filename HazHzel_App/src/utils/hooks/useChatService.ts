@@ -15,6 +15,7 @@ const fetcher = async (url: string, token: string) => {
 };
 
 export const useChatService = () => {
+    console.log("Check real:", CHAT_API_URL)
     const { data: session, status } = useSession();
     const token = session?.access_token;
 
