@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import axios from 'axios';
 import { useChatStore } from '@/library/stores/useChatStore';
 import { useSession } from 'next-auth/react';
-const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_SERVICE_URL || 'http://localhost:3005';
+const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_SERVICE_URL || 'http://localhost:30051221';
 const APP_ID = process.env.NEXT_PUBLIC_CHAT_APP_ID;
 
 const fetcher = async (url: string, token: string) => {
