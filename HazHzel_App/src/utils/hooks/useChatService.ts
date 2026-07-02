@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import axios from 'axios';
 import { useChatStore } from '@/library/stores/useChatStore';
 import { useSession } from 'next-auth/react';
-const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_SERVICE_URL || 'http://localhost:30051221';
+
+const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_SERVICE_URL || 'http://localhost:3005';
 const APP_ID = process.env.NEXT_PUBLIC_CHAT_APP_ID;
 
 const fetcher = async (url: string, token: string) => {
@@ -23,7 +24,6 @@ export const useChatService = () => {
     useEffect(() => {
         if (status === "loading" || !token || !APP_ID) return;
         if (socket?.connected) return;
-
 
         const newSocket = io(CHAT_API_URL, {
             auth: { token, appId: APP_ID },
@@ -53,6 +53,33 @@ export const useChatService = () => {
         token && activeConversationId ? [`/api/chat/messages/${activeConversationId}`, token] : null,
         ([url, token]) => fetcher(url, token)
     );
+
+    useEffect(() => {
+        if (!socket || !token) return;
+
+        const handleNewMessage = (newMessage: any) => {
+            if (activeConversationId === newMessage.conversationId) {
+                mutate(
+                    [`/api/chat/messages/${activeConversationId}`, token],
+                    (currentMessages: any = []) => {
+                        const isExist = currentMessages.some((msg: any) => msg.id === newMessage.id);
+                        if (isExist) return currentMessages;
+
+                        return [...currentMessages, newMessage];
+                    },
+                    { revalidate: false }
+                );
+            }
+
+            mutate([`/api/chat/inbox`, token]);
+        };
+
+        socket.on("receive message", handleNewMessage);
+
+        return () => {
+            socket.off("receive message", handleNewMessage);
+        };
+    }, [socket, activeConversationId, token]);
 
     return { inbox, loadingInbox, messages, loadingMessages };
 };
