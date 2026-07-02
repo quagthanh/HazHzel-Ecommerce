@@ -12,6 +12,7 @@ import { getCategoryColumns } from "../category-columns";
 import { deleteCategory } from "@/services/category.api";
 import CategoryCreateModal from "../category-modal/category-create-modal";
 import CategoryEditModal from "../category-modal/category-edit-modal";
+import useLoadingStore from "@/library/stores/useLoadingStore";
 
 interface CategoryListClientProps {
   initialData: ICategory[];
@@ -34,17 +35,17 @@ const CategoryListClient = ({
   const router = useRouter();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { loading, setLoading } = useLoadingStore();
   const [dataUpdate, setDataUpdate] = useState<any>(null);
   const categories = initialData || [];
   const meta = initialMeta;
 
   useEffect(() => {
-    setIsLoading(false);
+    setLoading(false);
   }, [searchParams]);
 
   const onChange = (pagination: any) => {
-    setIsLoading(true);
+    setLoading(true);
     const params = new URLSearchParams(searchParams);
     params.set("current", pagination.current?.toString() ?? "1");
     params.set("pageSize", meta?.pageSize?.toString() ?? "10");
@@ -66,7 +67,7 @@ const CategoryListClient = ({
     try {
       await deleteCategory(id);
     } catch {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -101,7 +102,7 @@ const CategoryListClient = ({
         onFilter={() => console.log("Filter")}
       />
 
-      <Spin spinning={isLoading} size="large">
+      <Spin spinning={loading} size="large">
         <Table
           rowSelection={{ type: "checkbox", ...rowSelection }}
           bordered

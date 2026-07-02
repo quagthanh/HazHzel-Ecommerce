@@ -17,6 +17,7 @@ import {
   UploadProps,
   Image,
   Tabs,
+  Spin,
 } from "antd";
 import { useEffect, useState } from "react";
 import { EyeOutlined, PlusOutlined } from "@ant-design/icons";
@@ -27,6 +28,7 @@ import ProductCardPreview from "./product-card-preview";
 import ProductEditForm from "../product-edit-form";
 import VariantList from "../../variant-section/variant-list";
 import { useRouter } from "next/navigation";
+import useLoadingStore from "@/library/stores/useLoadingStore";
 
 const ProductEditModal = (props: any) => {
   const { isOk, isCancel, dataUpdate, setDataUpdate, category, supplier } =
@@ -35,6 +37,8 @@ const ProductEditModal = (props: any) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const { loading, setLoading } = useLoadingStore();
+
   const router = useRouter();
   useEffect(() => {
     const supplierId = dataUpdate?.supplierId?._id;
@@ -75,7 +79,9 @@ const ProductEditModal = (props: any) => {
   };
 
   const onFinish = async (values: any) => {
-    if (dataUpdate) {
+    if (!dataUpdate) return;
+    try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("description", values.description);
@@ -113,6 +119,11 @@ const ProductEditModal = (props: any) => {
           description: res?.message,
         });
       }
+    } catch (error) {
+      console.error(error);
+      message.error("Error while updating product");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -200,15 +211,19 @@ const ProductEditModal = (props: any) => {
   return (
     <>
       <Modal
-        maskClosable={true}
+        maskClosable={false}
         title="Edit Product"
         open={isOk}
         onOk={() => form.submit()}
         onCancel={handleCancel}
         closable={false}
         width={1200}
+        confirmLoading={loading}
+        cancelButtonProps={{ disabled: loading }}
       >
-        <Tabs defaultActiveKey="info" items={tabItems} />
+        <Spin spinning={loading}>
+          <Tabs defaultActiveKey="info" items={tabItems} />
+        </Spin>{" "}
       </Modal>
 
       {/* Lightbox Preview */}

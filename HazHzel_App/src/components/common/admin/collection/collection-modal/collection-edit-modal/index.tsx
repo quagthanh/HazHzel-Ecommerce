@@ -16,6 +16,7 @@ import {
   UploadFile,
   UploadProps,
   Image,
+  Spin,
 } from "antd";
 import { useEffect, useState } from "react";
 import { EyeOutlined, PlusOutlined } from "@ant-design/icons";
@@ -23,7 +24,8 @@ import { FileType } from "@/types/product";
 import { getBase64 } from "@/utils/helper";
 import styles from "./style.module.scss";
 import { CollectionEditForm } from "../collection-edit-form";
-import { updateCollection } from "@/services/collection.api";
+import { updateCollectionForAdmin } from "@/services/collection.api";
+import useLoadingStore from "@/library/stores/useLoadingStore";
 
 const CollectionEditModal = (props: any) => {
   const { isOk, isCancel, dataUpdate, setDataUpdate, category, collection } =
@@ -32,6 +34,8 @@ const CollectionEditModal = (props: any) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const { loading, setLoading } = useLoadingStore();
+
   useEffect(() => {
     if (dataUpdate) {
       // Set form values
@@ -67,10 +71,11 @@ const CollectionEditModal = (props: any) => {
   };
 
   const onFinish = async (values: any) => {
-    if (dataUpdate) {
+    if (!dataUpdate) return;
+    try {
+      setLoading(true);
       const formData = new FormData();
       if (values.name) formData.append("name", values.name);
-      if (values.slug) formData.append("slug", values.slug);
       if (values.description)
         formData.append("description", values.description);
 
@@ -80,7 +85,7 @@ const CollectionEditModal = (props: any) => {
         }
       });
 
-      const res = await updateCollection({
+      const res = await updateCollectionForAdmin({
         _id: dataUpdate._id,
         formData,
       });
@@ -94,6 +99,11 @@ const CollectionEditModal = (props: any) => {
           description: res?.data?.message,
         });
       }
+    } catch (error) {
+      console.error(error);
+      message.error("Error while updating collection");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -138,23 +148,26 @@ const CollectionEditModal = (props: any) => {
         onCancel={handleCancel}
         closable={false}
         width={1200}
+        confirmLoading={loading}
+        cancelButtonProps={{ disabled: loading }}
       >
         <div className={styles.subtitle}>
           Please update the form below to edit collection information.
         </div>
-
-        <Row gutter={24}>
-          <Col span={16}>
-            <CollectionEditForm
-              form={form}
-              onFinish={onFinish}
-              fileList={fileList}
-              handlePreview={handlePreview}
-              handleChange={handleChange}
-              beforeUpload={beforeUpload}
-            />
-          </Col>
-        </Row>
+        <Spin spinning={loading}>
+          <Row gutter={24}>
+            <Col span={16}>
+              <CollectionEditForm
+                form={form}
+                onFinish={onFinish}
+                fileList={fileList}
+                handlePreview={handlePreview}
+                handleChange={handleChange}
+                beforeUpload={beforeUpload}
+              />
+            </Col>
+          </Row>
+        </Spin>
       </Modal>
 
       {/* Lightbox Preview */}

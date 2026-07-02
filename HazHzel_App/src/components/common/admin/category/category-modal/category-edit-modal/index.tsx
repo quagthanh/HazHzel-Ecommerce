@@ -19,6 +19,7 @@ import styles from "./style.module.scss";
 import { updateCategory } from "@/services/category.api";
 import CategoryEditForm from "../category-edit-form";
 import { useRouter } from "next/navigation";
+import useLoadingStore from "@/library/stores/useLoadingStore";
 
 const CategoryEditModal = (props: any) => {
   const { isOk, isCancel, dataUpdate, setDataUpdate, categoryOptions } = props;
@@ -27,6 +28,7 @@ const CategoryEditModal = (props: any) => {
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const router = useRouter();
+  const { loading, setLoading } = useLoadingStore();
   useEffect(() => {
     if (dataUpdate) {
       form.setFieldsValue({
@@ -60,7 +62,9 @@ const CategoryEditModal = (props: any) => {
   };
 
   const onFinish = async (values: any) => {
-    if (dataUpdate) {
+    if (!dataUpdate) return;
+    try {
+      setLoading(true);
       const formData = new FormData();
       if (values.name) formData.append("name", values.name);
       if (values.parentCategory)
@@ -86,6 +90,10 @@ const CategoryEditModal = (props: any) => {
           description: res?.data?.message,
         });
       }
+    } catch (error) {
+      message.error("Error while updating category");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -130,6 +138,10 @@ const CategoryEditModal = (props: any) => {
         onCancel={handleCancel}
         closable={false}
         width={1200}
+        confirmLoading={loading}
+        cancelButtonProps={{
+          disabled: loading,
+        }}
       >
         <div className={styles.subtitle}>
           Please update the form below to edit category information.

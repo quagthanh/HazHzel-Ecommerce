@@ -9,7 +9,7 @@ export async function getCollectionsForAdmin(params: any) {
   });
 }
 
-export async function createCollection(formData: FormData) {
+export async function createCollectionForAdmin(formData: FormData) {
   try {
     const res = await sendRequestFile<any>({
       url: "/collections",
@@ -27,7 +27,7 @@ export async function createCollection(formData: FormData) {
   }
 }
 
-export async function updateCollection({
+export async function updateCollectionForAdmin({
   _id,
   formData,
 }: {
@@ -41,7 +41,7 @@ export async function updateCollection({
   });
 }
 
-export async function deleteCollection(_id: string) {
+export async function deleteCollectionForAdmin(_id: string) {
   return sendRequest<any>({
     url: `/collections/${_id}`,
     method: "DELETE",

@@ -1,6 +1,5 @@
 "use client";
 
-import { updateProductsForAdmin } from "@/services/product.api";
 import {
   Col,
   Form,
@@ -11,23 +10,26 @@ import {
   UploadFile,
   UploadProps,
   Image,
+  Spin,
 } from "antd";
 import { useEffect, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
 import { FileType } from "@/types/product";
 import { getBase64 } from "@/utils/helper";
 import styles from "./style.module.scss";
 import SupplierEditForm from "../supplier-edit-form";
-import { updateSupplier } from "@/services/supplier.api";
+import { updateSupplierForAdmin } from "@/services/supplier.api";
 import { useRouter } from "next/navigation";
+import useLoadingStore from "@/library/stores/useLoadingStore";
 
 const SupplierEditModal = (props: any) => {
-  const { isOk, isCancel, dataUpdate, category, supplier } = props;
+  const { isOk, isCancel, dataUpdate, setDataUpdate, category, supplier } =
+    props;
   const [form] = Form.useForm();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const router = useRouter();
+  const { loading, setLoading } = useLoadingStore();
   useEffect(() => {
     if (dataUpdate) {
       form.setFieldsValue({
@@ -52,6 +54,15 @@ const SupplierEditModal = (props: any) => {
     }
   }, [dataUpdate, form]);
 
+  const handleCloseUpdateModal = () => {
+    if (setDataUpdate) {
+      setDataUpdate(null);
+    }
+    form.resetFields();
+    setFileList([]);
+    isCancel();
+  };
+
   const handleCancel = () => {
     form.resetFields();
     setFileList([]);
@@ -59,7 +70,9 @@ const SupplierEditModal = (props: any) => {
   };
 
   const onFinish = async (values: any) => {
-    if (dataUpdate) {
+    if (!dataUpdate) return;
+    try {
+      setLoading(true);
       const formData = new FormData();
       if (values.name) formData.append("name", values.name);
       if (values.contactName)
@@ -75,25 +88,26 @@ const SupplierEditModal = (props: any) => {
           formData.append("images", file.url);
         }
       });
-      try {
-        const res = await updateSupplier({
-          _id: dataUpdate._id,
-          formData,
-        });
+      const res = await updateSupplierForAdmin({
+        _id: dataUpdate._id,
+        formData,
+      });
 
-        if (res?.data) {
-          message.success("Update supplier successfully");
-          router.refresh();
-          handleCancel();
-        } else {
-          notification.error({
-            message: "Update failed",
-            description: res?.message || "Something went wrong",
-          });
-        }
-      } catch (error) {
-        message.error("System Error");
+      if (res?.data) {
+        message.success("Update supplier successfully");
+        router.refresh();
+        handleCloseUpdateModal();
+      } else {
+        notification.error({
+          message: "Update failed",
+          description: res?.message || "Something went wrong",
+        });
       }
+    } catch (error) {
+      console.error(error);
+      message.error("Error while updating supplier");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -120,23 +134,27 @@ const SupplierEditModal = (props: any) => {
         onCancel={handleCancel}
         closable={false}
         width={1200}
+        confirmLoading={loading}
+        cancelButtonProps={{ disabled: loading }}
       >
-        <div className={styles.subtitle}>
-          Please update the form below to edit supplier information.
-        </div>
+        <Spin spinning={loading}>
+          <div className={styles.subtitle}>
+            Please update the form below to edit supplier information.
+          </div>
 
-        <Row gutter={24}>
-          <Col span={16}>
-            <SupplierEditForm
-              form={form}
-              onFinish={onFinish}
-              fileList={fileList}
-              handlePreview={handlePreview}
-              handleChange={handleChange}
-              beforeUpload={beforeUpload}
-            />
-          </Col>
-        </Row>
+          <Row gutter={24}>
+            <Col span={24}>
+              <SupplierEditForm
+                form={form}
+                onFinish={onFinish}
+                fileList={fileList}
+                handlePreview={handlePreview}
+                handleChange={handleChange}
+                beforeUpload={beforeUpload}
+              />
+            </Col>
+          </Row>
+        </Spin>
       </Modal>
 
       {/* Lightbox Preview */}

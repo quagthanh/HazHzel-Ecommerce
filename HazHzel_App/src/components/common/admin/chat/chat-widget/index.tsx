@@ -1,9 +1,7 @@
 "use client";
 import { mutate } from "swr";
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Input, Spin, Avatar, Typography, FloatButton } from "antd";
-import { MessageCircle, X, Send } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { Button, Input, Spin, Avatar, FloatButton } from "antd";
 import { useChatService } from "@/utils/hooks/useChatService";
 import { useChatStore } from "@/library/stores/useChatStore";
 import styles from "@/components/common/admin/chat/chat-widget/style.module.scss";
@@ -12,7 +10,6 @@ import {
   MessageOutlined,
   SendOutlined,
 } from "@ant-design/icons";
-import { roleAccount } from "@/types/enum";
 
 const ADMIN_ID = process.env.NEXT_PUBLIC_ADMIN_ID || "admin";
 interface SessionProps {
@@ -63,16 +60,22 @@ export default function ClientChatWidget({ session }: SessionProps) {
       if (response.success) {
         setInputValue("");
 
+        const convId = activeConversationId || response.message.conversationId;
+        const token = session?.access_token;
+
         if (!activeConversationId && response.message?.conversationId) {
           setActiveChat(response.message.conversationId, ADMIN_ID);
         }
 
-        if (activeConversationId || response.message?.conversationId) {
-          const convId =
-            activeConversationId || response.message.conversationId;
-          const token = session?.access_token;
+        if (convId && token) {
+          mutate(
+            [`/api/chat/messages/${convId}`, token],
+            (currentMessages: any = []) => {
+              return [...currentMessages, response.message];
+            },
+            { revalidate: false },
+          );
 
-          mutate([`/api/chat/messages/${convId}`, token]);
           mutate([`/api/chat/inbox`, token]);
         }
       } else {

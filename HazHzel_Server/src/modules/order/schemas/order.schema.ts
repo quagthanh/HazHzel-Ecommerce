@@ -2,7 +2,6 @@ import {
   Address,
   AddressSchema,
 } from '@/modules/address/schemas/address.schema';
-import { Discount } from '@/modules/discount/schemas/discount.schema';
 import {
   Payment,
   PaymentSchema,
@@ -12,7 +11,6 @@ import mongoose, { HydratedDocument, Types } from 'mongoose';
 import { OrderItem, OrderItemSchema } from './order-item.schema';
 import { OrderDiscount, OrderDiscountSchema } from './order-discount.schema';
 import { statusOrderEnum } from '@/shared/enums/statusOrder.enum';
-import { stat } from 'fs';
 
 export type OrderDocument = HydratedDocument<Order>;
 

@@ -20,7 +20,7 @@ const SupplierListPage = async ({ searchParams }: AdminPageProps) => {
       console.error(" API return 200 but can not find key 'data.data'");
     }
   } catch (error: any) {
-    console.error("Error when call API Product:", error?.message);
+    console.error("Error when call API Supplier:", error?.message);
   }
 
   return <SupplierListClient initialData={suppliers} initialMeta={meta} />;

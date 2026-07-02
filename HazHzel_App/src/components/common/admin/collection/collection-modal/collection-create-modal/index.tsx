@@ -1,7 +1,7 @@
 "use client";
 
-import { createCollection } from "@/services/collection.api";
-import { createSupplier } from "@/services/supplier.api";
+import useLoadingStore from "@/library/stores/useLoadingStore";
+import { createCollectionForAdmin } from "@/services/collection.api";
 import { FileType } from "@/types/product";
 import { getBase64 } from "@/utils/helper";
 import { PlusOutlined } from "@ant-design/icons";
@@ -13,12 +13,12 @@ import {
   Modal,
   notification,
   Row,
-  Switch,
   Upload,
   UploadFile,
   UploadProps,
   Image,
 } from "antd";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface CollectionCreateModalProps {
@@ -31,11 +31,11 @@ const CollectionCreateModal = ({
   isCancel,
 }: CollectionCreateModalProps) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(false);
+  const { loading, setLoading } = useLoadingStore();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-
+  const router = useRouter();
   const onFinish = async (values: any) => {
     setLoading(true);
 
@@ -48,23 +48,19 @@ const CollectionCreateModal = ({
       }
     });
 
-    try {
-      const res = await createCollection(formData);
-      if (res?.data) {
-        message.success("Create collection successfully");
-        handleCancel();
-        window.location.reload();
-      } else {
-        notification.error({
-          message: "Create failed",
-          description: res?.message,
-        });
-      }
-    } catch (error) {
-      message.error("System error");
-    } finally {
-      setLoading(false);
+    const res = await createCollectionForAdmin(formData);
+    if (res?.data) {
+      message.success("Create collection successfully");
+      router.refresh();
+      handleCancel();
+    } else {
+      notification.error({
+        message: "Create failed",
+        description: res?.message,
+      });
     }
+
+    setLoading(false);
   };
 
   const beforeUpload = (file: FileType) => {
@@ -106,6 +102,7 @@ const CollectionCreateModal = ({
         onCancel={handleCancel}
         width={800}
         confirmLoading={loading}
+        cancelButtonProps={{ disabled: loading }}
       >
         <Form
           layout="vertical"
