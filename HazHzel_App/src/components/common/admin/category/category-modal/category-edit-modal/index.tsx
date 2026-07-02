@@ -76,7 +76,6 @@ const CategoryEditModal = (props: any) => {
         _id: dataUpdate._id,
         formData,
       });
-      console.log(res);
       if (res?.data) {
         handleCloseUpdateModal();
         message.success("Update category successfully");

@@ -6,7 +6,6 @@ const ManageChatPage = async () => {
 
   try {
     const res = await getUser({ all: true });
-    console.log("CHeck resL", res);
 
     const backendData = res?.data;
     if (backendData) {

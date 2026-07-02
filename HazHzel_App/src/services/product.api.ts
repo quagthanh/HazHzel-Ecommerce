@@ -55,7 +55,6 @@ export async function getProductsByStore(
     queryParams: sendParams,
   });
 
-  console.log("Check res getProductsByStore:", res);
   return res;
 }
 //Product by category
@@ -136,7 +135,6 @@ export async function updateProductsForAdmin({
     method: "PATCH",
     body: formData,
   });
-  console.log("Check res update:", res);
   return res;
 }
 export async function deleteProductsForAdmin(_id: string) {
