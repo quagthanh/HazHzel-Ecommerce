@@ -20,7 +20,7 @@ import { ProductFilterDto } from './dto/product-filter.dto';
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) { }
 
   @Post()
   @UseInterceptors(FilesInterceptor('files'))
@@ -104,9 +104,6 @@ export class ProductController {
     @Query('current') current?: number,
     @Query('pageSize') pageSize?: number,
   ) {
-    console.log('Check filter in controller:', filter);
-    console.log('Check query in controller:', query);
-
     return this.productService.findByCategory(
       categorySlug,
       query,

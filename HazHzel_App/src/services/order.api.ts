@@ -8,7 +8,6 @@ export async function Checkout(checkoutDTO: any) {
     method: "POST",
     body: checkoutDTO,
   });
-  console.log("Check checkout:", res);
   return res;
 }
 

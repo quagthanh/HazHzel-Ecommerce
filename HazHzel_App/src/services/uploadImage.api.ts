@@ -24,7 +24,6 @@ export async function UploadImages(formData: FormData) {
 
     const payload = await res.json();
     revalidatePath("/admin/dashboard/product/list");
-    console.log("Payload from BE:", payload);
     return {
       statusCode: 201,
       message: "Success",

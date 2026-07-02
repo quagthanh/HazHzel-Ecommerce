@@ -33,11 +33,6 @@ const ChatClient = ({ users }: ChatClientProps) => {
   }, [messages]);
 
   const handleSendMessage = () => {
-    console.log("Check Data trước khi gửi:", {
-      inputValue,
-      socket: !!socket,
-      activeChatUserId,
-    });
     if (!inputValue.trim() || !socket || !activeChatUserId) {
       console.error(
         "Blocked! Missing data. Please check if the active Chat UserId is null",

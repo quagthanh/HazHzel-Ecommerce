@@ -75,7 +75,6 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   getTotalPrice: () => {
-    console.log("Calculating total price for items:", get().items);
     return get().items.reduce((total, item) => {
       const price = item?.variantId?.currentPrice ?? 0;
       const quantity = item?.quantity ?? 0;

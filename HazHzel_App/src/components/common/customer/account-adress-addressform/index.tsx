@@ -98,7 +98,6 @@ export function AddressFormModal(props: Props) {
   }
 
   async function handleSubmit(values: any) {
-    console.log("Check values after submit:", values);
     try {
       if (isEdit) {
         // Replace with your update API call
@@ -116,8 +115,6 @@ export function AddressFormModal(props: Props) {
         };
 
         await createAddress(addressPayload);
-        console.log("Create address:", values);
-        console.log("Check address payload:", addressPayload);
       }
       form.resetFields();
       setOpen(false);

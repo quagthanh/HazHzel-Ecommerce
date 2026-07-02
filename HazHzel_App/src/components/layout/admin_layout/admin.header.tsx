@@ -10,7 +10,6 @@ const { Header } = Layout;
 const AdminHeader = ({ session }: any) => {
   const handleClick = (e: any) => {
     if (e.key === "logout") {
-      console.log("Logout button is clicked");
       signOut({ callbackUrl: "/auth/login" });
     }
   };

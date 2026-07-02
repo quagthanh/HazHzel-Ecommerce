@@ -33,7 +33,6 @@ const PAYMENT_METHOD_LABEL: Record<string, string> = {
 };
 
 export function OrderEntry({ order, index }: OrderEntryProps) {
-  console.log("Rendering OrderEntry for order:", order);
   const shortId = order._id.slice(-8).toUpperCase();
 
   return (

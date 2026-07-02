@@ -48,9 +48,6 @@ export default function ModalReactive(props: any) {
   };
 
   const onFinishStep1 = async (value: checkCodeDTO) => {
-    console.log("STEP 1 SUBMIT", value);
-    console.log("STEP 1 userId", userId);
-
     const { code } = value;
     if (!userId) {
       return null;

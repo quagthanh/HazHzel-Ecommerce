@@ -24,7 +24,6 @@ const RegisterForm = () => {
   const router = useRouter();
 
   const onFinish = async (values: registerDTO) => {
-    console.log("Form values:", values);
     setLoading(true);
     values = {
       name: values.name,

@@ -15,7 +15,6 @@ export async function getMyAddress() {
     url: "/address/me",
     method: "GET",
   });
-  console.log("Check client address", res);
   return res;
 }
 

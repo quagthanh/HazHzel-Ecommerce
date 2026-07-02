@@ -10,7 +10,7 @@ export class AddressService {
   constructor(
     @InjectModel(Address.name)
     private readonly addressModel: Model<Address>,
-  ) {}
+  ) { }
 
   async create(createAddressDto: CreateAddressDto) {
     if (createAddressDto.isDefault && createAddressDto.userId) {
@@ -36,7 +36,6 @@ export class AddressService {
   }
 
   async findMyAddress(userId: any) {
-    console.log('Check req user:', userId);
     const address = await this.addressModel.find({ userId: userId }).exec();
     if (!address) {
       throw new NotFoundException(`Address with user ID ${userId} not found`);

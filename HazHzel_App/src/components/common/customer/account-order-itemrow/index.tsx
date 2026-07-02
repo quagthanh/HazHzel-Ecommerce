@@ -15,7 +15,6 @@ function formatPrice(amount: number) {
 }
 
 export function OrderItemRow({ item }: OrderItemRowProps) {
-  console.log("Check image from oder item:", item);
   return (
     <div className={styles.itemRow}>
       <div className={styles.itemImageWrap}>
