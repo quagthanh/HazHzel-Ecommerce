@@ -13,7 +13,7 @@ export const getCollectionColumns = ({
 }: GetCollectionColumnsProps): TableProps<ICollection>["columns"] => {
   return [
     {
-      title: "Logo",
+      title: "Images",
       dataIndex: "images",
       width: 80,
       align: "center",

@@ -1,6 +1,7 @@
 "use client";
 
-import { createSupplier } from "@/services/supplier.api";
+import useLoadingStore from "@/library/stores/useLoadingStore";
+import { createSupplierForAdmin } from "@/services/supplier.api";
 import { FileType } from "@/types/product";
 import { getBase64 } from "@/utils/helper";
 import { PlusOutlined } from "@ant-design/icons";
@@ -17,6 +18,7 @@ import {
   UploadFile,
   UploadProps,
   Image,
+  Spin,
 } from "antd";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -28,7 +30,7 @@ interface SupplierCreateModalProps {
 
 const SupplierCreateModal = ({ isOk, isCancel }: SupplierCreateModalProps) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(false);
+  const { loading, setLoading } = useLoadingStore();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -50,7 +52,7 @@ const SupplierCreateModal = ({ isOk, isCancel }: SupplierCreateModalProps) => {
     });
 
     try {
-      const res = await createSupplier(formData);
+      const res = await createSupplierForAdmin(formData);
       if (res?.data) {
         message.success("Create supplier successfully");
         router.refresh();
@@ -107,68 +109,71 @@ const SupplierCreateModal = ({ isOk, isCancel }: SupplierCreateModalProps) => {
         onCancel={handleCancel}
         width={800}
         confirmLoading={loading}
+        cancelButtonProps={{ disabled: loading }}
       >
-        <Form
-          layout="vertical"
-          form={form}
-          onFinish={onFinish}
-          autoComplete="off"
-        >
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item
-                label="Supplier Name"
-                name="name"
-                rules={[{ required: true, message: "Please input name" }]}
-              >
-                <Input placeholder="Company Name" />
-              </Form.Item>
-              <Form.Item label="Contact Person" name="contactName">
-                <Input placeholder="Contact Name" />
-              </Form.Item>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    label="Email"
-                    name="email"
-                    rules={[{ type: "email" }]}
-                  >
-                    <Input placeholder="Email" />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item label="Phone" name="phone">
-                    <Input placeholder="Phone" />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item label="Address" name="address">
-                <Input.TextArea rows={4} placeholder="Address" />
-              </Form.Item>
-
-              <Row gutter={16}>
-                <Col span={12}>
-                  {/* QUAN TRỌNG: KHÔNG ĐỂ PROP NAME="LOGO" */}
-                  <Form.Item label="Logo">
-                    <Upload
-                      listType="picture-card"
-                      fileList={fileList}
-                      onPreview={handlePreview}
-                      onChange={handleChange}
-                      beforeUpload={beforeUpload}
-                      maxCount={1}
+        <Spin spinning={loading}>
+          <Form
+            layout="vertical"
+            form={form}
+            onFinish={onFinish}
+            autoComplete="off"
+          >
+            <Row gutter={24}>
+              <Col span={12}>
+                <Form.Item
+                  label="Supplier Name"
+                  name="name"
+                  rules={[{ required: true, message: "Please input name" }]}
+                >
+                  <Input placeholder="Company Name" />
+                </Form.Item>
+                <Form.Item label="Contact Person" name="contactName">
+                  <Input placeholder="Contact Name" />
+                </Form.Item>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Email"
+                      name="email"
+                      rules={[{ type: "email" }]}
                     >
-                      {fileList.length >= 1 ? null : uploadButton}
-                    </Upload>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Form>
+                      <Input placeholder="Email" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Phone" name="phone">
+                      <Input placeholder="Phone" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item label="Address" name="address">
+                  <Input.TextArea rows={4} placeholder="Address" />
+                </Form.Item>
+
+                <Row gutter={16}>
+                  <Col span={12}>
+                    {/* QUAN TRỌNG: KHÔNG ĐỂ PROP NAME="LOGO" */}
+                    <Form.Item label="Logo">
+                      <Upload
+                        listType="picture-card"
+                        fileList={fileList}
+                        onPreview={handlePreview}
+                        onChange={handleChange}
+                        beforeUpload={beforeUpload}
+                        maxCount={1}
+                      >
+                        {fileList.length >= 1 ? null : uploadButton}
+                      </Upload>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Form>
+        </Spin>
       </Modal>
 
       {previewImage && (
