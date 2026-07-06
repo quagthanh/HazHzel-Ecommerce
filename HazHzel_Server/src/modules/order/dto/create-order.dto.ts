@@ -6,7 +6,6 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreateAddressDto } from '@/modules/address/dto/create-address.dto';
-import { statusOrderEnum } from '@/shared/enums/statusOrder.enum';
 import { PaymentMethodType } from '@/shared/enums/methodPayment.enum';
 import { Type } from 'class-transformer';
 

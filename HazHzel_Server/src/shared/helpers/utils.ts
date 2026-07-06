@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import aqp from 'api-query-params';
 import { Role } from '@/modules/role/schemas/role.schema';
 import { BadRequestException } from '@nestjs/common';
+import { statusOrderAdminEnum, statusOrderEnum } from '../enums/statusOrder.enum';
 
 const saltOrRounds = 10;
 
@@ -157,3 +158,17 @@ export async function CheckRole(roleModel: Model<Role>, _id: string) {
   }
   return !!customerRole;
 }
+
+export const validOrderTransitions: Record<
+  statusOrderAdminEnum,
+  statusOrderAdminEnum[]
+> = {
+  [statusOrderAdminEnum.PENDING]: [
+    statusOrderAdminEnum.COMPLETED,
+    statusOrderAdminEnum.CANCELLED,
+  ],
+
+  [statusOrderAdminEnum.COMPLETED]: [],
+
+  [statusOrderAdminEnum.CANCELLED]: [],
+};

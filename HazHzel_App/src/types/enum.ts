@@ -18,3 +18,16 @@ export enum roleAccount {
   ADMIN = "ADMIN",
   CUSTOMER = "CUSTOMER"
 }
+
+export enum statusOrderEnum {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}
+
+export enum statusPaymentEnum {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+  REFUNDED = 'REFUNDED',
+}
