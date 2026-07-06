@@ -58,7 +58,9 @@ export const useChatService = () => {
         if (!socket || !token) return;
 
         const handleNewMessage = (newMessage: any) => {
+
             if (activeConversationId === newMessage.conversationId) {
+
                 mutate(
                     [`/api/chat/messages/${activeConversationId}`, token],
                     (currentMessages: any = []) => {
@@ -73,11 +75,10 @@ export const useChatService = () => {
 
             mutate([`/api/chat/inbox`, token]);
         };
-
-        socket.on("receive message", handleNewMessage);
+        socket.on("receive_message", handleNewMessage);
 
         return () => {
-            socket.off("receive message", handleNewMessage);
+            socket.off("receive_message", handleNewMessage);
         };
     }, [socket, activeConversationId, token]);
 

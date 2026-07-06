@@ -60,7 +60,6 @@ const ChatClient = ({ users }: ChatClientProps) => {
     });
   };
 
-  // SỬA LỖI 1: Bảo vệ inbox bằng fallback mảng rỗng (inbox || [])
   const formatedInbox = (inbox || []).map((conservation: ChatConversation) => {
     const matchedUser = (users || []).find(
       (user: IUser) => user._id === conservation.chatWithUserId,
@@ -71,7 +70,6 @@ const ChatClient = ({ users }: ChatClientProps) => {
     };
   });
 
-  // SỬA LỖI 2: Tìm thông tin user đang được chat hiện tại thay vì gọi sai từ mảng
   const activeChatUser = (users || []).find((u) => u._id === activeChatUserId);
 
   return (
@@ -135,7 +133,6 @@ const ChatClient = ({ users }: ChatClientProps) => {
                         src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.chatWithUserId}`}
                       />
                     }
-                    // SỬA LỖI 3: Thêm Optional Chaining (?.) đề phòng userInfo undefined
                     title={
                       <Text strong>
                         {item.userInfo?.name || "Người dùng ẩn danh"}
@@ -190,7 +187,6 @@ const ChatClient = ({ users }: ChatClientProps) => {
                 <Avatar
                   src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${activeChatUserId}`}
                 />
-                {/* SỬA LỖI 2 (Tiếp): Sử dụng biến activeChatUser đã tìm ở trên */}
                 <Text strong style={{ fontSize: 16 }}>
                   {activeChatUser?.name || "Người dùng ẩn danh"}
                 </Text>
