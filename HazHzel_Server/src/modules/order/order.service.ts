@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Order } from './schemas/order.schema';
 import { Model } from 'mongoose';
@@ -12,6 +11,9 @@ import { CartService } from '../cart/cart.service';
 import { statusOrderEnum } from '@/shared/enums/statusOrder.enum';
 import { statusPaymentEnum } from '@/shared/enums/statusPayment.enum';
 import { InventoryService } from '../inventory/inventory.service';
+import { pagination, validOrderTransitions } from '@/shared/helpers/utils';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
+import { UpdateOrderPaymentStatusDto } from './dto/update-order-payment-status.dto';
 
 @Injectable()
 export class OrderService {
@@ -19,7 +21,7 @@ export class OrderService {
     @InjectModel(Order.name) private orderModel: Model<Order>,
     private cartService: CartService,
     private inventoryService: InventoryService,
-  ) {}
+  ) { }
   async checkout(userId: string, createOrderDto: CreateOrderDto) {
     const { shippingAddress, paymentMethod, discountCode } = createOrderDto;
 
@@ -85,8 +87,8 @@ export class OrderService {
     return this.findOneByUserId(userId);
   }
 
-  async findAll() {
-    return this.orderModel.find().exec();
+  async findAll(query: string, current: number = 1, pageSize: number = 5) {
+    return pagination(this.orderModel, query, current, pageSize);
   }
 
   async findOneByUserId(userId: string) {
@@ -97,6 +99,48 @@ export class OrderService {
     if (order.length < 1) {
       order = [];
     }
+    return order;
+  }
+
+  async findOne(id: string) {
+    return this.orderModel.findById(id).populate('userId', 'name email').exec();
+  }
+
+  async updateStatus(id: string, updateOrderStatusDto: UpdateOrderStatusDto) {
+    const order = await this.orderModel.findById(id);
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    const allowedTransitions =
+      validOrderTransitions[order.status];
+
+    if (!allowedTransitions.includes(updateOrderStatusDto.status)) {
+      throw new BadRequestException(
+        `Cannot change order status from ${order.status} to ${updateOrderStatusDto.status}`,
+      );
+    }
+
+    order.status = updateOrderStatusDto.status;
+
+    await order.save();
+
+    return order;
+  }
+
+  async updatePaymentStatus(id: string, updateOrderPaymentStatusDto: UpdateOrderPaymentStatusDto) {
+    const order = await this.orderModel.findByIdAndUpdate(id,
+      {
+        $set: {
+          'payment.status': updateOrderPaymentStatusDto.paymentStatus,
+          'payment.paymentDate': new Date(),
+        },
+      },
+      {
+        new: true,
+      },);
+
     return order;
   }
 }

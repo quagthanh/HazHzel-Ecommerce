@@ -1,14 +1,16 @@
 "use client";
-import { Button, Dropdown, MenuProps, message, Modal, Popconfirm } from "antd";
+import { Dropdown, MenuProps, message, Modal } from "antd";
 import {
   MoreOutlined,
   EditOutlined,
   DeleteOutlined,
   ExclamationCircleFilled,
+  EyeOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 
 interface ActionMenuProps {
+  onView?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
   deleteConfirmTitle?: string;
@@ -16,13 +18,19 @@ interface ActionMenuProps {
 }
 const { confirm } = Modal;
 
-const ActionMenu = ({ onEdit, onDelete }: ActionMenuProps) => {
+const ActionMenu = ({
+  onView,
+  onEdit,
+  onDelete,
+  deleteConfirmTitle = "Do you want to delete this item?",
+  deleteConfirmDescription = "Check again before you delete it permanently",
+}: ActionMenuProps) => {
   const router = useRouter();
   const showConfirm = () => {
     confirm({
-      title: "Do you want to delete these products?",
+      title: deleteConfirmTitle,
       icon: <ExclamationCircleFilled />,
-      content: "Check againt before you deleted it permanently ",
+      content: deleteConfirmDescription,
 
       async onOk() {
         if (onDelete) {
@@ -39,21 +47,35 @@ const ActionMenu = ({ onEdit, onDelete }: ActionMenuProps) => {
       onCancel() {},
     });
   };
-  const items: MenuProps["items"] = [
-    {
+  const items: MenuProps["items"] = [];
+
+  if (onView) {
+    items.push({
+      key: "view",
+      label: "View detail",
+      icon: <EyeOutlined />,
+      onClick: onView,
+    });
+  }
+
+  if (onEdit) {
+    items.push({
       key: "edit",
-      label: "Chỉnh sửa",
+      label: "Edit",
       icon: <EditOutlined />,
       onClick: onEdit,
-    },
-    {
+    });
+  }
+
+  if (onDelete) {
+    items.push({
       key: "delete",
-      label: "Xóa",
+      label: "Delete",
       icon: <DeleteOutlined />,
       danger: true,
       onClick: showConfirm,
-    },
-  ];
+    });
+  }
 
   return (
     <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">

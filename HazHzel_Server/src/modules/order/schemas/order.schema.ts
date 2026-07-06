@@ -10,7 +10,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
 import { OrderItem, OrderItemSchema } from './order-item.schema';
 import { OrderDiscount, OrderDiscountSchema } from './order-discount.schema';
-import { statusOrderEnum } from '@/shared/enums/statusOrder.enum';
+import { statusOrderAdminEnum, statusOrderEnum } from '@/shared/enums/statusOrder.enum';
 
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -39,10 +39,10 @@ export class Order {
 
   @Prop({
     type: String,
-    enum: statusOrderEnum,
-    default: statusOrderEnum.PENDING,
+    enum: statusOrderAdminEnum,
+    default: statusOrderAdminEnum.PENDING,
   })
-  status: statusOrderEnum;
+  status: statusOrderAdminEnum;
 
   @Prop({ type: PaymentSchema })
   payment: Payment;

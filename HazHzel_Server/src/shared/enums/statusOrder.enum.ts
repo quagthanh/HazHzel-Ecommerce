@@ -5,3 +5,9 @@ export enum statusOrderEnum {
   DELIEVERED = 'DELIEVERED',
   CANCELLED = 'CANCELLED',
 }
+
+export enum statusOrderAdminEnum {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}

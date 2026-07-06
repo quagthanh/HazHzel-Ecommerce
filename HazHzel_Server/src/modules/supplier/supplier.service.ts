@@ -12,7 +12,6 @@ import { isValidId, pagination } from '@/shared/helpers/utils';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Product } from '../product/schemas/product.schema';
 import slugify from 'slugify';
-import aqp from 'api-query-params';
 import { statusSupplier } from '@/shared/enums/statusSupplier.enum';
 
 @Injectable()
@@ -22,7 +21,7 @@ export class SupplierService {
     private readonly cloudinaryService: CloudinaryService,
     @InjectModel(Product.name)
     private readonly productModel: Model<Product>,
-  ) {}
+  ) { }
 
   private checkSlugExist = async (slug: string): Promise<boolean> => {
     const isSlugExist = await this.supplierModel.exists({ slug });
@@ -69,26 +68,8 @@ export class SupplierService {
     }
   }
   async findAll(query: string, current: number = 1, pageSize: number = 5) {
-    const { filter, sort } = aqp(query);
-    if (!current) current = 1;
-    if (!pageSize) pageSize = 5;
+    return pagination(this.supplierModel, query, current, pageSize);
 
-    if (filter.current) delete filter.current;
-    if (filter.pageSize) delete filter.pageSize;
-
-    const totalItems = await this.supplierModel.countDocuments(filter);
-    const totalPages = Math.ceil(totalItems / pageSize);
-
-    const result = await this.supplierModel.find(filter).sort(sort as any);
-    return {
-      meta: {
-        current: current,
-        pageSize: pageSize,
-        pages: totalPages,
-        total: totalItems,
-      },
-      result,
-    };
   }
   async findAllForAdmin(query: string, current: number, pageSize: number) {
     return pagination(this.supplierModel, query, current, pageSize);
