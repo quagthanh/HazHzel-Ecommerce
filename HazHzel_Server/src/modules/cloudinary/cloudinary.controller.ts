@@ -3,16 +3,11 @@ import {
   Post,
   UploadedFile,
   UploadedFiles,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
 import { Public, ResponseMessage } from '@/shared/decorators/customize';
-import { Permission } from '@/shared/decorators/permissions.decorator';
-import { Resources } from '@/shared/enums/resources.enum';
-import { PermissionGuard } from '@/auth/guards/permission.guard';
-import { JwtAuthGuard } from '@/auth/strategies/jwt/jwt-auth.guard';
 
 @Controller('cloudinary')
 export class CloudinaryController {

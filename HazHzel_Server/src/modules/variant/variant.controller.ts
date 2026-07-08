@@ -14,7 +14,6 @@ import { CreateVariantDto } from './dto/create-variant.dto';
 import { UpdateVariantDto } from './dto/update-variant.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { RemoveImage } from '../product/dto/remove-image.dto';
-import { Types } from 'mongoose';
 @Controller('variants')
 export class VariantController {
   constructor(private readonly variantService: VariantService) {}

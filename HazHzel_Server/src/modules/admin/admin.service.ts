@@ -77,7 +77,7 @@ export class AdminService {
     pageSize: number,
     callerRoles: RoleEnum[],
   ) {
-    const { filter, sort, projection } = aqp(query);
+    const { filter, sort } = aqp(query);
 
     if (!current) current = 1;
     if (!pageSize) pageSize = 5;
@@ -103,9 +103,6 @@ export class AdminService {
     const skip = (current - 1) * pageSize;
 
     const baseProjection = { password: 0 };
-    const finalProjection = projection
-      ? { ...projection, ...baseProjection }
-      : baseProjection;
 
     const result = await this.userModel
       .find(filter)

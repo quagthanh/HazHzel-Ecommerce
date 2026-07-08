@@ -132,7 +132,7 @@ export class CategoryService {
     return category._id;
   }
   async findIdBySlugs(slugs: string[]): Promise<Types.ObjectId[]> {
-    let slugIds = [];
+    const slugIds = [];
     for (const slug of slugs) {
       const slugId = await this.findIdBySlug(slug);
       slugIds.push(slugId);
@@ -316,7 +316,7 @@ export class CategoryService {
 
     for (const group of navGroups) {
       if (group.model == 'supplier') {
-        var usedBrand = await this.supplierModel.find(group.filter);
+        const usedBrand = await this.supplierModel.find(group.filter);
         if (usedBrand.length > 0) {
           const brandItems = usedBrand.map((brand) => ({
             _id: brand._id,
@@ -337,7 +337,7 @@ export class CategoryService {
           .find(group.filter)
           .distinct('categoryId');
 
-        let activeCategoryList: any[] = [];
+        const activeCategoryList: any[] = [];
         for (const idObj of usedCategoryIds) {
           const lineage = this.getCategoryAndAncestors(
             idObj.toString(),

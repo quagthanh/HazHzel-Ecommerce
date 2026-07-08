@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 export interface Response<T> {
   statusCode: number;
   message?: string;
-  data: any;
+  data: T;
 }
 @Injectable()
 export class TransformInterceptor<T>

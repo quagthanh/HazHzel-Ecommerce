@@ -21,14 +21,14 @@ export class SupplierService {
     private readonly cloudinaryService: CloudinaryService,
     @InjectModel(Product.name)
     private readonly productModel: Model<Product>,
-  ) { }
+  ) {}
 
   private checkSlugExist = async (slug: string): Promise<boolean> => {
     const isSlugExist = await this.supplierModel.exists({ slug });
     return !!isSlugExist;
   };
   private generateSlugUnique = async (text: string): Promise<string> => {
-    let baseSlug = slugify(text, {
+    const baseSlug = slugify(text, {
       replacement: '-',
       trim: true,
       lower: true,
@@ -69,7 +69,6 @@ export class SupplierService {
   }
   async findAll(query: string, current: number = 1, pageSize: number = 5) {
     return pagination(this.supplierModel, query, current, pageSize);
-
   }
   async findAllForAdmin(query: string, current: number, pageSize: number) {
     return pagination(this.supplierModel, query, current, pageSize);
@@ -98,7 +97,7 @@ export class SupplierService {
   }
   async findIdBySlugs(slugs: string[] | string): Promise<Types.ObjectId[]> {
     const slugArray = typeof slugs === 'string' ? [slugs] : slugs;
-    let slugIds = [];
+    const slugIds = [];
 
     for (const slug of slugArray) {
       const slugId = await this.findIdBySlug(slug);

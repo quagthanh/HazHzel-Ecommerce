@@ -20,7 +20,7 @@ import { ProductFilterDto } from './dto/product-filter.dto';
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) { }
+  constructor(private readonly productService: ProductService) {}
 
   @Post()
   @UseInterceptors(FilesInterceptor('files'))

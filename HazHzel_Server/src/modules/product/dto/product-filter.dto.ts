@@ -2,7 +2,6 @@ import { ProductSortType } from '@/shared/enums/productSortType.enum';
 import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
-  IsBoolean,
   IsEnum,
   IsNumber,
   IsOptional,

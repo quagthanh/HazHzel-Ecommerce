@@ -1,7 +1,4 @@
-import {
-  CartItem,
-  CartItemDocument,
-} from '@/modules/cart-item/schemas/cart-item.schema';
+import { CartItemDocument } from '@/modules/cart-item/schemas/cart-item.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
 

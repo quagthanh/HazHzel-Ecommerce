@@ -1,7 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CategoryController } from './category.controller';
-import { Mongoose } from 'mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Category, CategorySchema } from './schemas/category.schema';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';

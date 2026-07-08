@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import { RestockDto } from './dto/restock.dto';
 

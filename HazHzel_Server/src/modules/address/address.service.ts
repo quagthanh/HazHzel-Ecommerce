@@ -10,7 +10,7 @@ export class AddressService {
   constructor(
     @InjectModel(Address.name)
     private readonly addressModel: Model<Address>,
-  ) { }
+  ) {}
 
   async create(createAddressDto: CreateAddressDto) {
     if (createAddressDto.isDefault && createAddressDto.userId) {

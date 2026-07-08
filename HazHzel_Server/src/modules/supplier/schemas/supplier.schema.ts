@@ -1,7 +1,7 @@
 import { statusSupplier } from '@/shared/enums/statusSupplier.enum';
 import { IImage } from '@/shared/interfaces/image';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type SupplierDocument = HydratedDocument<Supplier>;
 

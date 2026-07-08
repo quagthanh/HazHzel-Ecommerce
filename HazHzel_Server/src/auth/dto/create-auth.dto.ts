@@ -1,6 +1,4 @@
-import { RoleEnum } from '@/shared/enums/role.enum';
-import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
-import { Types } from 'mongoose';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateAuthDto {
   @IsNotEmpty({ message: 'email không được để trống' })

@@ -9,7 +9,7 @@ import { RemoveImage } from '../product/dto/remove-image.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Variant } from './schemas/variant.schema';
 import { Product } from '../product/schemas/product.schema';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 const generateUniqueKey = (attrs: any[]) => {
   return attrs
@@ -29,8 +29,8 @@ export class VariantService {
     createVariantDto: CreateVariantDto,
     files: Express.Multer.File[],
   ) {
-    let { productId, attributes, originalPrice, currentPrice, sku } =
-      createVariantDto;
+    const { productId, originalPrice, currentPrice } = createVariantDto;
+    let { attributes, sku } = createVariantDto;
     if (typeof attributes === 'string') {
       try {
         attributes = JSON.parse(attributes);

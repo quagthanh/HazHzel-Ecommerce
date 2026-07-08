@@ -1,7 +1,7 @@
 import { PaymentMethodType } from '@/shared/enums/methodPayment.enum';
 import { statusPaymentEnum } from '@/shared/enums/statusPayment.enum';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type PaymentDocument = HydratedDocument<Payment>;
 

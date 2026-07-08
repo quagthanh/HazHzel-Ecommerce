@@ -8,10 +8,8 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './schemas/product.schema';
 import { Model, Types } from 'mongoose';
-import aqp from 'api-query-params';
 import {
   isValidId,
-  pagination,
   paginationAggregate,
   paginationAggregateNew,
 } from '@/shared/helpers/utils';
@@ -23,9 +21,8 @@ import { CategoryService } from '../category/category.service';
 import { CollectionService } from '../collection/collection.service';
 import { GenderType } from '@/shared/enums/typeGenderProduct.enm';
 import { VariantService } from '../variant/variant.service';
-import { IImage } from '@/shared/interfaces/image';
-import { ProductFilterDto } from './dto/product-filter.dto';
 import { ProductSortType } from '@/shared/enums/productSortType.enum';
+import { ProductFilterDto } from './dto/product-filter.dto';
 
 @Injectable()
 export class ProductService {
@@ -43,7 +40,7 @@ export class ProductService {
     return !!isSlugExist;
   };
   private generateSlugUnique = async (text: string): Promise<string> => {
-    let baseSlug = slugify(text, {
+    const baseSlug = slugify(text, {
       replacement: '-',
       trim: true,
       lower: true,
@@ -61,7 +58,7 @@ export class ProductService {
     createProductDto: CreateProductDto,
     files: Express.Multer.File[] = [],
   ) {
-    let { name, ...otherFields } = createProductDto;
+    const { name, ...otherFields } = createProductDto;
     const slug = await this.generateSlugUnique(name);
     if (!files || files.length === 0) {
       throw new BadRequestException('Please choose at least 1 picture');

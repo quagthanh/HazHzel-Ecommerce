@@ -7,7 +7,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model, Types } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { hashPassword, pagination } from '@/shared/helpers/utils';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
@@ -21,7 +21,6 @@ import {
 } from '@/auth/dto/checkcode-auth.dto';
 import { RoleEnum } from '@/shared/enums/role.enum';
 import { Role } from '../role/schemas/role.schema';
-import { Order } from '../order/schemas/order.schema';
 import { OrderService } from '../order/order.service';
 
 @Injectable()
@@ -31,7 +30,7 @@ export class UsersService {
     private readonly mailerService: MailerService,
     @InjectModel(Role.name) private readonly roleModel: Model<Role>,
     private readonly orderService: OrderService,
-  ) { }
+  ) {}
   isEmailExist = async (email: string) => {
     const user = await this.userModel.exists({ email });
 
@@ -56,8 +55,12 @@ export class UsersService {
     return user;
   }
 
-  async findAll(query: string, current?: number, pageSize?: number, isAll?: boolean) {
-
+  async findAll(
+    query: string,
+    current?: number,
+    pageSize?: number,
+    isAll?: boolean,
+  ) {
     return pagination(
       this.userModel,
       query,

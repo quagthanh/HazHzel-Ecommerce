@@ -1,0 +1,123 @@
+.metricCard {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+  cursor: default;
+
+  &:hover {
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-color: rgba(79, 70, 229, 0.2);
+  }
+}
+
+.blob {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 96px;
+  height: 96px;
+  border-bottom-left-radius: 100%;
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.iconWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  margin: 0;
+}
+
+.valueContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.value {
+  font-size: 30px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &.positive {
+    color: #059669;
+    background-color: rgba(16, 185, 129, 0.1);
+  }
+
+  &.negative {
+    color: #e11d48;
+    background-color: rgba(225, 29, 72, 0.1);
+  }
+}
+
+.footerArea {
+  margin-top: 16px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 6px;
+
+  .target {
+    color: #6b7280;
+  }
+  .current {
+    color: #111827;
+    font-weight: 500;
+  }
+}
+
+.progressTrack {
+  height: 8px;
+  width: 100%;
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(to right, rgba(79, 70, 229, 0.8), #4f46e5);
+  border-radius: 9999px;
+  transition: width 0.5s ease;
+}

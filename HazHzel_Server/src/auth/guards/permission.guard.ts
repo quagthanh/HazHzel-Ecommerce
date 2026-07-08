@@ -1,4 +1,3 @@
-// src/shared/guards/permission.guard.ts
 import {
   CanActivate,
   ExecutionContext,
@@ -7,13 +6,8 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { PERMISSION_KEY } from '@/shared/decorators/permissions.decorator';
-import {
-  Permission as PermissionEntity,
-  ActionPer,
-  Permission,
-} from '@/modules/permission/schemas/permission.schema';
+import { ActionPer } from '@/modules/permission/schemas/permission.schema';
 import { UsersService } from '@/modules/users/users.service';
-import { Role } from '@/modules/role/schemas/role.schema';
 import { RolePopulated } from '@/shared/interfaces/role-populated';
 
 @Injectable()
