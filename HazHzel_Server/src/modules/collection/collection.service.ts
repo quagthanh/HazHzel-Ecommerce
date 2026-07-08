@@ -28,7 +28,7 @@ export class CollectionService {
   };
 
   private generateSlugUnique = async (text: string): Promise<string> => {
-    let baseSlug = slugify(text, {
+    const baseSlug = slugify(text, {
       replacement: '-',
       trim: true,
       lower: true,

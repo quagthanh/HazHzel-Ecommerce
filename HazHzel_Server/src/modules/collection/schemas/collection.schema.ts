@@ -1,7 +1,7 @@
 import { statusCollection } from '@/shared/enums/statusCollection.enum';
 import { IImage } from '@/shared/interfaces/image';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type CollectionDocument = HydratedDocument<Collection>;
 

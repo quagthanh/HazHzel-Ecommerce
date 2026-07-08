@@ -5,14 +5,14 @@ import { Model } from 'mongoose';
 import aqp from 'api-query-params';
 import { Role } from '@/modules/role/schemas/role.schema';
 import { BadRequestException } from '@nestjs/common';
-import { statusOrderAdminEnum, statusOrderEnum } from '../enums/statusOrder.enum';
+import { statusOrderAdminEnum } from '../enums/statusOrder.enum';
 
 const saltOrRounds = 10;
 
 export const hashPassword = async (plainPassword: string) => {
   try {
     return await bcrypt.hash(plainPassword, saltOrRounds);
-  } catch (error) { }
+  } catch (error) {}
 };
 export const comparePassword = async (
   plainPassword: string,
@@ -20,7 +20,7 @@ export const comparePassword = async (
 ) => {
   try {
     return await bcrypt.compare(plainPassword, hashPassword);
-  } catch (error) { }
+  } catch (error) {}
 };
 
 export const isValidId = (id: string): boolean => mongoose.isValidObjectId(id);
@@ -48,7 +48,9 @@ export async function pagination(
   if (filter.all) delete filter.all;
 
   const totalItems = await model.countDocuments(filter);
-  let finalProjection = projection ? { ...baseProjection, ...projection } : baseProjection;
+  const finalProjection = projection
+    ? { ...baseProjection, ...projection }
+    : baseProjection;
 
   let resultQuery = model
     .find(filter)
@@ -171,4 +173,11 @@ export const validOrderTransitions: Record<
   [statusOrderAdminEnum.COMPLETED]: [],
 
   [statusOrderAdminEnum.CANCELLED]: [],
+};
+
+export const getDateRange = (days: number) => {
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(endDate.getDate() - days);
+  return { startDate, endDate };
 };

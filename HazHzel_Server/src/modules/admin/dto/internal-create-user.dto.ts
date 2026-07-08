@@ -1,5 +1,4 @@
-import { RoleEnum } from '@/shared/enums/role.enum';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class InternalCreateUser {

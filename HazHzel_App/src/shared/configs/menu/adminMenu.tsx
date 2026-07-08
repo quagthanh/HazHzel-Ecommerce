@@ -143,48 +143,7 @@ export const itemsSidebar: MenuItem[] = [
           },
         ],
       },
-      {
-        key: "customer",
-        label: "Customers",
-        icon: <SettingOutlined />,
-        children: [
-          {
-            key: "customer-list",
-            label: (
-              <Link href="/admin/dashboard/customer/list">Customer List</Link>
-            ),
-          },
-          {
-            key: "customer-details",
-            label: (
-              <Link href="/admin/dashboard/customer/details">
-                Customer Details
-              </Link>
-            ),
-          },
-          {
-            key: "add-customer",
-            label: (
-              <Link href="/admin/dashboard/customer/add">Add Customer</Link>
-            ),
-          },
-        ],
-      },
-      {
-        key: "shopping-cart",
-        label: "Shopping Cart",
-        icon: <ShoppingCartOutlined />,
-        children: [
-          {
-            key: "shopping-cart-list",
-            label: (
-              <Link href="/admin/dashboard/shopping-cart/list">
-                Shopping Cart List
-              </Link>
-            ),
-          },
-        ],
-      },
+
       {
         key: "checkout",
         label: <Link href="/admin/dashboard/checkout">Checkout</Link>,

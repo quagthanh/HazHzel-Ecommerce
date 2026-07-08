@@ -1,8 +1,7 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { v2 as cloudinary } from 'cloudinary';
 import * as streamifier from 'streamifier';
 import { CloudinaryResponse } from '@/shared/interfaces/cloudinary-response';
-import { Model } from 'mongoose';
 import { IImage } from '@/shared/interfaces/image';
 
 @Injectable()

@@ -1,8 +1,7 @@
 import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Permission } from './schemas/permission.schema';
-import mongoose, { Model, Mongoose } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import aqp from 'api-query-params';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Resources } from '@/shared/enums/resources.enum';

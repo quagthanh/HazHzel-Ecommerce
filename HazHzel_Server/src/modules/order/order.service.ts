@@ -21,9 +21,9 @@ export class OrderService {
     @InjectModel(Order.name) private orderModel: Model<Order>,
     private cartService: CartService,
     private inventoryService: InventoryService,
-  ) { }
+  ) {}
   async checkout(userId: string, createOrderDto: CreateOrderDto) {
-    const { shippingAddress, paymentMethod, discountCode } = createOrderDto;
+    const { shippingAddress, paymentMethod } = createOrderDto;
 
     const cart = await this.cartService.getCart(userId);
     if (!cart || cart.items.length === 0) {
@@ -57,8 +57,8 @@ export class OrderService {
     await this.inventoryService.reduceStock(itemsToReduceInSTock);
     const shippingCost = 30000;
 
-    let discountObj = null;
-    let discountAmount = 0;
+    const discountObj = null;
+    const discountAmount = 0;
 
     const totalPrice = subTotal + shippingCost - discountAmount;
 
@@ -113,8 +113,7 @@ export class OrderService {
       throw new NotFoundException('Order not found');
     }
 
-    const allowedTransitions =
-      validOrderTransitions[order.status];
+    const allowedTransitions = validOrderTransitions[order.status];
 
     if (!allowedTransitions.includes(updateOrderStatusDto.status)) {
       throw new BadRequestException(
@@ -129,8 +128,12 @@ export class OrderService {
     return order;
   }
 
-  async updatePaymentStatus(id: string, updateOrderPaymentStatusDto: UpdateOrderPaymentStatusDto) {
-    const order = await this.orderModel.findByIdAndUpdate(id,
+  async updatePaymentStatus(
+    id: string,
+    updateOrderPaymentStatusDto: UpdateOrderPaymentStatusDto,
+  ) {
+    const order = await this.orderModel.findByIdAndUpdate(
+      id,
       {
         $set: {
           'payment.status': updateOrderPaymentStatusDto.paymentStatus,
@@ -139,7 +142,8 @@ export class OrderService {
       },
       {
         new: true,
-      },);
+      },
+    );
 
     return order;
   }

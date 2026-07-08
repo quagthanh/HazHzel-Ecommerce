@@ -1,13 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Cart, CartDocument } from './schemas/cart.schema';
+import { Cart } from './schemas/cart.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import {
   CartItem,
   CartItemDocument,
 } from '../cart-item/schemas/cart-item.schema';
 import { CreateCartDto } from './dto/create-cart.dto';
-import { DeleteCartItemDto } from './dto/delete-cart.dto';
 @Injectable()
 export class CartService {
   constructor(

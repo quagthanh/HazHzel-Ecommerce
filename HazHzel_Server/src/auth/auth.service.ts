@@ -18,8 +18,8 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly roleService: RoleService,
-    private readonly configService: ConfigService
-  ) { }
+    private readonly configService: ConfigService,
+  ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
@@ -37,9 +37,15 @@ export class AuthService {
   async login(user: UserResponseDto) {
     const role = await this.roleService.findOne(user.roles[0]);
 
-    const payload = { username: user.email, sub: user._id, roles: user.roles, roleName: role.name, appId: this.configService.get<string>("CHAT_APP_ID") };
+    const payload = {
+      username: user.email,
+      sub: user._id,
+      roles: user.roles,
+      roleName: role.name,
+      appId: this.configService.get<string>('CHAT_APP_ID'),
+    };
 
-    let result = {
+    const result = {
       user: {
         _id: user._id,
         name: user.name,

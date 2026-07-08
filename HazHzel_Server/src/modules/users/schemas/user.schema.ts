@@ -1,5 +1,4 @@
 import { Role } from '@/modules/role/schemas/role.schema';
-import { RoleEnum } from '@/shared/enums/role.enum';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
 

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class CodeAuthDto {
   @IsNotEmpty({ message: '_id không được để trống' })

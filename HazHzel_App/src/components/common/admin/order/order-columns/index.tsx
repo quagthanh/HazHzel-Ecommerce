@@ -17,19 +17,17 @@ export const getOrderColumns = ({
     {
       title: "Order ID",
       dataIndex: "_id",
-      width: 120,
+      width: 140,
       render: (id) => <Text copyable>{id}</Text>,
     },
     {
       title: "Customer",
       dataIndex: "userId",
-      width: 200,
+      width: 180,
       render: (_, record) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <b>{record.shippingAddress?.name || "N/A"}</b>
-          <span style={{ fontSize: 13, color: "#666" }}>
-            {record.shippingAddress?.phone}
-          </span>
+          <span>{record.shippingAddress?.phone}</span>
         </div>
       ),
     },
@@ -38,11 +36,8 @@ export const getOrderColumns = ({
       dataIndex: "totalPrice",
       width: 150,
       render: (price) => (
-        <span style={{ fontWeight: 600, color: "#d9363e" }}>
-          {new Intl.NumberFormat("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          }).format(price)}
+        <span style={{ fontWeight: 600 }}>
+          {new Intl.NumberFormat("vi-VN").format(price)}
         </span>
       ),
     },
@@ -52,7 +47,7 @@ export const getOrderColumns = ({
       width: 150,
       align: "center",
       render: (status: statusOrderEnum) => {
-        let color = "default";
+        let color = "warning";
         if (status === statusOrderEnum.COMPLETED) color = "success";
         if (status === statusOrderEnum.CANCELLED) color = "error";
 
@@ -78,9 +73,15 @@ export const getOrderColumns = ({
       },
     },
     {
-      title: "Date",
+      title: "Created Date",
       dataIndex: "createdAt",
-      width: 150,
+      width: 75,
+      render: (date) => new Date(date).toLocaleDateString("vi-VN"),
+    },
+    {
+      title: "Updated Date",
+      dataIndex: "updatedAt",
+      width: 75,
       render: (date) => new Date(date).toLocaleDateString("vi-VN"),
     },
     {

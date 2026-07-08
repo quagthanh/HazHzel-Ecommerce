@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
-import { DeleteCartItemDto } from './dto/delete-cart.dto';
 import { ResponseMessage } from '@/shared/decorators/customize';
 
 @Controller('cart')
