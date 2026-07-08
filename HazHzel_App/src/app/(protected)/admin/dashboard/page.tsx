@@ -9,14 +9,13 @@ interface DashboardPageProps {
 }
 
 const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
-  const days = parseInt((searchParams.days as string) || "30", 10);
+  const days = parseInt((searchParams.days as string) || "365", 10);
 
   const [analyticsResult, ordersResult] = await Promise.allSettled([
     getDashboardAnalytics(days),
     getRecentOrdersForDashboard(),
   ]);
 
-  // 3. Trích xuất dữ liệu Analytics
   let analyticsData = {};
   if (analyticsResult.status === "fulfilled" && analyticsResult.value?.data) {
     analyticsData = analyticsResult.value.data;
