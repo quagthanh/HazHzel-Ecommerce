@@ -2,22 +2,19 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Patch,
   Param,
   Delete,
 } from '@nestjs/common';
 import { DiscountService } from './discount.service';
-import { CreateDiscountDto } from './dto/create-discount.dto';
-import { UpdateDiscountDto } from './dto/update-discount.dto';
 
 @Controller('discount')
 export class DiscountController {
-  constructor(private readonly discountService: DiscountService) {}
+  constructor(private readonly discountService: DiscountService) { }
 
   @Post()
-  create(@Body() createDiscountDto: CreateDiscountDto) {
-    return this.discountService.create(createDiscountDto);
+  create() {
+    return this.discountService.create();
   }
 
   @Get()
@@ -33,9 +30,8 @@ export class DiscountController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateDiscountDto: UpdateDiscountDto,
   ) {
-    return this.discountService.update(+id, updateDiscountDto);
+    return this.discountService.update(+id);
   }
 
   @Delete(':id')
