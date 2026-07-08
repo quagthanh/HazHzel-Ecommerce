@@ -35,8 +35,6 @@ const getStatusTheme = (status: string) => {
 };
 
 const RecentOrders = ({ data = [] }: RecentOrdersProps) => {
-  console.log("Recent Orders Data:", data);
-
   return (
     <div className={styles.card}>
       <div className={styles.header}>
