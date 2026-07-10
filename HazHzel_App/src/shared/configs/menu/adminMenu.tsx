@@ -38,24 +38,6 @@ export const itemsSidebar: MenuItem[] = [
               <Link href="/admin/dashboard/product/list">Product List</Link>
             ),
           },
-          {
-            key: "product-grid",
-            label: (
-              <Link href="/admin/dashboard/product/grid">Product Grid</Link>
-            ),
-          },
-          {
-            key: "product-details",
-            label: (
-              <Link href="/admin/dashboard/product/details">
-                Product Detail
-              </Link>
-            ),
-          },
-          {
-            key: "add-product",
-            label: <Link href="/admin/dashboard/product/add">Add Product</Link>,
-          },
         ],
       },
       {
@@ -66,10 +48,6 @@ export const itemsSidebar: MenuItem[] = [
           {
             key: "user-list",
             label: <Link href="/admin/dashboard/user/list">User List</Link>,
-          },
-          {
-            key: "user-detail",
-            label: <Link href="">User Overview</Link>,
           },
         ],
       },
@@ -84,10 +62,6 @@ export const itemsSidebar: MenuItem[] = [
               <Link href="/admin/dashboard/supplier/list">Supplier List</Link>
             ),
           },
-          {
-            key: "supplier-detail",
-            label: <Link href="">Supplier Overview</Link>,
-          },
         ],
       },
       {
@@ -100,10 +74,6 @@ export const itemsSidebar: MenuItem[] = [
             label: (
               <Link href="/admin/dashboard/category/list">Category List</Link>
             ),
-          },
-          {
-            key: "category-detail",
-            label: <Link href="">Category Overview</Link>,
           },
         ],
       },
@@ -120,10 +90,6 @@ export const itemsSidebar: MenuItem[] = [
               </Link>
             ),
           },
-          {
-            key: "collection-detail",
-            label: <Link href="">Collection Overview</Link>,
-          },
         ],
       },
       {
@@ -135,19 +101,7 @@ export const itemsSidebar: MenuItem[] = [
             key: "order-list",
             label: <Link href="/admin/dashboard/order/list">Order List</Link>,
           },
-          {
-            key: "order-details",
-            label: (
-              <Link href="/admin/dashboard/order/details">Order Detail</Link>
-            ),
-          },
         ],
-      },
-
-      {
-        key: "checkout",
-        label: <Link href="/admin/dashboard/checkout">Checkout</Link>,
-        icon: <CreditCardOutlined />,
       },
       {
         key: "chat",
