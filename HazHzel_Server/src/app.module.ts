@@ -27,6 +27,7 @@ import { CartItemModule } from './modules/cart-item/cart-item.module';
 import { OrderModule } from './modules/order/order.module';
 import { AddressModule } from './modules/address/address.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { RedisModule } from './modules/redis/redis.module';
 
 @Module({
   imports: [
@@ -84,6 +85,7 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
     OrderModule,
     AddressModule,
     AnalyticsModule,
+    RedisModule
   ],
   controllers: [AppController],
   providers: [
@@ -98,4 +100,4 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
