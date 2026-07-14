@@ -12,7 +12,7 @@ const saltOrRounds = 10;
 export const hashPassword = async (plainPassword: string) => {
   try {
     return await bcrypt.hash(plainPassword, saltOrRounds);
-  } catch (error) {}
+  } catch (error) { }
 };
 export const comparePassword = async (
   plainPassword: string,
@@ -20,7 +20,7 @@ export const comparePassword = async (
 ) => {
   try {
     return await bcrypt.compare(plainPassword, hashPassword);
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const isValidId = (id: string): boolean => mongoose.isValidObjectId(id);
@@ -180,4 +180,25 @@ export const getDateRange = (days: number) => {
   const startDate = new Date();
   startDate.setDate(endDate.getDate() - days);
   return { startDate, endDate };
+};
+
+
+const PREFIX = 'ecom';
+
+export const ProductRedisKeys = {
+  //Product detail cache 
+  detail: (slug: string) => `${PREFIX}:product:detail:${slug}`,
+  //Product list cache  (Cache inactive, short TTL)
+
+  listByCategory: (categorySlug: string, queryHash: string) =>
+    `${PREFIX}:product:list:category:${categorySlug}:query:${queryHash}`,
+
+  listByCollection: (collectionSlug: string, queryHash: string) =>
+    `${PREFIX}:product:list:collection:${collectionSlug}:query:${queryHash}`,
+
+  listBySupplier: (supplierSlug: string, queryHash: string) =>
+    `${PREFIX}:product:list:supplier:${supplierSlug}:query:${queryHash}`,
+
+  //Home product cache (Cache inactive, short TTL) 
+  homeNewBrand: (slug: string) => `${PREFIX}:product:home:new-brand:${slug}`
 };

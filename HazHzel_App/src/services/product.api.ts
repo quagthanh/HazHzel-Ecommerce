@@ -25,7 +25,6 @@ export async function getProducts(sendParams: IProductQueryParams) {
   if (sendParams.gender && sendParams.gender.toUpperCase() !== "UNDEFINED") {
     sendParams.gender = sendParams.gender.toUpperCase();
   }
-
   const res = await sendRequest<ResponseData<any>>({
     url: "/products",
     method: "GET",

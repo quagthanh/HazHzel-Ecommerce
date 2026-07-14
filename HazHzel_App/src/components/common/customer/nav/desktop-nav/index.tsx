@@ -13,10 +13,7 @@ const DesktopNav = ({ items }: { items: NavMenuItem[] }) => {
       return `/${linkType.STORES}/${slug}`;
     }
 
-    return `/${linkType.PRODUCTS}?${item.baseParams}&category=${slug.replace(
-      /^\//,
-      "",
-    )}`;
+    return `/${linkType.PRODUCTS}?${item.baseParams}&filterCategory=${slug}`;
   };
   return (
     <nav className={styles.headerPrimaryNav}>

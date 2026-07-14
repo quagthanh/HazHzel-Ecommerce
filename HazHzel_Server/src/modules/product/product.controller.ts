@@ -20,7 +20,7 @@ import { ProductFilterDto } from './dto/product-filter.dto';
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) { }
 
   @Post()
   @UseInterceptors(FilesInterceptor('files'))
@@ -62,7 +62,7 @@ export class ProductController {
   }
   @Public()
   @Get('/home-new-brand/:supplierSlug')
-  @ResponseMessage('Fetched products by supplier successful')
+  @ResponseMessage('Fetched home new brand products by supplier successful')
   findHomeNewBrand(
     @Param('supplierSlug') supplierSlug: string,
     @Query() query: string,

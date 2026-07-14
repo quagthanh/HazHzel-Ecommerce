@@ -27,8 +27,13 @@ This is an **MVP (Minimum Viable Product)** in the initial phases of development
   - Add/remove/update product quantities
   - Persistent cart state management
   - Cart summary and checkout flow
-- **Order placement (basic)**
+- **Order management**
   - Order creation and confirmation
+  - Order history and tracking
+- **Admin dashboard**
+  - Management interfaces for core admin operations
+- **Advanced analytics**
+  - Admin reporting and analytics capabilities
 - **User account management**
   - User profile management
   - Address management for shipping
@@ -42,13 +47,13 @@ This is an **MVP (Minimum Viable Product)** in the initial phases of development
   - Supplier product association and pricing
 - **Responsive design**
   - Mobile-first responsive layout
+- **Chat service**
+  - Real-time messaging support using WebSocket
+  - Enables instant communication between users and admins
 
 ### 🚧 In Development / Incomplete Features
 
 - **Payment Filter** - Payment methods and filtering options are not yet fully implemented
-- **Admin Dashboard** - Currently lacking comprehensive management interfaces
-- **Order Management** - Only core order functionality is available; advanced management features (tracking, cancellations, refunds) are not fully implemented
-- **Advanced Analytics** - Admin analytics and reporting features
 - **Discount & Coupon System** - Promotion management features
 
 ## 📋 Tech Stack

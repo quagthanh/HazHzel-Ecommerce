@@ -25,7 +25,7 @@ export class CategoryService {
     private readonly productModel: Model<Product>,
     @InjectModel(Supplier.name)
     private readonly supplierModel: Model<Supplier>,
-  ) {}
+  ) { }
 
   private createBaseSlug(name: string): string {
     return slugify(name, {
@@ -122,11 +122,13 @@ export class CategoryService {
   }
 
   async findIdBySlug(slug: string): Promise<Types.ObjectId> {
-    const category = await this.categoryModel.findOne({ slug: slug });
+    const normalizedSlug =
+      slug.startsWith("/") ? slug : `/${slug}`;
+    const category = await this.categoryModel.findOne({ slug: normalizedSlug });
 
     if (!category) {
       throw new NotFoundException(
-        `Category with slug "${slug}" is not exists `,
+        `Category with slug "${normalizedSlug}" is not exists `,
       );
     }
     return category._id;

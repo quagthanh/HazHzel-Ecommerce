@@ -8,6 +8,7 @@ import { SupplierModule } from '../supplier/supplier.module';
 import { CategoryModule } from '../category/category.module';
 import { CollectionModule } from '../collection/collection.module';
 import { VariantModule } from '../variant/variant.module';
+import { RedisModule } from '../redis/redis.module';
 
 @Module({
   imports: [
@@ -17,9 +18,10 @@ import { VariantModule } from '../variant/variant.module';
     forwardRef(() => CategoryModule),
     MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
     CloudinaryModule,
+    RedisModule,
   ],
   controllers: [ProductController],
   providers: [ProductService],
   exports: [ProductService, MongooseModule],
 })
-export class ProductModule {}
+export class ProductModule { }

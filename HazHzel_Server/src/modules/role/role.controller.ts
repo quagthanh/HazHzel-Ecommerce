@@ -15,7 +15,7 @@ import { Public, ResponseMessage } from '@/shared/decorators/customize';
 
 @Controller('role')
 export class RoleController {
-  constructor(private readonly roleService: RoleService) {}
+  constructor(private readonly roleService: RoleService) { }
 
   @Post()
   @ResponseMessage('Create role success')

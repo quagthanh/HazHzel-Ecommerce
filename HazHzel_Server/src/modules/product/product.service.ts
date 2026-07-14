@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConsoleLogger,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -12,6 +13,7 @@ import {
   isValidId,
   paginationAggregate,
   paginationAggregateNew,
+  ProductRedisKeys,
 } from '@/shared/helpers/utils';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { RemoveImage } from './dto/remove-image.dto';
@@ -23,6 +25,7 @@ import { GenderType } from '@/shared/enums/typeGenderProduct.enm';
 import { VariantService } from '../variant/variant.service';
 import { ProductSortType } from '@/shared/enums/productSortType.enum';
 import { ProductFilterDto } from './dto/product-filter.dto';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class ProductService {
@@ -33,7 +36,8 @@ export class ProductService {
     private readonly categoryService: CategoryService,
     private readonly collectionService: CollectionService,
     private readonly variantService: VariantService,
-  ) {}
+    private readonly redisService: RedisService,
+  ) { }
 
   private checkSlugExist = async (slug: string): Promise<boolean> => {
     const isSlugExist = await this.productModel.exists({ slug });
@@ -321,21 +325,21 @@ export class ProductService {
       { $unwind: { path: '$variants', preserveNullAndEmptyArrays: true } },
       ...(variantAttributeMatch.length > 0
         ? [
-            {
-              $match: {
-                $and: variantAttributeMatch,
-              },
+          {
+            $match: {
+              $and: variantAttributeMatch,
             },
-          ]
+          },
+        ]
         : []),
       ...(Object.keys(priceMatch).length > 0
         ? [
-            {
-              $match: {
-                'variants.currentPrice': priceMatch,
-              },
+          {
+            $match: {
+              'variants.currentPrice': priceMatch,
             },
-          ]
+          },
+        ]
         : []),
       { $sort: { 'variants.currentPrice': 1 } },
       {
@@ -512,7 +516,7 @@ export class ProductService {
   ) {
     const supplierId = await this.supplierService.findIdBySlug(supplierSlug);
 
-    return paginationAggregate(this.productModel, query, current, pageSize, [
+    const productHomeNewBrand = await paginationAggregate(this.productModel, query, current, pageSize, [
       {
         $match: {
           supplierId: new Types.ObjectId(supplierId),
@@ -565,6 +569,8 @@ export class ProductService {
         },
       },
     ]);
+    // await this.redis.set('app:home-new-brand', JSON.stringify(productHomeNewBrand),);
+    return productHomeNewBrand;
   }
   async findByCategory(
     categorySlug: string,
@@ -839,7 +845,13 @@ export class ProductService {
       ],
     );
   }
+
   async findByProductSlug(slug: string) {
+    let cacheKey = ProductRedisKeys.detail(slug)
+    const cacheData = await this.redisService.get(cacheKey)
+    if (cacheData) {
+      return JSON.parse(cacheData)
+    }
     const product = await this.productModel
       .findOne({ slug: slug })
       .populate(['supplierId', { path: 'categoryId' }])
@@ -853,11 +865,14 @@ export class ProductService {
     if (!variants) {
       throw new BadRequestException('Can not find data');
     }
-    return {
+    const result = {
       ...product,
       variants: variants || [],
-    };
+    }
+    await this.redisService.set(cacheKey, JSON.stringify(result), 86400)
+    return result
   }
+
   async searchByKeyword(keyword: string) {
     const regex = new RegExp(keyword, 'i');
 
@@ -963,7 +978,6 @@ export class ProductService {
     if (!product)
       throw new BadRequestException('Can not find product to update');
 
-    //Must have this to use synImage from cloudinaryService
     const keptImages = updateProductDto.existingImages
       ? JSON.parse(updateProductDto.existingImages)
       : [];
@@ -990,7 +1004,13 @@ export class ProductService {
     product.isHot = updateProductDto.isHot ?? product.isHot;
     product.isNewArrival =
       updateProductDto.isNewArrival ?? product.isNewArrival;
-    return await product.save();
+
+    const updatedProduct = await product.save()
+    if (updatedProduct && product.slug) {
+      const cacheKey = ProductRedisKeys.detail(product.slug)
+      await this.redisService.del(cacheKey)
+    }
+    return updatedProduct
   }
 
   async remove(_id: string) {
@@ -1026,6 +1046,7 @@ export class ProductService {
     return { message: 'Đã xóa ảnh thành công' };
   }
 
+
   // async removeImages(_id: string, removeImage: RemoveImage) {
   //   const { public_ids } = removeImage;
 
@@ -1055,3 +1076,4 @@ export class ProductService {
   //   );
   // }
 }
+

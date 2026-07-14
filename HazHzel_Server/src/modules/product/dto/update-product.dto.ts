@@ -5,4 +5,7 @@ import { IsOptional } from 'class-validator';
 export class UpdateProductDto extends PartialType(CreateProductDto) {
   @IsOptional()
   existingImages?: string;
+
+  @IsOptional()
+  slug?: string;
 }

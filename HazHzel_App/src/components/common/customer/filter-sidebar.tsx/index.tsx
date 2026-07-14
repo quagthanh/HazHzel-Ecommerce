@@ -22,19 +22,17 @@ export default function FilterSidebar({ filter_config }: IFilterConfig) {
   const isCategoryPage = pathname.startsWith("/categories");
 
   const categoryTreeData = useMemo(() => {
-    // 1. Chỉ lọc ra các group MEN và WOMEN, bỏ qua BRANDS, SALE...
     const targetGroups = productType.filter(
       (group: any) => group.label === "MEN" || group.label === "WOMEN",
     );
 
-    // 2. Hàm đệ quy map data từ API sang format của Ant Design Tree
     const mapNode = (node: any): TreeDataNode => ({
       title: node.name,
-      key: node.slug, // Dùng slug làm key duy nhất để không bị trùng
+      key: node.slug,
       children:
         node.children && node.children.length > 0
           ? node.children.map(mapNode)
-          : undefined, // undefined để ẩn icon expand nếu không có con
+          : undefined,
     });
 
     const treeNodes: TreeDataNode[] = [];
@@ -52,15 +50,11 @@ export default function FilterSidebar({ filter_config }: IFilterConfig) {
   const checkedCategories =
     searchParams.get("filterCategory")?.split(",").filter(Boolean) || [];
 
-  // Xử lý khi check/uncheck vào tree node
   const handleCategoryCheck = (checkedKeysValue: any) => {
-    // antd tree trả về mảng các key (slug) được check
     const keys = Array.isArray(checkedKeysValue)
       ? checkedKeysValue
       : checkedKeysValue.checked;
 
-    // Cập nhật lại toàn bộ params bằng updateParams thay vì updateFilter toggle
-    // Nếu mảng rỗng thì truyền "" để xoá param đó khỏi URL
     updateParams([
       { key: "filterCategory", value: keys.length > 0 ? keys.join(",") : "" },
     ]);

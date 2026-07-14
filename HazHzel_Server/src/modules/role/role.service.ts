@@ -9,7 +9,7 @@ import aqp from 'api-query-params';
 export class RoleService {
   constructor(
     @InjectModel(Role.name) private readonly roleModel: Model<Role>,
-  ) {}
+  ) { }
 
   isRoleExists = async (_id: string) => {
     const role = await this.roleModel.exists({ _id: new Types.ObjectId(_id) });
