@@ -69,11 +69,12 @@ export async function getProductsByCategory(
     brand?: string;
   },
 ) {
-  return sendRequest<ProductResponseData>({
+  const result = await sendRequest<ProductResponseData>({
     url: `/products/by-category/${slug}`,
     method: "GET",
     queryParams: params,
   });
+  return result
 }
 //Product by collection
 export async function getProductsByCollection(

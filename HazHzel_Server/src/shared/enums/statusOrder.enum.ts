@@ -1,11 +1,3 @@
-export enum statusOrderEnum {
-  PENDING = 'PENDING',
-  PROCESSING = 'PROCESSING',
-  SHIPPED = 'SHIPPED',
-  DELIEVERED = 'DELIEVERED',
-  CANCELLED = 'CANCELLED',
-}
-
 export enum statusOrderAdminEnum {
   PENDING = 'PENDING',
   COMPLETED = 'COMPLETED',

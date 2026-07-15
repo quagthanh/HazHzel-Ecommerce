@@ -1,14 +1,15 @@
 import ListingCategoryClient from "@/components/layout/public/client-listing-layout/listing-category-layout/listing-category-layout";
 import { getProductsByCategory } from "@/services/product.api";
-import { ListPageProps } from "@/types/interface";
+import { ListCategoryPageProps } from "@/types/interface";
 import category_banner from "@/assets/categories_banner.jpg";
 import { getParam } from "@/utils/helper";
 export default async function CatgoryPage({
   params,
   searchParams,
-}: ListPageProps) {
-  const { slug } = params;
-  const title = slug.replace(/-/g, " ").toUpperCase();
+}: ListCategoryPageProps) {
+  const slug = params.slug.join("/");
+  const title = params.slug[params.slug.length - 1].toUpperCase();
+
   const filters = {
     current: Number(getParam(searchParams?.current)) || 1,
     pageSize: Number(getParam(searchParams?.pageSize)) || 12,

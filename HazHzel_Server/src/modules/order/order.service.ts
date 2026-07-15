@@ -8,8 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Order } from './schemas/order.schema';
 import { Model } from 'mongoose';
 import { CartService } from '../cart/cart.service';
-import { statusOrderEnum } from '@/shared/enums/statusOrder.enum';
-import { statusPaymentEnum } from '@/shared/enums/statusPayment.enum';
+import { statusOrderAdminEnum } from '@/shared/enums/statusOrder.enum';
 import { InventoryService } from '../inventory/inventory.service';
 import { pagination, validOrderTransitions } from '@/shared/helpers/utils';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
@@ -21,7 +20,7 @@ export class OrderService {
     @InjectModel(Order.name) private orderModel: Model<Order>,
     private cartService: CartService,
     private inventoryService: InventoryService,
-  ) {}
+  ) { }
   async checkout(userId: string, createOrderDto: CreateOrderDto) {
     const { shippingAddress, paymentMethod } = createOrderDto;
 
@@ -69,10 +68,10 @@ export class OrderService {
       shippingCost,
       totalPrice,
       shippingAddress,
-      status: statusOrderEnum.PENDING,
+      status: statusOrderAdminEnum.PENDING,
       payment: {
         method: paymentMethod,
-        status: statusPaymentEnum.PENDING,
+        status: statusOrderAdminEnum.PENDING,
         paymentDate: new Date(),
       },
       discount: discountObj,

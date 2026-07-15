@@ -55,10 +55,15 @@ export class ProductController {
   @ResponseMessage('Fetched products by supplier successful')
   findBySupplier(
     @Param('supplierSlug') supplierSlug: string,
-    @Query() filterDto: ProductFilterDto,
+    @Query() query: string,
+    @Query() filter: ProductFilterDto,
+    @Query('current') current?: number,
+    @Query('pageSize') pageSize?: number,
   ) {
-    filterDto.filterBrand = supplierSlug;
-    return this.productService.findAll(filterDto);
+    return this.productService.findBySupplier(supplierSlug,
+      query,
+      Number(current) || 1,
+      Number(pageSize) || 10,);
   }
   @Public()
   @Get('/home-new-brand/:supplierSlug')

@@ -380,6 +380,17 @@ export class ProductService {
     current: number,
     pageSize: number,
   ) {
+    const queryContext = JSON.stringify({ query, current, pageSize })
+    const queryHash = Buffer.from(queryContext).toString('base64')
+
+    const cacheKey = ProductRedisKeys.listByCategory(supplierSlug, queryHash)
+    const cachedData = await this.redisService.get(cacheKey)
+
+    if (cachedData) {
+      return JSON.parse(cachedData)
+    }
+
+
     const supplierId = await this.supplierService.findIdBySlug(supplierSlug);
 
     const queryParams = new URLSearchParams(query);
@@ -431,7 +442,7 @@ export class ProductService {
 
     const cleanQuery = queryParams.toString();
 
-    return paginationAggregate(
+    const result = await paginationAggregate(
       this.productModel,
       cleanQuery,
       current,
@@ -507,6 +518,10 @@ export class ProductService {
         },
       ],
     );
+
+    await this.redisService.set(cacheKey, JSON.stringify(result), 60)
+
+    return result;
   }
   async findHomeNewBrand(
     supplierSlug: string,
@@ -578,6 +593,17 @@ export class ProductService {
     current: number,
     pageSize: number,
   ) {
+
+    const queryContext = JSON.stringify({ query, current, pageSize })
+    const queryHash = Buffer.from(queryContext).toString('base64')
+
+    const cacheKey = ProductRedisKeys.listByCategory(categorySlug, queryHash)
+    const cachedData = await this.redisService.get(cacheKey)
+
+    if (cachedData) {
+      return JSON.parse(cachedData)
+    }
+
     const categoryId = await this.categoryService.findIdBySlug(categorySlug);
 
     const queryParams = new URLSearchParams(query);
@@ -628,7 +654,7 @@ export class ProductService {
 
     const cleanQuery = queryParams.toString();
 
-    return paginationAggregate(
+    const result = await paginationAggregate(
       this.productModel,
       cleanQuery,
       current,
@@ -707,6 +733,8 @@ export class ProductService {
         },
       ],
     );
+    await this.redisService.set(cacheKey, JSON.stringify(result), 60)
+    return result;
   }
   async findByCollection(
     collectionSlug: string,
@@ -714,6 +742,16 @@ export class ProductService {
     current: number,
     pageSize: number,
   ) {
+    const queryContext = JSON.stringify({ query, current, pageSize })
+    const queryHash = Buffer.from(queryContext).toString('base64')
+
+    const cacheKey = ProductRedisKeys.listByCollection(collectionSlug, queryHash)
+    const cachedData = await this.redisService.get(cacheKey)
+
+    if (cachedData) {
+      return JSON.parse(cachedData)
+    }
+
     const collectionId =
       await this.collectionService.findIdBySlug(collectionSlug);
 
@@ -1017,6 +1055,9 @@ export class ProductService {
     const data = await this.productModel.findById(_id);
     if (!data) {
       throw new BadRequestException('Không tìm thấy id sản phẩm');
+    }
+    if (data) {
+      await this.redisService.del(ProductRedisKeys.detail(data.slug));
     }
     const id_image = data?.images.map((img) => img.public_id);
     await this.cloudinaryService.deleteFiles(id_image);

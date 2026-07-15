@@ -9,6 +9,9 @@ export class RedisService implements OnModuleDestroy {
         this.client = new Redis({
             host: '127.0.0.1',
             port: 6379,
+            enableOfflineQueue: false,
+            maxRetriesPerRequest: 1,
+            connectTimeout: 1000,
         });
 
         this.client.on('connect', () => {
@@ -24,18 +27,32 @@ export class RedisService implements OnModuleDestroy {
         this.client.disconnect();
     }
     async set(key: string, value: string, ttl?: number) {
-        if (ttl) {
-            await this.client.set(key, value, 'EX', ttl);
-        } else {
-            await this.client.set(key, value);
+        try {
+            if (ttl) {
+                await this.client.set(key, value, 'EX', ttl);
+            } else {
+                await this.client.set(key, value);
+            }
+        } catch (error) {
+            console.error('Redis set error: can not set key ${key}', error);
         }
     }
 
     async get(key: string) {
-        return this.client.get(key);
+        try {
+            return await this.client.get(key);
+        } catch (error) {
+            console.error('Redis get error: can not get key ${key}', error);
+            return null
+        }
     }
 
     async del(key: string) {
-        return this.client.del(key);
+        try {
+            return await this.client.del(key);
+        }
+        catch (error) {
+            console.error('Redis del error: can not delete key ${key}', error);
+        }
     }
 }
