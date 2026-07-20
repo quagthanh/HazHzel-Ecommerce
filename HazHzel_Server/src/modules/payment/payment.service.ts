@@ -1,58 +1,71 @@
-// src/modules/payment/payment.service.ts
-import { Injectable, Inject, BadRequestException, Logger } from '@nestjs/common';
-import { PayOS } from '@payos/node'; // Đảm bảo import đúng type
+import { Injectable, Inject, BadRequestException } from '@nestjs/common';
+import { RedisService } from '../redis/redis.service';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Order, OrderDocument } from '../order/schemas/order.schema';
+import { statusOrderAdminEnum } from '@/shared/enums/statusOrder.enum';
 import { PAYOS_INSTANCE } from './providers/payos.provider';
-import { CreatePaymentLinkDto } from './dto/create-payment-link.dto';
-// Import OrderService hoặc Repository của bạn
 
 @Injectable()
 export class PaymentService {
-  private readonly logger = new Logger(PaymentService.name);
-
   constructor(
-    @Inject(PAYOS_INSTANCE) private readonly payos: PayOS,
-    // private readonly orderService: OrderService,
+    @Inject(PAYOS_INSTANCE) private readonly payOS: any,
+    private readonly redisService: RedisService,
+    @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
   ) { }
 
-  async createPaymentLink(createPaymentDto: CreatePaymentLinkDto) {
-    try {
-      // 1. (Tùy chọn) Lưu log giao dịch vào DB với trạng thái PENDING
-      // 2. Chuẩn bị payload (Lưu ý: orderCode phải là số)
-      const paymentData = {
-        orderCode: createPaymentDto.orderCode,
-        amount: createPaymentDto.amount,
-        description: createPaymentDto.description || 'Thanh toan don hang',
-        returnUrl: 'https://your-domain.com/success',
-        cancelUrl: 'https://your-domain.com/cancel',
-        // ... (Thêm items nếu cần)
-      };
+  async createPaymentLink(orderId: string) {
+    const order = await this.orderModel.findById(orderId);
+    if (!order) throw new BadRequestException('Order is not exist');
 
-      // 3. Gọi PayOS SDK (Cú pháp mới)
-      const paymentLink = await this.payos.paymentRequests.create(paymentData);
-      return paymentLink.checkoutUrl;
+    const orderCode = Number(String(Date.now()).slice(-6)) + Math.floor(Math.random() * 1000);
 
-    } catch (error) {
-      this.logger.error('Lỗi khi tạo link thanh toán PayOS', error);
-      throw new BadRequestException('Không thể tạo link thanh toán');
-    }
+    order.payment.orderCode = orderCode;
+    await order.save();
+
+    const body = {
+      orderCode: orderCode,
+      amount: order.totalPrice,
+      description: `Pay order`,
+      cancelUrl: 'http://localhost:3000/checkout/cancel',
+      returnUrl: 'http://localhost:3000/checkout/success',
+    };
+
+    const paymentLink = await this.payOS.paymentRequests.create(body);
+    return paymentLink.checkoutUrl;
   }
 
   async handleWebhook(webhookBody: any) {
     try {
-      // 1. Xác thực Webhook (Cú pháp mới)
-      const webhookData = this.payos.webhooks.verify(webhookBody);
+      const webhookData = await this.payOS.webhooks.verify(webhookBody);
 
-      // 2. Logic xử lý sau khi xác thực thành công (như đã nói ở câu trả lời trước)
-      // - Mở Transaction
-      // - Lock Row
-      // - Check Idempotency (Order đã SUCCESS chưa?)
-      // - Update Order Status
-      // - Commit Transaction
+      const { orderCode, amount, reference, code } = webhookData;
 
-      return { message: 'Webhook xử lý thành công' };
-    } catch (error) {
-      this.logger.error('Lỗi khi xử lý Webhook PayOS', error);
-      throw new BadRequestException('Webhook không hợp lệ'); // Controller sẽ hứng lỗi này
+
+      if (code === '00') {
+        const updatedOrder = await this.orderModel.findOneAndUpdate(
+          { 'payment.orderCode': Number(orderCode) },
+          {
+            $set: {
+              status: statusOrderAdminEnum.COMPLETED,
+              'payment.status': 'SUCCESS',
+              'payment.transactionReference': reference,
+              'payment.amountPaid': amount,
+              'payment.webhookSnapshot': webhookData,
+            }
+          },
+          { new: true }
+        );
+
+        if (!updatedOrder) {
+          return { success: false, message: 'Order not found' };
+        }
+      }
+
+      return { success: true };
+    } catch (error: any) {
+      console.error('Webhook Error:', error.message);
+      return { success: false };
     }
   }
 }

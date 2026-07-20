@@ -5,7 +5,7 @@ import { HydratedDocument } from 'mongoose';
 
 export type PaymentDocument = HydratedDocument<Payment>;
 
-@Schema({ timestamps: false, _id: false })
+@Schema({ timestamps: true, _id: false })
 export class Payment {
   @Prop({
     type: String,
@@ -21,11 +21,23 @@ export class Payment {
   })
   status: statusPaymentEnum;
 
-  @Prop({ type: String })
-  transactionId: string;
+  @Prop({ type: Number })
+  orderCode: number;
 
-  @Prop({ type: Date })
-  paymentDate: Date;
+  @Prop({ type: String })
+  transactionReference: string;
+
+  @Prop({ type: Number })
+  amountPaid: number;
+
+  @Prop({ type: String })
+  errorCode: string;
+
+  @Prop({ type: String })
+  errorMessage: string;
+
+  @Prop({ type: Object })
+  webhookSnapshot: Record<string, any>;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);
