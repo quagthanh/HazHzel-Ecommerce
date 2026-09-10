@@ -1,0 +1,265 @@
+{
+  "generated_at": "2026-09-10T08:58:15Z",
+  "modules": [
+    {
+      "name": "auth",
+      "path": "HazHzel_Server/src/auth",
+      "purpose": "Authenticate credentials, activate accounts, issue JWTs, bridge backend identity into NextAuth sessions, and enforce role/permission access controls.",
+      "primary_files": [
+        "HazHzel_Server/src/auth/auth.controller.ts",
+        "HazHzel_Server/src/auth/auth.service.ts",
+        "HazHzel_Server/src/auth/strategies/local/local.strategy.ts",
+        "HazHzel_Server/src/auth/strategies/jwt/jwt.strategy.ts",
+        "HazHzel_Server/src/auth/strategies/jwt/jwt-auth.guard.ts",
+        "HazHzel_App/src/auth.ts",
+        "HazHzel_App/src/middleware.ts"
+      ],
+      "functions": [
+        {
+          "name": "validateUser",
+          "file": "HazHzel_Server/src/auth/auth.service.ts",
+          "params": ["email: string", "pass: string"],
+          "returns": "Promise<User | null>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "login",
+          "file": "HazHzel_Server/src/auth/auth.service.ts",
+          "params": ["user: UserResponseDto"],
+          "returns": "Promise<AuthResponseDto>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "handleRegister",
+          "file": "HazHzel_Server/src/modules/users/users.service.ts",
+          "params": ["registerDto: CreateAuthDto"],
+          "returns": "Promise<{ _id: ObjectId }>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "handleActive",
+          "file": "HazHzel_Server/src/modules/users/users.service.ts",
+          "params": ["codeDto: CodeAuthDto"],
+          "returns": "Promise<{ isBeforeCheck: boolean }>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "retryActive",
+          "file": "HazHzel_Server/src/modules/users/users.service.ts",
+          "params": ["retryCodeDto: RetryCodeDto"],
+          "returns": "Promise<{ _id: ObjectId }>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "retryPassword",
+          "file": "HazHzel_Server/src/modules/users/users.service.ts",
+          "params": ["retryPasswordDto: RetryPasswordDto"],
+          "returns": "Promise<{ _id: ObjectId, email: string }>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "changePassword",
+          "file": "HazHzel_Server/src/modules/users/users.service.ts",
+          "params": ["changePasswordDto: ChangePasswordDto"],
+          "returns": "Promise<{ isBeforeCheck: boolean }>",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "PermissionGuard.canActivate",
+          "file": "HazHzel_Server/src/auth/guards/permission.guard.ts",
+          "params": ["context: ExecutionContext"],
+          "returns": "Promise<boolean>",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "User",
+          "fields": [
+            {"name": "name", "type": "string", "required": false},
+            {"name": "email", "type": "string", "required": false},
+            {"name": "password", "type": "string", "required": false},
+            {"name": "roles", "type": "Array<ObjectId|Role>", "required": false},
+            {"name": "accountType", "type": "string", "required": false},
+            {"name": "isActive", "type": "boolean", "required": false},
+            {"name": "codeId", "type": "string", "required": false},
+            {"name": "codeExpired", "type": "Date", "required": false}
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Role",
+          "fields": [
+            {"name": "name", "type": "string", "required": true},
+            {"name": "permissions", "type": "Array<ObjectId|Permission>", "required": false}
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Permission",
+          "fields": [
+            {"name": "resource", "type": "Resources", "required": true},
+            {"name": "action", "type": "ActionPer", "required": false}
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Self-registration always assigns the CUSTOMER role.",
+          "location": "HazHzel_Server/src/modules/users/users.service.ts:116",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Activation and recovery codes expire after three minutes.",
+          "location": "HazHzel_Server/src/modules/users/users.service.ts:134",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Inactive users cannot log in.",
+          "location": "HazHzel_Server/src/auth/strategies/local/local.strategy.ts:25",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Any populated role granting the required resource action authorizes the request.",
+          "location": "HazHzel_Server/src/auth/guards/permission.guard.ts:34",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Password change appears to query code instead of the persisted codeId field.",
+          "location": "HazHzel_Server/src/modules/users/users.service.ts:239",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": [
+        "users",
+        "role",
+        "permission",
+        "MongoDB/Mongoose",
+        "Gmail SMTP",
+        "NextAuth",
+        "Passport",
+        "JWT",
+        "bcrypt"
+      ],
+      "algorithms": [
+        "bcrypt hashing and comparison with cost factor 10",
+        "UUID-based activation/recovery code generation",
+        "JWT creation and bearer-token validation",
+        "any-role permission resolution over populated roles and permissions"
+      ],
+      "complexity": "high"
+    },
+    {
+      "name": "address",
+      "path": "HazHzel_Server/src/modules/address",
+      "purpose": "Persist and manage customer delivery addresses, including per-user default-address selection.",
+      "primary_files": [
+        "HazHzel_Server/src/modules/address/address.controller.ts",
+        "HazHzel_Server/src/modules/address/address.service.ts",
+        "HazHzel_Server/src/modules/address/schemas/address.schema.ts",
+        "HazHzel_App/src/services/address.api.ts",
+        "HazHzel_App/src/components/common/customer/account-adress-addressform/index.tsx"
+      ],
+      "functions": [
+        {"name": "create", "file": "HazHzel_Server/src/modules/address/address.service.ts", "params": ["createAddressDto: CreateAddressDto"], "returns": "Promise<Address>", "confidence": "confirmed"},
+        {"name": "findAll", "file": "HazHzel_Server/src/modules/address/address.service.ts", "params": [], "returns": "Promise<Address[]>", "confidence": "confirmed"},
+        {"name": "findOne", "file": "HazHzel_Server/src/modules/address/address.service.ts", "params": ["id: string"], "returns": "Promise<Address>", "confidence": "confirmed"},
+        {"name": "findMyAddress", "file": "HazHzel_Server/src/modules/address/address.service.ts", "params": ["userId: any"], "returns": "Promise<Address[]>", "confidence": "confirmed"},
+        {"name": "update", "file": "HazHzel_Server/src/modules/address/address.service.ts", "params": ["id: string", "updateAddressDto: UpdateAddressDto"], "returns": "Promise<Address | null>", "confidence": "confirmed"},
+        {"name": "remove", "file": "HazHzel_Server/src/modules/address/address.service.ts", "params": ["id: string"], "returns": "Promise<Address>", "confidence": "confirmed"}
+      ],
+      "entities": [
+        {
+          "name": "Address",
+          "fields": [
+            {"name": "userId", "type": "ObjectId<User>", "required": false},
+            {"name": "name", "type": "string", "required": true},
+            {"name": "street", "type": "string", "required": true},
+            {"name": "ward", "type": "string", "required": false},
+            {"name": "city", "type": "string", "required": false},
+            {"name": "country", "type": "string", "required": false},
+            {"name": "zipCode", "type": "string", "required": false},
+            {"name": "phone", "type": "string", "required": true},
+            {"name": "typeAddress", "type": "HOMEADDRESS|OFFICEADDRESS", "required": false},
+            {"name": "isDefault", "type": "boolean", "required": false}
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {"description": "A default create/update unsets other default addresses for the selected userId.", "location": "HazHzel_Server/src/modules/address/address.service.ts:16", "confidence": "confirmed"},
+        {"description": "Address name, street, and phone are required.", "location": "HazHzel_Server/src/modules/address/schemas/address.schema.ts:12", "confidence": "confirmed"},
+        {"description": "Create/update/delete by ID do not verify ownership.", "location": "HazHzel_Server/src/modules/address/address.controller.ts:20", "confidence": "confirmed"}
+      ],
+      "dependencies": ["auth", "users", "MongoDB/Mongoose"],
+      "algorithms": ["per-user default-address normalization via updateMany"],
+      "complexity": "medium"
+    },
+    {
+      "name": "admin",
+      "path": "HazHzel_Server/src/modules/admin",
+      "purpose": "Create internal users and list users according to the caller's administrative role.",
+      "primary_files": [
+        "HazHzel_Server/src/modules/admin/admin.controller.ts",
+        "HazHzel_Server/src/modules/admin/admin.service.ts",
+        "HazHzel_Server/src/modules/admin/dto/internal-create-user.dto.ts",
+        "HazHzel_Server/src/shared/constants/create_policy.ts"
+      ],
+      "functions": [
+        {"name": "handleRegister", "file": "HazHzel_Server/src/modules/admin/admin.service.ts", "params": ["internalRegisterDto: InternalCreateUser", "callerRoles: RoleEnum[]"], "returns": "Promise<{ _id: ObjectId }>", "confidence": "confirmed"},
+        {"name": "findAll", "file": "HazHzel_Server/src/modules/admin/admin.service.ts", "params": ["query: string", "current: number", "pageSize: number", "callerRoles: RoleEnum[]"], "returns": "Promise<{ meta, result }>", "confidence": "confirmed"}
+      ],
+      "entities": [],
+      "business_rules": [
+        {"description": "SYSTEM_ADMIN may create any defined role; ADMIN may create only CUSTOMER.", "location": "HazHzel_Server/src/shared/constants/create_policy.ts:3", "confidence": "confirmed"},
+        {"description": "ADMIN listings are restricted to ADMIN and CUSTOMER accounts.", "location": "HazHzel_Server/src/modules/admin/admin.service.ts:93", "confidence": "confirmed"},
+        {"description": "The implementation validates caller roles rather than requested roles against the creation matrix.", "location": "HazHzel_Server/src/modules/admin/admin.service.ts:41", "confidence": "confirmed"}
+      ],
+      "dependencies": ["auth", "users", "role", "Gmail SMTP", "bcrypt", "api-query-params"],
+      "algorithms": ["role-priority selection", "role-scoped query filtering", "offset pagination"],
+      "complexity": "high"
+    },
+    {
+      "name": "analytics",
+      "path": "HazHzel_Server/src/modules/analytics",
+      "purpose": "Aggregate store-wide order, customer, product, category, payment, and stock metrics for the administration dashboard.",
+      "primary_files": [
+        "HazHzel_Server/src/modules/analytics/analytics.controller.ts",
+        "HazHzel_Server/src/modules/analytics/analytics.service.ts",
+        "HazHzel_App/src/services/dashboard.api.ts",
+        "HazHzel_App/src/components/common/admin/overview/dashboard-overview/index.tsx"
+      ],
+      "functions": [
+        {"name": "getDashboardOverview", "file": "HazHzel_Server/src/modules/analytics/analytics.service.ts", "params": ["days: number"], "returns": "Promise<DashboardOverview>", "confidence": "confirmed"}
+      ],
+      "entities": [],
+      "business_rules": [
+        {"description": "Dashboard order metrics exclude CANCELLED orders within the selected date window.", "location": "HazHzel_Server/src/modules/analytics/analytics.service.ts:21", "confidence": "confirmed"},
+        {"description": "Low stock means stock less than or equal to 10.", "location": "HazHzel_Server/src/modules/analytics/analytics.service.ts:26", "confidence": "confirmed"},
+        {"description": "Payment-method revenue includes only COMPLETED payments.", "location": "HazHzel_Server/src/modules/analytics/analytics.service.ts:89", "confidence": "confirmed"}
+      ],
+      "dependencies": ["order", "users", "variant", "product", "category", "MongoDB aggregation", "dayjs"],
+      "algorithms": ["seven concurrent aggregation pipelines", "daily time-series grouping", "cross-collection product/category joins", "top-N and low-stock ranking"],
+      "complexity": "high"
+    }
+  ],
+  "modules_pending": [
+    "cart",
+    "cart-item",
+    "category",
+    "cloudinary",
+    "collection",
+    "discount",
+    "inventory",
+    "order",
+    "payment",
+    "permission",
+    "product",
+    "role",
+    "supplier",
+    "title-aggregation",
+    "users",
+    "variant"
+  ]
+}

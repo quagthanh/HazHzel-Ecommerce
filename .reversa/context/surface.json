@@ -1,0 +1,174 @@
+{
+  "generated_at": "2026-09-10T08:45:50Z",
+  "project_root": "/home/quangthanh/Workspace/Chore/hazlzle-ecommerce/HazHzel-Ecommerce",
+  "languages": [
+    {
+      "name": "TypeScript",
+      "extensions": [".ts", ".tsx"],
+      "file_count": 433
+    },
+    {
+      "name": "SCSS",
+      "extensions": [".scss"],
+      "file_count": 125
+    },
+    {
+      "name": "JavaScript",
+      "extensions": [".mjs"],
+      "file_count": 1
+    },
+    {
+      "name": "Handlebars",
+      "extensions": [".hbs"],
+      "file_count": 2
+    },
+    {
+      "name": "YAML",
+      "extensions": [".yml"],
+      "file_count": 1
+    }
+  ],
+  "primary_language": "TypeScript",
+  "frameworks": [
+    {
+      "name": "Next.js",
+      "version": "14.2.5",
+      "source": "HazHzel_App/package.json"
+    },
+    {
+      "name": "React",
+      "version": "18.3.1",
+      "source": "HazHzel_App/package.json"
+    },
+    {
+      "name": "NextAuth",
+      "version": "^5.0.0-beta.20",
+      "source": "HazHzel_App/package.json"
+    },
+    {
+      "name": "NestJS",
+      "version": "10.3.10",
+      "source": "HazHzel_Server/package.json"
+    },
+    {
+      "name": "Mongoose",
+      "version": "8.5.1",
+      "source": "HazHzel_Server/package.json"
+    }
+  ],
+  "package_manager": "npm",
+  "entry_points": [
+    {
+      "path": "HazHzel_App/src/app/layout.tsx",
+      "type": "app_entry"
+    },
+    {
+      "path": "HazHzel_App/src/app/(public)/page.tsx",
+      "type": "page_entry"
+    },
+    {
+      "path": "HazHzel_App/src/app/api/auth/[...nextauth]/route.ts",
+      "type": "api_route"
+    },
+    {
+      "path": "HazHzel_App/src/middleware.ts",
+      "type": "middleware"
+    },
+    {
+      "path": "HazHzel_Server/src/main.ts",
+      "type": "server_entry"
+    },
+    {
+      "path": "HazHzel_Server/src/app.module.ts",
+      "type": "composition_root"
+    }
+  ],
+  "config_files": [
+    "HazHzel_App/.env.example",
+    "HazHzel_App/next.config.mjs",
+    "HazHzel_App/tsconfig.json",
+    "HazHzel_Server/.env.example",
+    "HazHzel_Server/nest-cli.json",
+    "HazHzel_Server/tsconfig.json",
+    "HazHzel_Server/tsconfig.build.json",
+    "docker-compose.yml"
+  ],
+  "ci_cd": [
+    ".github/workflows/deploy.yml"
+  ],
+  "docker": {
+    "dockerfiles": [
+      "HazHzel_App/Dockerfile",
+      "HazHzel_Server/Dockerfile"
+    ],
+    "compose": "docker-compose.yml"
+  },
+  "database_hints": [
+    {
+      "path": "HazHzel_Server/src/modules/*/schemas/*.schema.ts",
+      "type": "mongoose_schemas"
+    },
+    {
+      "path": "HazHzel_Server/src/modules/*/entities/*.entity.ts",
+      "type": "entity_files"
+    },
+    {
+      "path": "docker-compose.yml",
+      "type": "mongodb_container"
+    }
+  ],
+  "test_framework": "Jest",
+  "test_file_count": 1,
+  "modules": [
+    "auth",
+    "address",
+    "admin",
+    "analytics",
+    "cart",
+    "cart-item",
+    "category",
+    "cloudinary",
+    "collection",
+    "discount",
+    "inventory",
+    "order",
+    "payment",
+    "permission",
+    "product",
+    "role",
+    "supplier",
+    "title-aggregation",
+    "users",
+    "variant"
+  ],
+  "total_files": 618,
+  "external_integrations": [
+    "Cloudinary",
+    "Gmail SMTP",
+    "Socket.IO chat service",
+    "Docker Hub/VPS deployment"
+  ],
+  "organization_suggestion": {
+    "granularity": "hybrid",
+    "rationale": "Cấu trúc backend phân tách rõ theo mô-đun miền, trong khi NestJS controllers và Next.js App Router đồng thời tạo bề mặt định tuyến theo endpoint.",
+    "signals": [
+      {
+        "type": "top_level_domain_folders",
+        "evidence": [
+          "HazHzel_Server/src/modules/product/",
+          "HazHzel_Server/src/modules/order/",
+          "HazHzel_Server/src/modules/users/"
+        ]
+      },
+      {
+        "type": "controller_and_filesystem_routes",
+        "evidence": [
+          "HazHzel_Server/src/modules/product/product.controller.ts",
+          "HazHzel_Server/src/modules/order/order.controller.ts",
+          "HazHzel_App/src/app/(public)/products/[slug]/page.tsx"
+        ]
+      }
+    ],
+    "features": []
+  }
+}
